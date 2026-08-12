@@ -1,0 +1,124 @@
+import React, { useState, useEffect } from 'react';
+import { Zap, Clock } from 'lucide-react';
+
+export default function PriceDropShowcaseSection({ onSelectListing }) {
+  const [timeLeft, setTimeLeft] = useState({ hours: 6, minutes: 18, seconds: 36 });
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev.seconds > 0) return { ...prev, seconds: prev.seconds - 1 };
+        if (prev.minutes > 0) return { ...prev, minutes: 59, seconds: 59 };
+        if (prev.hours > 0) return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
+        return { hours: 6, minutes: 18, seconds: 36 };
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const priceDropItems = [
+    {
+      id: 'pd1',
+      title: 'Casa con Pileta en Yerba Buena',
+      category: 'Propiedad',
+      oldPrice: 195000,
+      newPrice: 179000,
+      discount: '-8%',
+      image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80',
+      location: 'Yerba Buena, Tucumán',
+      sectionId: 'propiedades'
+    },
+    {
+      id: 'pd2',
+      title: 'Lote Exclusivo Cevil Redondo',
+      category: 'Terreno',
+      oldPrice: 62000,
+      newPrice: 55000,
+      discount: '-11%',
+      image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80',
+      location: 'Cevil Redondo, Tucumán',
+      sectionId: 'propiedades'
+    },
+    {
+      id: 'pd3',
+      title: 'Ford Ranger Limited 4x4',
+      category: 'Pickup Premium',
+      oldPrice: 41000,
+      newPrice: 38500,
+      discount: '-6%',
+      image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80',
+      location: 'San Miguel, Tucumán',
+      sectionId: 'autos'
+    },
+    {
+      id: 'pd4',
+      title: 'Depto 2 Amb Barrio Sur',
+      category: 'Departamento',
+      oldPrice: 94000,
+      newPrice: 89000,
+      discount: '-5%',
+      image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80',
+      location: 'Barrio Sur, Tucumán',
+      sectionId: 'propiedades'
+    }
+  ];
+
+  return (
+    <section className="price-drop-container">
+      <div className="price-drop-header">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div className="zap-badge-icon">
+            <Zap size={20} />
+          </div>
+          <div>
+            <span style={{ fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--accent-gold)' }}>
+              OPORTUNIDADES DESTACADAS
+            </span>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.9rem', color: '#FFF', lineHeight: '1.05' }}>
+              BAJARON DE PRECIO
+            </h2>
+          </div>
+        </div>
+
+        <div className="countdown-timer-pill">
+          <Clock size={16} />
+          <span>Oportunidad por</span>
+          <div className="timer-boxes">
+            <span>{String(timeLeft.hours).padStart(2, '0')}</span>:
+            <span>{String(timeLeft.minutes).padStart(2, '0')}</span>:
+            <span>{String(timeLeft.seconds).padStart(2, '0')}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="price-drop-grid">
+        {priceDropItems.map((item) => (
+          <div
+            key={item.id}
+            className="price-drop-card"
+            onClick={() => onSelectListing({
+              ...item,
+              price: item.newPrice,
+              subtitle: `Oportunidad con ${item.discount} de rebaja directa.`
+            })}
+          >
+            <div className="pd-card-img">
+              <img src={item.image} alt={item.title} />
+              <span className="pd-discount-pill">{item.discount}</span>
+            </div>
+
+            <div className="pd-card-body">
+              <span className="pd-loc-text">{item.location}</span>
+              <h3 className="pd-title-text">{item.title}</h3>
+
+              <div className="pd-price-row">
+                <span className="pd-old-price">USD {item.oldPrice.toLocaleString()}</span>
+                <div className="pd-new-price">USD {item.newPrice.toLocaleString()}</div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}

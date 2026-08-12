@@ -19,16 +19,17 @@ export default function BannerHero({
       <div className="hero-overlay" />
 
       <div className="hero-content-inner">
+        {/* Top Badge Pill with Direct Agustín Fidalgo Trust */}
         <div className="hero-badge">
           <Sparkles size={14} />
-          <span>SELECCIÓN PREMIUM · CATÁLOGO CURADO</span>
+          <span>TRATO DIRECTO CON AGUSTÍN FIDALGO</span>
         </div>
 
-        {/* STRICT GUARANTEED 2-LINE HEADLINE WITH PALETTE ACCENT GOLD (#C5A059) */}
+        {/* Ultra-Short 2-Line Hero Headline */}
         <h1 className="hero-headline">
-          <span className="hero-line-1">GARAGE DE LUJO Y RESIDENCIAS DE AUTOR</span>
+          <span className="hero-line-1">GARAGE DE LUJO</span>
           <br />
-          <span className="hero-line-2">TRATO DIRECTO CON AGUSTÍN FIDALGO</span>
+          <span className="hero-line-2">Y RESIDENCIAS DE AUTOR</span>
         </h1>
 
         <p className="hero-lead">

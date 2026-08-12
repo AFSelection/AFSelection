@@ -1161,12 +1161,6 @@ h1, h2, h3, h4, .font-display {
   align-items: center;
 }
 
-@media (max-width: 992px) {
-  .why-choose-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 .section-pill-badge {
   font-size: 0.75rem;
   font-weight: 800;
@@ -1275,12 +1269,6 @@ h1, h2, h3, h4, .font-display {
   align-items: center;
 }
 
-@media (max-width: 992px) {
-  .staggered-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 .section-pill-tag-dark {
   display: inline-flex;
   align-items: center;
@@ -1315,12 +1303,6 @@ h1, h2, h3, h4, .font-display {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-}
-
-@media (max-width: 768px) {
-  .staggered-images-row {
-    grid-template-columns: 1fr;
-  }
 }
 
 .staggered-card {
@@ -1440,4 +1422,198 @@ h1, h2, h3, h4, .font-display {
   color: var(--text-light);
   padding: 60px 36px;
   border-top: 1px solid var(--border-dark);
+}
+
+/* ==========================================================================
+   MOBILE & TABLET RESPONSIVE ADAPTATIONS (DESKTOP min-width: 1025px IS 100% UNTOUCHED)
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .editorial-header {
+    width: calc(100% - 24px);
+    top: 12px;
+  }
+  
+  .header-inner {
+    padding: 8px 16px;
+  }
+
+  .brand-logo {
+    font-size: 1.1rem;
+  }
+
+  .search-pill {
+    max-width: 200px;
+    padding: 4px 12px;
+  }
+
+  .main-wrapper {
+    padding: 0 16px;
+    margin-bottom: 40px;
+  }
+
+  .hero-monumental {
+    height: 85vh;
+    min-height: 520px;
+    padding: 40px 20px 28px;
+    margin-bottom: 32px;
+    border-radius: 0 0 28px 28px;
+  }
+
+  .hero-badge {
+    font-size: 0.68rem;
+    padding: 6px 14px;
+    margin-bottom: 16px;
+  }
+
+  .hero-headline {
+    font-size: clamp(1.4rem, 5.5vw, 2.5rem);
+    line-height: 1.12;
+    margin-bottom: 14px;
+  }
+
+  .hero-line-1, .hero-line-2 {
+    white-space: normal !important;
+    display: inline !important;
+  }
+
+  .hero-lead {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+
+  .hero-search-box {
+    padding: 6px 6px 6px 16px;
+    margin-bottom: 20px;
+  }
+
+  .hero-search-btn {
+    padding: 10px 18px;
+    font-size: 0.8rem;
+  }
+
+  .hero-quick-pills {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 4px;
+  }
+  .hero-quick-pills::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hero-pill-btn {
+    padding: 8px 16px !important;
+    font-size: 0.78rem !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Price Drop Mobile Swipe Carousel */
+  .price-drop-container {
+    padding: 24px 20px;
+    margin: 32px 0;
+    border-radius: 24px;
+  }
+
+  .price-drop-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 16px;
+    padding-bottom: 12px;
+    scrollbar-width: none;
+  }
+  .price-drop-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .price-drop-card {
+    width: 260px !important;
+    min-width: 260px !important;
+    flex: 0 0 260px !important;
+    scroll-snap-align: start;
+  }
+
+  /* Dark & Light Section Blocks */
+  .dark-section-block, .light-section-block, .why-choose-section, .investments-section, .testimonials-section, .concierge-whatsapp-box {
+    padding: 28px 20px !important;
+    margin: 36px 0 !important;
+    border-radius: 24px !important;
+  }
+
+  .why-choose-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .why-choose-title {
+    font-size: 1.6rem;
+  }
+
+  .stats-counters-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .staggered-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .staggered-title {
+    font-size: 1.8rem;
+  }
+
+  .staggered-images-row {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .staggered-card {
+    height: 240px;
+  }
+
+  .investments-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .investment-card {
+    padding: 20px;
+  }
+
+  .investments-title {
+    font-size: 1.6rem;
+  }
+
+  .c-wa-headline {
+    font-size: 1.8rem;
+  }
+
+  .c-wa-desc {
+    font-size: 0.95rem;
+  }
+
+  .c-wa-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .search-pill {
+    display: none; /* Hide search input pill in header on mobile to prevent overcrowding */
+  }
+
+  .staggered-images-row {
+    grid-template-columns: 1fr;
+  }
+
+  .staggered-card {
+    height: 280px;
+  }
 }

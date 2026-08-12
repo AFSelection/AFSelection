@@ -959,41 +959,49 @@ h1, h2, h3, h4, .font-display {
   color: #FFF !important;
 }
 
-/* WANDER STYLE FULL IMAGE OVERLAY CARDS (NO ENLARGING HOVER, FLIP COVER IMAGE) */
+/* WANDER STYLE FULL IMAGE OVERLAY CARDS (SUBTLE INNER IMAGE ZOOM + HOVER IMAGE ROTATION, ZERO CARD RESIZING OR CLIPPING) */
 .wander-card {
   position: relative;
   background: var(--bg-dark);
   border-radius: 24px;
-  overflow: hidden;
+  overflow: hidden; /* STRICT CONTAINER BOUNDARY - PREVENTS CARD CUTTING AT TOP */
   height: 400px;
   width: 100%;
+  box-sizing: border-box;
   cursor: pointer;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-  transition: box-shadow 0.3s ease;
-  transform: none !important; /* STRICTLY DISABLE ENLARGING SCALING */
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transform: none !important; /* STRICTLY PREVENT CARD WIDTH/HEIGHT RESIZING */
 }
 
 .wander-card:hover {
-  transform: none !important; /* STRICTLY DISABLE ENLARGING SCALING */
-  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.25);
+  transform: none !important; /* STRICTLY PREVENT CARD RESIZING */
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.28);
+  border-color: rgba(197, 160, 89, 0.4);
 }
 
 .wander-image-container {
   position: relative;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
 .card-interactive-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  transform: none !important;
+  transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: scale(1.0);
+}
+
+.wander-card:hover .card-interactive-img {
+  transform: scale(1.06); /* ELEGANT SUBTLE INNER ZOOM BOUNDED INSIDE THE CARD */
 }
 
 .card-interactive-img.hover-active {
-  opacity: 0.96;
+  opacity: 0.98;
 }
 
 .wander-top-badges {

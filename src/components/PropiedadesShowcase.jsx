@@ -14,7 +14,7 @@ export default function PropiedadesShowcase({
 
   const scroll = (direction) => {
     if (sliderRef.current) {
-      const scrollAmount = direction === 'left' ? -380 : 380;
+      const scrollAmount = direction === 'left' ? -384 : 384;
       sliderRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   };
@@ -84,7 +84,7 @@ export default function PropiedadesShowcase({
         </div>
       </div>
 
-      {/* Horizontal Carousel Container */}
+      {/* Horizontal Carousel Container with STRICT FIXED CARD WIDTH */}
       <div
         ref={sliderRef}
         style={{
@@ -99,9 +99,10 @@ export default function PropiedadesShowcase({
           <div
             key={item.id}
             style={{
-              minWidth: '350px',
-              maxWidth: '370px',
-              flex: '0 0 auto',
+              width: '360px',
+              minWidth: '360px',
+              maxWidth: '360px',
+              flex: '0 0 360px',
               scrollSnapAlign: 'start'
             }}
           >

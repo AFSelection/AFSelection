@@ -959,39 +959,44 @@ h1, h2, h3, h4, .font-display {
   color: #FFF !important;
 }
 
-/* WANDER STYLE FULL IMAGE OVERLAY CARDS (SUBTLE INNER IMAGE ZOOM + HOVER IMAGE ROTATION, ZERO CARD RESIZING OR CLIPPING) */
+/* WANDER STYLE FULL IMAGE OVERLAY CARDS (SUBTLE INNER IMAGE ZOOM + HOVER IMAGE ROTATION, STRICT STABLE CARD WIDTH) */
 .wander-card {
   position: relative;
   background: var(--bg-dark);
   border-radius: 24px;
-  overflow: hidden; /* STRICT CONTAINER BOUNDARY - PREVENTS CARD CUTTING AT TOP */
+  overflow: hidden !important; /* STRICT CONTAINER BOUNDARY - PREVENTS CARD CUTTING AT TOP */
   height: 400px;
-  width: 100%;
-  box-sizing: border-box;
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
   cursor: pointer;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
   transition: box-shadow 0.3s ease, border-color 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  transform: none !important; /* STRICTLY PREVENT CARD WIDTH/HEIGHT RESIZING */
+  transform: none !important; /* STRICTLY PREVENT CARD RESIZING OR POSITION SHIFTING */
 }
 
 .wander-card:hover {
-  transform: none !important; /* STRICTLY PREVENT CARD RESIZING */
+  transform: none !important;
   box-shadow: 0 20px 44px rgba(0, 0, 0, 0.28);
   border-color: rgba(197, 160, 89, 0.4);
 }
 
 .wander-image-container {
   position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
 }
 
 .card-interactive-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
   transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   transform: scale(1.0);
 }
@@ -1368,10 +1373,10 @@ h1, h2, h3, h4, .font-display {
   padding: 0 36px;
 }
 
-/* Product Cards Grid */
+/* Product Cards Grid with STRICT FIXED COLUMN WIDTHS */
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 28px;
 }
 

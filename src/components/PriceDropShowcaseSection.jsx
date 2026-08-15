@@ -66,27 +66,27 @@ export default function PriceDropShowcaseSection({ onSelectListing }) {
   return (
     <section className="price-drop-container">
       <div className="price-drop-header">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
           <div className="zap-badge-icon">
-            <Zap size={20} />
+            <Zap size={20} style={{ display: 'block' }} />
           </div>
           <div>
-            <span style={{ fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--accent-gold)' }}>
-              OPORTUNIDADES DESTACADAS
-            </span>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.9rem', color: '#FFF', lineHeight: '1.05' }}>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.9rem', color: '#111317', lineHeight: '1.05' }}>
               BAJARON DE PRECIO
             </h2>
           </div>
         </div>
 
+        {/* Ultra-Rounded Luxury Countdown Timer Pill */}
         <div className="countdown-timer-pill">
-          <Clock size={16} />
-          <span>Oportunidad por</span>
+          <Clock size={15} className="timer-clock-icon" />
+          <span className="timer-lbl">OPORTUNIDAD POR</span>
           <div className="timer-boxes">
-            <span>{String(timeLeft.hours).padStart(2, '0')}</span>:
-            <span>{String(timeLeft.minutes).padStart(2, '0')}</span>:
-            <span>{String(timeLeft.seconds).padStart(2, '0')}</span>
+            <span className="t-box">{String(timeLeft.hours).padStart(2, '0')}</span>
+            <span className="t-sep">:</span>
+            <span className="t-box">{String(timeLeft.minutes).padStart(2, '0')}</span>
+            <span className="t-sep">:</span>
+            <span className="t-box">{String(timeLeft.seconds).padStart(2, '0')}</span>
           </div>
         </div>
       </div>

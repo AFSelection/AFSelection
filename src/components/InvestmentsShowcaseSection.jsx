@@ -1,92 +1,196 @@
-import React from 'react';
-import { TrendingUp, ArrowUpRight, ArrowRight } from 'lucide-react';
+import React, { useRef } from 'react';
+import { TrendingUp, ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function InvestmentsShowcaseSection({ onOpenContact }) {
+  const sliderRef = useRef(null);
+
+  const scroll = (direction) => {
+    if (sliderRef.current) {
+      const scrollAmount = direction === 'left' ? -340 : 340;
+      sliderRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
   const investments = [
     {
       id: 'inv1',
       title: 'Torre Alem, Yerba Buena',
-      developer: 'Desarrollador: Grupo Constructor Alem',
+      developer: 'Grupo Constructor Alem',
       risk: 'RIESGO BAJO',
       riskColor: '#10B981',
       minInvestment: 'USD 18.000',
-      estimatedReturn: '14-17%',
+      estimatedReturn: '14-17% Anual',
       termMonths: '18 meses',
       progress: 62,
       location: 'Yerba Buena, Tucumán'
     },
     {
       id: 'inv2',
-      title: 'Galpones Ruta 9, Cevil Redondo',
-      developer: 'Desarrollador: Fidalgo Inversiones',
+      title: 'Galpones Ruta 9',
+      developer: 'Fidalgo Inversiones',
       risk: 'RIESGO MEDIO',
       riskColor: '#F59E0B',
       minInvestment: 'USD 35.000',
-      estimatedReturn: '19-22%',
+      estimatedReturn: '19-22% Anual',
       termMonths: '24 meses',
       progress: 70,
       location: 'Cevil Redondo, Tucumán'
+    },
+    {
+      id: 'inv3',
+      title: 'Residencias del Parque',
+      developer: 'Desarrollos Del Sur',
+      risk: 'RIESGO BAJO',
+      riskColor: '#10B981',
+      minInvestment: 'USD 22.000',
+      estimatedReturn: '15-18% Anual',
+      termMonths: '20 meses',
+      progress: 45,
+      location: 'San Miguel, Tucumán'
+    },
+    {
+      id: 'inv4',
+      title: 'Distrito Comercial Norte',
+      developer: 'Boutique Real Estate',
+      risk: 'RIESGO MEDIO',
+      riskColor: '#F59E0B',
+      minInvestment: 'USD 40.000',
+      estimatedReturn: '20-24% Anual',
+      termMonths: '30 meses',
+      progress: 80,
+      location: 'Tucumán Capital'
     }
   ];
 
   return (
-    <section className="investments-section">
-      <div className="investments-header">
-        <div>
-          <span className="section-pill-badge-gold">
-            <TrendingUp size={14} />
-            <span>OPORTUNIDADES DE CAPITAL</span>
-          </span>
-          <h2 className="investments-title">Inversiones con Retorno Estimado</h2>
+    <section className="investments-section" style={{ marginBottom: '60px' }}>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '24px',
+        paddingBottom: '16px',
+        borderBottom: '1px solid var(--border-light)',
+        flexWrap: 'wrap',
+        gap: '16px'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <div style={{
+            background: 'var(--accent-gold)',
+            color: '#111317',
+            width: '44px',
+            height: '44px',
+            minWidth: '44px',
+            minHeight: '44px',
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+            lineHeight: 0
+          }}>
+            <TrendingUp size={20} style={{ display: 'block' }} />
+          </div>
+          <div>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.9rem', color: 'var(--text-main)', lineHeight: '1.05' }}>
+              INVERSIONES DE CAPITAL
+            </h2>
+          </div>
         </div>
 
-        <button className="btn-pill" onClick={onOpenContact}>
-          <span>Ver Todas las Inversiones</span>
-          <ArrowRight size={15} />
-        </button>
+        {/* Crisp Single-Line Action Controls Group */}
+        <div className="showcase-actions-group">
+          <div className="carousel-nav-arrows">
+            <button onClick={() => scroll('left')} className="btn-arrow-circle" title="Anterior">
+              <ChevronLeft size={16} />
+            </button>
+            <button onClick={() => scroll('right')} className="btn-arrow-circle" title="Siguiente">
+              <ChevronRight size={16} />
+            </button>
+          </div>
+
+          <button className="btn-square-sm active-btn-dark" onClick={onOpenContact}>
+            <span>CONSULTAR PROYECTOS ({investments.length})</span>
+            <ArrowUpRight size={14} />
+          </button>
+        </div>
       </div>
 
-      <div className="investments-grid">
+      {/* Horizontal Carousel Container */}
+      <div
+        ref={sliderRef}
+        className="showcase-carousel-track investments-carousel-track"
+        style={{
+          display: 'flex',
+          gap: '20px',
+          overflowX: 'auto',
+          scrollSnapType: 'x mandatory',
+          paddingBottom: '12px'
+        }}
+      >
         {investments.map((inv) => (
-          <div key={inv.id} className="investment-card">
-            <div className="inv-top-row">
+          <div
+            key={inv.id}
+            className="investment-compact-card"
+            style={{
+              width: '320px',
+              minWidth: '320px',
+              maxWidth: '320px',
+              flex: '0 0 320px',
+              scrollSnapAlign: 'start'
+            }}
+          >
+            <div className="inv-top-row" style={{ marginBottom: '14px' }}>
               <div>
-                <h3 className="inv-title">{inv.title}</h3>
-                <span className="inv-developer">{inv.developer}</span>
+                <h3 className="inv-title" style={{ fontSize: '1.1rem', marginBottom: '2px' }}>{inv.title}</h3>
+                <span className="inv-developer" style={{ fontSize: '0.78rem' }}>{inv.developer}</span>
               </div>
-              <span className="inv-risk-badge" style={{ background: `${inv.riskColor}15`, color: inv.riskColor, borderColor: `${inv.riskColor}30` }}>
+              <span
+                className="inv-risk-badge"
+                style={{
+                  background: `${inv.riskColor}15`,
+                  color: inv.riskColor,
+                  borderColor: `${inv.riskColor}30`,
+                  fontSize: '0.68rem',
+                  padding: '3px 8px'
+                }}
+              >
                 {inv.risk}
               </span>
             </div>
 
-            <div className="inv-metrics-grid">
-              <div className="inv-metric-box">
-                <div className="inv-metric-val">{inv.minInvestment}</div>
-                <div className="inv-metric-lbl">Inversión mínima</div>
+            <div className="inv-metrics-grid" style={{ gap: '10px', marginBottom: '14px' }}>
+              <div className="inv-metric-box" style={{ padding: '8px 12px' }}>
+                <div className="inv-metric-val" style={{ fontSize: '1.05rem' }}>{inv.minInvestment}</div>
+                <div className="inv-metric-lbl" style={{ fontSize: '0.7rem' }}>Min. Inversión</div>
               </div>
-              <div className="inv-metric-box">
-                <div className="inv-metric-val highlight-green">{inv.estimatedReturn}</div>
-                <div className="inv-metric-lbl">Retorno estimado</div>
+              <div className="inv-metric-box" style={{ padding: '8px 12px' }}>
+                <div className="inv-metric-val highlight-green" style={{ fontSize: '1.05rem' }}>{inv.estimatedReturn}</div>
+                <div className="inv-metric-lbl" style={{ fontSize: '0.7rem' }}>Retorno Est.</div>
               </div>
-              <div className="inv-metric-box">
-                <div className="inv-metric-val">{inv.termMonths}</div>
-                <div className="inv-metric-lbl">Plazo estimado</div>
+              <div className="inv-metric-box" style={{ padding: '8px 12px' }}>
+                <div className="inv-metric-val" style={{ fontSize: '1.05rem' }}>{inv.termMonths}</div>
+                <div className="inv-metric-lbl" style={{ fontSize: '0.7rem' }}>Plazo</div>
               </div>
-              <div className="inv-metric-box">
-                <div className="inv-metric-val">{inv.progress}%</div>
-                <div className="inv-metric-lbl">Avance de obra</div>
+              <div className="inv-metric-box" style={{ padding: '8px 12px' }}>
+                <div className="inv-metric-val" style={{ fontSize: '1.05rem' }}>{inv.progress}%</div>
+                <div className="inv-metric-lbl" style={{ fontSize: '0.7rem' }}>Avance Obra</div>
               </div>
             </div>
 
-            <div className="inv-progress-bar-wrap">
+            <div className="inv-progress-bar-wrap" style={{ height: '6px', marginBottom: '14px' }}>
               <div className="inv-progress-fill" style={{ width: `${inv.progress}%` }} />
             </div>
 
-            <div className="inv-footer-row">
-              <span className="inv-loc">{inv.location}</span>
-              <button className="btn-pill" onClick={onOpenContact} style={{ padding: '6px 14px', fontSize: '0.78rem' }}>
-                <span>Consultar Proyecto</span>
-                <ArrowUpRight size={14} />
+            <div className="inv-footer-row" style={{ paddingTop: '12px' }}>
+              <span className="inv-loc" style={{ fontSize: '0.78rem' }}>{inv.location}</span>
+              <button
+                className="btn-square-sm"
+                onClick={onOpenContact}
+                style={{ padding: '6px 12px', fontSize: '0.72rem' }}
+              >
+                <span>CONSULTAR</span>
+                <ArrowUpRight size={13} />
               </button>
             </div>
           </div>

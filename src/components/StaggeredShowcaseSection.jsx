@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowUpRight, Sparkles } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 
 export default function StaggeredShowcaseSection({ onOpenCatalog }) {
   return (
@@ -7,21 +7,16 @@ export default function StaggeredShowcaseSection({ onOpenCatalog }) {
       <div className="staggered-grid">
         {/* Left Editorial Content */}
         <div className="staggered-left">
-          <span className="section-pill-tag-dark">
-            <Sparkles size={13} />
-            <span>01 NUESTRA PROPUESTA</span>
-          </span>
-
           <h2 className="staggered-title">
             No Somos un Concesionario Tradicional
           </h2>
 
           <p className="staggered-desc">
-            Gestionamos transacciones entre particulares con el estándar de una boutique de arte. Curamos cada unidad para ofrecer únicamente vehículos con historial documentado e inmuebles de arquitectura destacada.
+            Facilitamos la compra y venta de vehículos y propiedades de forma directa. Revisamos cada publicación para garantizar información transparente y un proceso ágil.
           </p>
 
           <button className="btn-pill btn-pill-dark" onClick={onOpenCatalog} style={{ padding: '14px 28px', fontSize: '0.9rem' }}>
-            <span>Explorar Todo el Portafolio</span>
+            <span>Explorar Todo el Catálogo</span>
             <ArrowUpRight size={16} />
           </button>
         </div>

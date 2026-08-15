@@ -22,71 +22,75 @@ export default function PropiedadesShowcase({
   if (listings.length === 0) return null;
 
   return (
-    <section className="light-section-block" style={{ marginBottom: '60px', borderRadius: '32px' }}>
+    <section className="dark-section-block" style={{ marginBottom: '60px' }}>
       <div style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         marginBottom: '28px',
         paddingBottom: '18px',
-        borderBottom: '1px solid var(--border-light)'
+        borderBottom: '1px solid var(--border-dark)',
+        flexWrap: 'wrap',
+        gap: '16px'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ background: 'var(--text-main)', color: '#FFF', padding: '10px', borderRadius: '50%' }}>
-            <Home size={22} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <div style={{
+            background: '#FFFFFF',
+            color: '#111317',
+            width: '44px',
+            height: '44px',
+            minWidth: '44px',
+            minHeight: '44px',
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+            lineHeight: 0
+          }}>
+            <Home size={20} style={{ display: 'block' }} />
           </div>
           <div>
-            <span style={{ fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)' }}>
-              SECCIÓN 02 / ARQUITECTURA & INTERIORISMO
-            </span>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', color: 'var(--text-main)' }}>
-              RESIDENCIAS DE AUTOR & PENTHOUSES
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.9rem', color: '#FFF', lineHeight: '1.05' }}>
+              PROPIEDADES
             </h2>
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ display: 'flex', gap: '8px' }}>
-            <button
-              onClick={() => scroll('left')}
-              className="btn-pill"
-              style={{ padding: '8px 12px' }}
-              title="Anterior"
-            >
-              <ChevronLeft size={18} />
+        {/* Crisp Single-Line Action Controls Group */}
+        <div className="showcase-actions-group">
+          <div className="carousel-nav-arrows">
+            <button onClick={() => scroll('left')} className="btn-arrow-circle" title="Anterior">
+              <ChevronLeft size={16} />
             </button>
-            <button
-              onClick={() => scroll('right')}
-              className="btn-pill"
-              style={{ padding: '8px 12px' }}
-              title="Siguiente"
-            >
-              <ChevronRight size={18} />
+            <button onClick={() => scroll('right')} className="btn-arrow-circle" title="Siguiente">
+              <ChevronRight size={16} />
             </button>
           </div>
 
           <button
-            className="btn-pill"
+            className="btn-square-sm"
             onClick={onToggleMap}
-            style={{ background: 'var(--text-main)', color: '#FFF' }}
+            style={{ background: 'rgba(255, 255, 255, 0.1)', color: '#FFF', borderColor: 'rgba(255, 255, 255, 0.2)' }}
           >
             <MapPin size={14} />
-            <span>Ver Mapa</span>
+            <span>VER MAPA</span>
           </button>
 
           <button
-            className="btn-pill btn-pill-dark"
+            className="btn-square-sm active-btn-dark"
             onClick={onViewAll}
           >
-            <span>Ver Catálogo Completo de Propiedades ({listings.length})</span>
+            <span>VER CATÁLOGO ({listings.length})</span>
             <ArrowUpRight size={14} />
           </button>
         </div>
       </div>
 
-      {/* Horizontal Carousel Container with STRICT FIXED CARD WIDTH */}
+      {/* Horizontal Carousel Container */}
       <div
         ref={sliderRef}
+        className="showcase-carousel-track"
         style={{
           display: 'flex',
           gap: '24px',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Car, Home, Layers, MapPin } from 'lucide-react';
+import { Car, Home, Layers, MapPin, Grid } from 'lucide-react';
 
 export default function SectionsCategoryBar({
   sections,
@@ -10,9 +10,9 @@ export default function SectionsCategoryBar({
 }) {
   const getSectionIcon = (iconName) => {
     switch (iconName) {
-      case 'Car': return <Car size={24} />;
-      case 'Home': return <Home size={24} />;
-      default: return <Layers size={24} />;
+      case 'Car': return <Car size={22} />;
+      case 'Home': return <Home size={22} />;
+      default: return <Layers size={22} />;
     }
   };
 
@@ -27,86 +27,125 @@ export default function SectionsCategoryBar({
   };
 
   return (
-    <section style={{ marginBottom: '48px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
-        <div>
-          <span style={{ fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)' }}>
-            EXPLORÁ POR SECCIÓN
-          </span>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem' }}>
-            SECCIONES DE PRODUCTOS
-          </h2>
+    <section className="sections-bar-container">
+      {/* Header Row (Desktop Only) */}
+      <div className="sections-bar-header desktop-only-header">
+        <div className="sections-title-group">
+          <h2 className="sections-main-head">SECCIONES DE PRODUCTOS</h2>
         </div>
 
         <button
-          className={`btn-pill ${activeSection === 'all' ? 'active' : ''}`}
+          className={`btn-square-sm ${activeSection === 'all' ? 'active' : ''}`}
           onClick={() => setActiveSection('all')}
         >
-          <span>Todas las Secciones</span>
+          <span>TODAS LAS SECCIONES</span>
         </button>
       </div>
 
-      {/* Mercado Libre Inspired Category Cards Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px' }}>
+      {/* MOBILE MERCADO LIBRE STYLE SQUARE SHORTCUTS (Visible ONLY on Mobile) */}
+      <div className="mobile-meli-shortcuts-wrapper">
+        <div className="mobile-meli-shortcuts-row">
+          {/* Todas Shortcut */}
+          <button
+            className={`mobile-shortcut-item ${activeSection === 'all' ? 'active' : ''}`}
+            onClick={() => setActiveSection('all')}
+          >
+            <div className="mobile-shortcut-square">
+              <Grid size={24} className="shortcut-icon" />
+            </div>
+            <span className="mobile-shortcut-label">TODAS</span>
+          </button>
+
+          {/* Autos Shortcut */}
+          <button
+            className={`mobile-shortcut-item ${activeSection === 'autos' ? 'active' : ''}`}
+            onClick={() => setActiveSection('autos')}
+          >
+            <div className="mobile-shortcut-square img-shortcut" style={{ backgroundImage: `url("${getSectionBgImage('autos')}")` }}>
+              <div className="shortcut-img-overlay">
+                <Car size={22} className="shortcut-icon-light" />
+              </div>
+            </div>
+            <span className="mobile-shortcut-label">AUTOS</span>
+          </button>
+
+          {/* Propiedades Shortcut */}
+          <button
+            className={`mobile-shortcut-item ${activeSection === 'propiedades' ? 'active' : ''}`}
+            onClick={() => setActiveSection('propiedades')}
+          >
+            <div className="mobile-shortcut-square img-shortcut" style={{ backgroundImage: `url("${getSectionBgImage('propiedades')}")` }}>
+              <div className="shortcut-img-overlay">
+                <Home size={22} className="shortcut-icon-light" />
+              </div>
+            </div>
+            <span className="mobile-shortcut-label">PROPIEDADES</span>
+          </button>
+
+          {/* Mapa Shortcut */}
+          <button
+            className={`mobile-shortcut-item ${showMap ? 'active' : ''}`}
+            onClick={onToggleMap}
+          >
+            <div className="mobile-shortcut-square map-shortcut">
+              <MapPin size={24} className="shortcut-icon-gold" />
+            </div>
+            <span className="mobile-shortcut-label">MAPA</span>
+          </button>
+
+          {/* Dynamic Custom Sections */}
+          {sections.filter((s) => s.id !== 'autos' && s.id !== 'propiedades').map((sec) => (
+            <button
+              key={sec.id}
+              className={`mobile-shortcut-item ${activeSection === sec.id ? 'active' : ''}`}
+              onClick={() => setActiveSection(sec.id)}
+            >
+              <div className="mobile-shortcut-square">
+                {getSectionIcon(sec.icon)}
+              </div>
+              <span className="mobile-shortcut-label">{sec.name.toUpperCase()}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* DESKTOP CATEGORY CARDS GRID (Hidden on Mobile) */}
+      <div className="sections-cards-row desktop-cards-grid">
         {/* Autos Card */}
         <div
           onClick={() => setActiveSection('autos')}
+          className={`cat-banner-card ${activeSection === 'autos' ? 'active-card' : ''}`}
           style={{
-            position: 'relative',
-            height: '180px',
-            borderRadius: '16px',
-            overflow: 'hidden',
-            cursor: 'pointer',
-            border: activeSection === 'autos' ? '2px solid var(--text-main)' : '1px solid var(--border-light)',
-            padding: '24px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            background: `linear-gradient(180deg, rgba(17, 19, 23, 0.4) 0%, rgba(17, 19, 23, 0.85) 100%), url("${getSectionBgImage('autos')}") center/cover no-repeat`,
-            color: '#FFF'
+            backgroundImage: `linear-gradient(180deg, rgba(17, 19, 23, 0.35) 0%, rgba(17, 19, 23, 0.88) 100%), url("${getSectionBgImage('autos')}")`
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.08em', background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(8px)', padding: '4px 10px', borderRadius: '99px' }}>
-              01 / VEHÍCULOS
-            </span>
-            <Car size={24} style={{ color: 'var(--accent-gold)' }} />
+          <div className="cat-card-top">
+            <span className="cat-badge-pill">01 / AUTOS</span>
+            <Car size={22} className="cat-icon-gold" />
           </div>
 
-          <div>
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', color: '#FFF' }}>AUTOS DE LUJO</h3>
-            <p style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.8)' }}>Deportivos, SUVs & Pick-ups</p>
+          <div className="cat-card-bottom">
+            <h3 className="cat-card-title">AUTOS DE LUJO</h3>
+            <p className="cat-card-desc">Deportivos, SUVs & Pick-ups</p>
           </div>
         </div>
 
         {/* Propiedades Card */}
         <div
           onClick={() => setActiveSection('propiedades')}
+          className={`cat-banner-card ${activeSection === 'propiedades' ? 'active-card' : ''}`}
           style={{
-            position: 'relative',
-            height: '180px',
-            borderRadius: '16px',
-            overflow: 'hidden',
-            cursor: 'pointer',
-            border: activeSection === 'propiedades' ? '2px solid var(--text-main)' : '1px solid var(--border-light)',
-            padding: '24px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            background: `linear-gradient(180deg, rgba(17, 19, 23, 0.4) 0%, rgba(17, 19, 23, 0.85) 100%), url("${getSectionBgImage('propiedades')}") center/cover no-repeat`,
-            color: '#FFF'
+            backgroundImage: `linear-gradient(180deg, rgba(17, 19, 23, 0.35) 0%, rgba(17, 19, 23, 0.88) 100%), url("${getSectionBgImage('propiedades')}")`
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.08em', background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(8px)', padding: '4px 10px', borderRadius: '99px' }}>
-              02 / INMUEBLES
-            </span>
-            <Home size={24} style={{ color: 'var(--accent-gold)' }} />
+          <div className="cat-card-top">
+            <span className="cat-badge-pill">02 / PROPIEDADES</span>
+            <Home size={22} className="cat-icon-gold" />
           </div>
 
-          <div>
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', color: '#FFF' }}>PROPIEDADES</h3>
-            <p style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.8)' }}>Casas, Penthouses & Terrenos</p>
+          <div className="cat-card-bottom">
+            <h3 className="cat-card-title">PROPIEDADES</h3>
+            <p className="cat-card-desc">Casas, Penthouses & Terrenos</p>
           </div>
         </div>
 
@@ -115,31 +154,19 @@ export default function SectionsCategoryBar({
           <div
             key={sec.id}
             onClick={() => setActiveSection(sec.id)}
+            className={`cat-banner-card ${activeSection === sec.id ? 'active-card' : ''}`}
             style={{
-              position: 'relative',
-              height: '180px',
-              borderRadius: '16px',
-              overflow: 'hidden',
-              cursor: 'pointer',
-              border: activeSection === sec.id ? '2px solid var(--text-main)' : '1px solid var(--border-light)',
-              padding: '24px',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              background: `linear-gradient(180deg, rgba(17, 19, 23, 0.4) 0%, rgba(17, 19, 23, 0.85) 100%), url("${getSectionBgImage(sec.id)}") center/cover no-repeat`,
-              color: '#FFF'
+              backgroundImage: `linear-gradient(180deg, rgba(17, 19, 23, 0.35) 0%, rgba(17, 19, 23, 0.88) 100%), url("${getSectionBgImage(sec.id)}")`
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.08em', background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(8px)', padding: '4px 10px', borderRadius: '99px' }}>
-                NUEVA SECCIÓN
-              </span>
+            <div className="cat-card-top">
+              <span className="cat-badge-pill">SECCIÓN</span>
               {getSectionIcon(sec.icon)}
             </div>
 
-            <div>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', color: '#FFF' }}>{sec.name.toUpperCase()}</h3>
-              <p style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.8)' }}>{sec.categories?.join(', ')}</p>
+            <div className="cat-card-bottom">
+              <h3 className="cat-card-title">{sec.name.toUpperCase()}</h3>
+              <p className="cat-card-desc">{sec.categories?.join(', ')}</p>
             </div>
           </div>
         ))}
@@ -147,31 +174,16 @@ export default function SectionsCategoryBar({
         {/* Interactive Property Map Card */}
         <div
           onClick={onToggleMap}
-          style={{
-            position: 'relative',
-            height: '180px',
-            borderRadius: '16px',
-            overflow: 'hidden',
-            cursor: 'pointer',
-            border: showMap ? '2px solid var(--accent-gold)' : '1px solid var(--border-light)',
-            padding: '24px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            background: 'var(--bg-dark)',
-            color: '#FFF'
-          }}
+          className={`cat-banner-card map-card ${showMap ? 'active-map-card' : ''}`}
         >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.08em', background: 'var(--accent-gold)', color: '#111317', padding: '4px 10px', borderRadius: '99px' }}>
-              GEO-MAP
-            </span>
-            <MapPin size={24} style={{ color: 'var(--accent-gold)' }} />
+          <div className="cat-card-top">
+            <span className="cat-badge-pill map-badge">MAPA</span>
+            <MapPin size={22} className="cat-icon-gold" />
           </div>
 
-          <div>
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', color: '#FFF' }}>MAPA INTERACTIVO</h3>
-            <p style={{ fontSize: '0.82rem', color: 'var(--text-light-muted)' }}>Explorar propiedades en el mapa</p>
+          <div className="cat-card-bottom">
+            <h3 className="cat-card-title">MAPA INTERACTIVO</h3>
+            <p className="cat-card-desc">Ver unidades en mapa</p>
           </div>
         </div>
       </div>

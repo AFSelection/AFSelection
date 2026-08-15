@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, CheckCircle2, Award, UserCheck, Sparkles } from 'lucide-react';
+import { ShieldCheck, CheckCircle2, Award, UserCheck } from 'lucide-react';
 
 export default function WhyChooseUsSection() {
   return (
@@ -7,11 +7,6 @@ export default function WhyChooseUsSection() {
       <div className="why-choose-grid">
         {/* Left Column: Authentic Agustín Fidalgo Trust Card */}
         <div className="why-choose-left">
-          <div className="curated-badge-pill" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Sparkles size={14} />
-            <span>SELECCIÓN PREMIUM · CATÁLOGO CURADO</span>
-          </div>
-          
           <h2 className="why-choose-title">
             Todo revisado antes de publicarse
           </h2>
@@ -31,8 +26,8 @@ export default function WhyChooseUsSection() {
               <div className="stat-label">Operaciones Cerradas</div>
             </div>
             <div className="stat-item">
-              <div className="stat-number">8 Años</div>
-              <div className="stat-label">En el Rubro</div>
+              <div className="stat-number">8+</div>
+              <div className="stat-label">Años en el Rubro</div>
             </div>
             <div className="stat-item">
               <div className="stat-number">3</div>

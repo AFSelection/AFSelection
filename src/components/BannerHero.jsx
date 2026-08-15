@@ -1,5 +1,5 @@
-import React from 'react';
-import { Search, ArrowRight, MapPin, Car, Home, CheckCircle2, Sparkles } from 'lucide-react';
+import React, { useState } from 'react';
+import { Search, ArrowRight, ShieldCheck, MapPin } from 'lucide-react';
 
 export default function BannerHero({
   onScrollToSection,
@@ -7,86 +7,116 @@ export default function BannerHero({
   searchQuery,
   setSearchQuery
 }) {
+  const [localSearch, setLocalSearch] = useState('');
+
+  const handleSearchSubmit = () => {
+    setSearchQuery(localSearch);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
   return (
-    <section className="hero-monumental">
-      <div className="hero-bg-media">
+    <section className="split-hero-section">
+      {/* Full Bleed Background Media */}
+      <div className="split-hero-media">
         <img
-          src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2000&q=90"
-          alt="AF • Selection Luxury Residence & Porsche"
+          src="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=2400&q=95"
+          alt="AF • Selection Showroom"
         />
+        <div className="split-hero-dark-overlay" />
       </div>
 
-      <div className="hero-overlay" />
+      {/* Top Mobile Brand Header (Outside / Above Glass Panel - Solid Black Logo) */}
+      <div className="mobile-top-brand-bar">
+        <a href="#" className="split-brand-logo mobile-logo-dark">
+          <span className="logo-text-bold">AF</span>
+          <span className="brand-dot-black" />
+          <span className="logo-text-light">SELECTION</span>
+        </a>
+      </div>
 
-      <div className="hero-content-inner">
-        {/* Top Badge Pill with Direct Agustín Fidalgo Trust */}
-        <div className="hero-badge">
-          <Sparkles size={14} />
-          <span>TRATO DIRECTO CON AGUSTÍN FIDALGO</span>
+      {/* Glass Panel */}
+      <div className="split-glass-panel">
+        {/* Navigation Bar Inside Glass Panel (Desktop Only) */}
+        <div className="split-glass-nav desktop-only-nav">
+          <a href="#" className="split-brand-logo">
+            <span className="logo-text-bold">AF</span>
+            <span className="brand-dot-black" />
+            <span className="logo-text-light">SELECTION</span>
+          </a>
+
+          <div className="split-nav-links">
+            <button onClick={() => onScrollToSection('autos')} className="split-nav-link">
+              AUTOS
+            </button>
+            <button onClick={() => onScrollToSection('propiedades')} className="split-nav-link">
+              PROPIEDADES
+            </button>
+            <button onClick={() => onScrollToSection('por-que-elegirnos')} className="split-nav-link">
+              NOSOTROS
+            </button>
+          </div>
         </div>
 
-        {/* Ultra-Short 2-Line Hero Headline */}
-        <h1 className="hero-headline">
-          <span className="hero-line-1">GARAGE DE LUJO</span>
-          <br />
-          <span className="hero-line-2">Y RESIDENCIAS DE AUTOR</span>
-        </h1>
+        {/* Spacious, Harmonious Editorial Content */}
+        <div className="split-glass-body">
+          <div className="split-badge-pill">
+            <ShieldCheck size={14} className="dark-sparkle-icon" />
+            <span>TRATO DIRECTO CON AGUSTÍN FIDALGO</span>
+          </div>
 
-        <p className="hero-lead">
-          180+ operaciones cerradas en Tucumán, Salta y Buenos Aires. Coordinación transparente sin intermediarios extra.
-        </p>
+          {/* Strictly 2-Line Title: Line 1 All Black, Line 2 White with Black Highlight Badge */}
+          <h1 className="split-hero-title">
+            <span className="hero-line-strict line-black-text">GARAGE DE AUTOS</span>
+            <span className="hero-line-strict line-black-highlight">
+              <span className="highlight-badge-inner">Y PROPIEDADES</span>
+            </span>
+          </h1>
 
-        {/* Embedded Glass Search Input */}
-        <div className="hero-search-box">
-          <Search size={20} className="hero-search-icon" />
-          <input
-            type="text"
-            placeholder="Buscar Porsche, BMW, Penthouse Puerto Madero, Yerba Buena..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <button
-            className="hero-search-btn"
-            onClick={() => onScrollToSection('autos')}
-          >
-            <span>EXPLORAR</span>
-            <ArrowRight size={16} />
-          </button>
+          <p className="split-hero-desc">
+            Selección y gestión de vehículos y propiedades en Tucumán, Salta y Buenos Aires.
+          </p>
+
+          {/* Sleek Compact Search Bar */}
+          <div className="split-search-box">
+            <Search size={16} className="search-icon-muted" />
+            <input
+              type="text"
+              placeholder="Buscar Toyota, Honda, Yerba Buena..."
+              value={localSearch}
+              onChange={(e) => setLocalSearch(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') handleSearchSubmit(); }}
+            />
+            <button
+              className="split-search-btn"
+              onClick={handleSearchSubmit}
+              title="Buscar"
+            >
+              <ArrowRight size={14} />
+            </button>
+          </div>
+
+          {/* Action Buttons Row */}
+          <div className="split-actions-row">
+            <button
+              className="btn-split-primary"
+              onClick={() => onScrollToSection('autos')}
+            >
+              EXPLORAR CATÁLOGO
+            </button>
+
+            <button
+              className="btn-split-secondary"
+              onClick={onToggleMap}
+            >
+              <MapPin size={14} />
+              <span>VER MAPA</span>
+            </button>
+          </div>
         </div>
 
-        {/* Sleek Glass Quick Pills */}
-        <div className="hero-quick-pills">
-          <button
-            className="hero-pill-btn hero-pill-gold"
-            onClick={() => onScrollToSection('autos')}
-          >
-            <CheckCircle2 size={15} />
-            <span>Verificado por Agustín</span>
-          </button>
-
-          <button
-            className="hero-pill-btn"
-            onClick={() => onScrollToSection('autos')}
-          >
-            <Car size={15} />
-            <span>Garaje de Autos</span>
-          </button>
-
-          <button
-            className="hero-pill-btn"
-            onClick={() => onScrollToSection('propiedades')}
-          >
-            <Home size={15} />
-            <span>Propiedades Exclusivas</span>
-          </button>
-
-          <button
-            className="hero-pill-btn"
-            onClick={onToggleMap}
-          >
-            <MapPin size={15} />
-            <span>Ver Mapa de Propiedades</span>
-          </button>
+        {/* Footer info */}
+        <div className="split-glass-footer">
+          <span className="split-footer-label">ATENCIÓN PERSONALIZADA</span>
+          <span className="split-footer-val">LUN - SÁB: 09:00 - 20:00 HS</span>
         </div>
       </div>
     </section>

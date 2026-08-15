@@ -12,7 +12,8 @@ import TestimonialsSection from './components/TestimonialsSection';
 import BlogAndConciergeSection from './components/BlogAndConciergeSection';
 import CatalogHeaderBanner from './components/CatalogHeaderBanner';
 import ListingCard from './components/ListingCard';
-import ListingDetailsModal from './components/ListingDetailsModal';
+import ProductDetailPage from './components/ProductDetailPage';
+import SellFormPage from './components/SellFormPage';
 import PropertyMapView from './components/PropertyMapView';
 import { getInitialData, subscribeToStorage } from './services/storage';
 import { Heart, X, AlertCircle, Layers } from 'lucide-react';
@@ -27,6 +28,7 @@ export default function App() {
   const [showScrolledNav, setShowScrolledNav] = useState(false);
 
   const [selectedListing, setSelectedListing] = useState(null);
+  const [showSellPage, setShowSellPage] = useState(false);
   const [favorites, setFavorites] = useState(() => {
     try {
       const saved = localStorage.getItem('af_favorites');
@@ -39,6 +41,36 @@ export default function App() {
 
   const autosRef = useRef(null);
   const propiedadesRef = useRef(null);
+  const whyChooseUsRef = useRef(null);
+
+  const scrollToSection = (sec) => {
+    // Reset view states first so we are on the homepage
+    setSelectedListing(null);
+    setShowSellPage(false);
+    setShowFavoritesOnly(false);
+    setSearchQuery('');
+    
+    if (sec === 'hero') {
+      setActiveSection('all');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    // Set activeSection to 'all' so that all sections are visible on the homepage
+    setActiveSection('all');
+
+    // Wait a brief timeout for render update, then scroll
+    setTimeout(() => {
+      let targetRef = null;
+      if (sec === 'autos') targetRef = autosRef;
+      if (sec === 'propiedades') targetRef = propiedadesRef;
+      if (sec === 'por-que-elegirnos' || sec === 'nosotros') targetRef = whyChooseUsRef;
+
+      if (targetRef && targetRef.current) {
+        targetRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  };
 
   // Scroll listener to reveal header AFTER scrolling past Hero
   useEffect(() => {
@@ -108,35 +140,49 @@ export default function App() {
     return (data.listings || []).filter((l) => l.sectionId !== 'autos' && l.sectionId !== 'propiedades');
   }, [data.listings]);
 
-  const isHomepage = activeSection === 'all' && !showFavoritesOnly && searchQuery.trim() === '';
+  const isHomepage = activeSection === 'all' && !showFavoritesOnly && searchQuery.trim() === '' && !selectedListing && !showSellPage;
 
   return (
     <div>
       {/* Floating Header */}
       <Header
-        sections={data.sections || []}
         activeSection={activeSection}
         setActiveSection={(sec) => {
           setActiveSection(sec);
           setSelectedCategory('all');
           if (sec !== 'propiedades') setShowMap(false);
+          setSelectedListing(null);
+          setShowSellPage(false);
         }}
         searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
+        setSearchQuery={(q) => {
+          setSearchQuery(q);
+          setSelectedListing(null);
+          setShowSellPage(false);
+        }}
         favoritesCount={favorites.length}
         showMap={showMap}
         setShowMap={setShowMap}
-        onOpenFavorites={() => setShowFavoritesOnly(!showFavoritesOnly)}
+        onOpenFavorites={() => {
+          setShowFavoritesOnly(!showFavoritesOnly);
+          setSelectedListing(null);
+          setShowSellPage(false);
+        }}
         isVisible={!isHomepage || showScrolledNav}
+        onGoToSell={() => {
+          setShowSellPage(true);
+          setSelectedListing(null);
+        }}
+        onScrollToSection={scrollToSection}
+        listings={data.listings || []}
+        onSelectListing={(item) => setSelectedListing(item)}
       />
 
       <main className="main-wrapper" style={{ paddingTop: '0' }}>
         {/* FUNNEL STAGE 1: Full Viewport Monumental Hero Banner */}
         {isHomepage && (
           <BannerHero
-            onScrollToSection={(sec) => {
-              setActiveSection(sec);
-            }}
+            onScrollToSection={scrollToSection}
             onToggleMap={() => {
               setActiveSection('propiedades');
               setShowMap(true);
@@ -187,7 +233,7 @@ export default function App() {
         )}
 
         {/* Map View Frame */}
-        {showMap && (
+        {showMap && !selectedListing && !showSellPage && (
           <div className="map-frame" style={{ marginTop: !isHomepage ? '120px' : '0' }}>
             <PropertyMapView
               listings={data.listings.filter((l) => l.sectionId === 'propiedades')}
@@ -196,18 +242,28 @@ export default function App() {
           </div>
         )}
 
-        {/* PERFECT HIGH-CONVERSION CUSTOMER FUNNEL */}
-        {isHomepage ? (
+        {showSellPage ? (
+          <SellFormPage onBack={() => setShowSellPage(false)} />
+        ) : selectedListing ? (
+          <ProductDetailPage
+            item={selectedListing}
+            onBack={() => setSelectedListing(null)}
+            onGoToSell={() => {
+              setSelectedListing(null);
+              setShowSellPage(true);
+            }}
+            favorites={favorites}
+            toggleFavorite={toggleFavorite}
+            onSelectListing={(item) => setSelectedListing(item)}
+          />
+        ) : isHomepage ? (
           <div>
             {/* FUNNEL STAGE 3: ⚡ BAJARON DE PRECIO (Urgency & Immediate Opportunities) */}
             <PriceDropShowcaseSection
               onSelectListing={(item) => setSelectedListing(item)}
             />
 
-            {/* FUNNEL STAGE 4: Confianza Institucional (Agustín Fidalgo - 180+ Operaciones) */}
-            <WhyChooseUsSection />
-
-            {/* FUNNEL STAGE 5: Garaje de Autos de Luxe */}
+            {/* FUNNEL STAGE 4: Garaje de Autos de Luxe */}
             <div ref={autosRef}>
               <AutosCarouselShowcase
                 listings={allAutosListings}
@@ -218,12 +274,12 @@ export default function App() {
               />
             </div>
 
-            {/* FUNNEL STAGE 6: Retención Visual & Filosofía ("No somos un concesionario tradicional") */}
+            {/* FUNNEL STAGE 5: Retención Visual & Filosofía */}
             <StaggeredShowcaseSection
               onOpenCatalog={() => setActiveSection('autos')}
             />
 
-            {/* FUNNEL STAGE 7: Residencias de Autor & Penthouses */}
+            {/* FUNNEL STAGE 6: Residencias de Autor & Penthouses */}
             <div ref={propiedadesRef}>
               <PropiedadesShowcase
                 listings={allPropiedadesListings}
@@ -235,14 +291,14 @@ export default function App() {
               />
             </div>
 
-            {/* FUNNEL STAGE 8: Inversiones & Desarrollo (Retorno Estimado 14-17%) */}
+            {/* FUNNEL STAGE 7: Inversiones & Desarrollo (Retorno Estimado 14-17%) */}
             <InvestmentsShowcaseSection
               onOpenContact={() => {
                 const dummyItem = {
                   id: 'inv_contact',
                   title: 'Inversiones & Desarrollo',
                   location: 'Tucumán, Salta y Buenos Aires',
-                  price: 18000,
+                  price: 180000,
                   images: ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80'],
                   sectionId: 'propiedades'
                 };
@@ -250,10 +306,15 @@ export default function App() {
               }}
             />
 
-            {/* FUNNEL STAGE 9: Prueba Social (Reseñas Reales) */}
+            {/* FUNNEL STAGE 8: Prueba Social (Reseñas Reales) */}
             <TestimonialsSection />
 
-            {/* FUNNEL STAGE 10: Cierre de Conversión (Informes de Mercado + WhatsApp Directo Agustín) */}
+            {/* FUNNEL STAGE 9: Confianza Institucional (Agustín Fidalgo - 180+ Operaciones) MOVED RIGHT ABOVE CONCIERGE AS REQUESTED */}
+            <div ref={whyChooseUsRef}>
+              <WhyChooseUsSection />
+            </div>
+
+            {/* FUNNEL STAGE 10: Cierre de Conversión (Informes de Mercado + WhatsApp Directo Agustín - ¿Buscás algo puntual?) */}
             <BlogAndConciergeSection />
 
             {/* Dynamic Product Sections if any */}
@@ -294,6 +355,7 @@ export default function App() {
               setViewLayout={setViewLayout}
               showMap={showMap}
               setShowMap={setShowMap}
+              searchQuery={searchQuery}
             />
 
             {filteredListings.length === 0 ? (
@@ -322,14 +384,6 @@ export default function App() {
         )}
       </main>
 
-      {/* Details Modal */}
-      {selectedListing && (
-        <ListingDetailsModal
-          item={selectedListing}
-          onClose={() => setSelectedListing(null)}
-        />
-      )}
-
       {/* Footer */}
       <footer className="editorial-footer">
         <div style={{ maxWidth: '1440px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '24px' }}>
@@ -342,6 +396,20 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      {/* Floating WhatsApp Button (Reveals AFTER scrolling past Hero) */}
+      <a
+        href="https://wa.me/5493810000000?text=Hola%20Agust%C3%ADn,%20quisiera%20consultar%20por%20un%20activo%20en%20AF%20Selection"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`floating-whatsapp-btn ${showScrolledNav ? 'visible' : ''}`}
+        title="Consultar por WhatsApp con Agustín Fidalgo"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="#FFFFFF" style={{ display: 'block', flexShrink: 0 }}>
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        <span>WhatsApp Directo</span>
+      </a>
     </div>
   );
 }

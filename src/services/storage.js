@@ -23,7 +23,7 @@ const defaultListings = [
       'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80'
     ],
-    description: 'Unidad exclusiva en estado 0km con Paquete Weissach en fibra de carbono vista. Inspeccionado y verificado directo por Agustín Fidalgo.',
+    description: 'Unidad en excelente estado verificado directo por Agustín Fidalgo.',
     specs: { 'Potencia': '525 CV', 'Aceleración': '0-100 en 3.2s', 'Caja': 'PDK 7 marchas', 'Color': 'Python Green' }
   },
   {
@@ -41,7 +41,7 @@ const defaultListings = [
       'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=1200&q=80'
     ],
-    description: 'Impecable estado. M Carbon Package interior y exterior, llantas forjadas de 20", frenos M Compound.',
+    description: 'Impecable estado. M Carbon Package interior y exterior, llantas de 20", frenos M Compound.',
     specs: { 'Potencia': '510 CV', 'Tracción': 'xDrive Integral', 'Color': 'Isle of Man Green' }
   },
   {
@@ -59,14 +59,14 @@ const defaultListings = [
       'https://images.unsplash.com/photo-1520050206274-a1ae44613e6d?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=1200&q=80'
     ],
-    description: 'Icono del lujo off-road. Tapizado en cuero Nappa Manufaktur, sistema Burmester 3D Surround.',
+    description: 'Excelente andar y confort. Equipamiento completo, tapizado en cuero, sistema Burmester 3D.',
     specs: { 'Potencia': '585 CV', 'Torque': '850 Nm', 'Color': 'Obsidian Black Metallic' }
   },
   {
     id: 'l4',
     sectionId: 'propiedades',
     title: 'Villa Nordelta sobre el Lago',
-    subtitle: 'Mansión de autor con muelle privado y piscina sin fin',
+    subtitle: 'Casa amplia con jardín y piscina sin fin',
     price: 1450000,
     category: 'Casa',
     location: 'Nordelta, Tigre',
@@ -76,14 +76,14 @@ const defaultListings = [
       'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80'
     ],
-    description: 'Residencia arquitectónica de 650 m² cubiertos sobre lote al lago principal. Master suite con jacuzzi panorámico y quincho de lujo.',
+    description: 'Residencia de 650 m² cubiertos sobre lote al lago principal. Suite principal, quincho y piscina.',
     features: { sqm: 650, rooms: 5, bathrooms: 6, garage: 4 }
   },
   {
     id: 'l5',
     sectionId: 'propiedades',
-    title: 'Penthouse Exclusivo Puerto Madero',
-    subtitle: 'Triplex con terraza privada, jacuzzi y vista 360° al río',
+    title: 'Penthouse Puerto Madero',
+    subtitle: 'Triplex con terraza privada, jacuzzi y vista al río',
     price: 2100000,
     category: 'Departamento',
     location: 'Puerto Madero, CABA',
@@ -93,14 +93,14 @@ const defaultListings = [
       'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80'
     ],
-    description: '450 m² totales en torre premiada internacionalmente. Cava de vinos privada, domótica integral Lutron.',
+    description: '450 m² totales con excelentes accesos y terminaciones de calidad.',
     features: { sqm: 450, rooms: 4, bathrooms: 5, garage: 3 }
   },
   {
     id: 'l6',
     sectionId: 'propiedades',
-    title: 'Residencia de Autor Yerba Buena',
-    subtitle: 'Casa de estilo minimalista en barrio privado cerrado',
+    title: 'Residencia Yerba Buena',
+    subtitle: 'Casa de estilo moderno en barrio cerrado',
     price: 850000,
     category: 'Casa',
     location: 'Yerba Buena, Tucumán',
@@ -108,9 +108,9 @@ const defaultListings = [
     coordinates: [-26.816, -65.316],
     images: [
       'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80'
+      'https://images.unsplash.com/photo-1600606753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80'
     ],
-    description: 'Terreno de 1.500 m² con parque diseñado por paisajista reconocido. Piscina climatizada, cava subterránea.',
+    description: 'Terreno de 1.500 m² con gran parque y jardín. Piscina climatizada, terminaciones de calidad.',
     features: { sqm: 480, rooms: 4, bathrooms: 4, garage: 2 }
   }
 ];

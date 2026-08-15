@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heart, MapPin, Star } from 'lucide-react';
+import { Heart, MapPin } from 'lucide-react';
 
 export default function ListingCard({
   item,
@@ -67,10 +67,6 @@ export default function ListingCard({
             <span className="category-pill-tag">
               {item.category || (isAuto ? 'Auto' : 'Propiedad')}
             </span>
-            <div className="rating-pill-tag">
-              <Star size={11} fill="currentColor" color="currentColor" />
-              <span>4.9</span>
-            </div>
           </div>
 
           <h3 className="wander-card-title">{item.title}</h3>

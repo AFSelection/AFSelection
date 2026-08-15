@@ -3763,8 +3763,60 @@ h1, h2, h3, h4, .font-display {
   }
 
   .related-grid {
-    grid-template-columns: 1fr !important;
-    gap: 20px !important;
+    display: flex !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    gap: 16px !important;
+    padding: 4px 4px 16px 4px !important;
+    margin: 0 -4px !important;
+    scrollbar-width: none !important;
+  }
+
+  .related-grid::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .related-grid .wander-card {
+    flex: 0 0 200px !important;
+    width: 200px !important;
+    height: 280px !important;
+    scroll-snap-align: start !important;
+  }
+
+  .related-grid .wander-image-container {
+    height: 100% !important;
+  }
+
+  .related-grid .wander-card-title {
+    font-size: 0.85rem !important;
+    margin-bottom: 2px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .related-grid .wander-location-row {
+    font-size: 0.7rem !important;
+    gap: 3px !important;
+  }
+
+  .related-grid .wander-specs-bar {
+    font-size: 0.65rem !important;
+  }
+
+  .related-grid .price-pill-badge {
+    font-size: 0.72rem !important;
+    padding: 3px 8px !important;
+  }
+
+  .related-grid .btn-fav-circle {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .related-grid .btn-fav-circle svg {
+    width: 14px !important;
+    height: 14px !important;
   }
 
   .detail-conversion-cta-block {

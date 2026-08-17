@@ -107,12 +107,7 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    const unsubscribe = subscribeToStorage((newData) => {
-      setData(newData);
-    });
-    return () => unsubscribe();
-  }, []);
+
 
   useEffect(() => {
     localStorage.setItem('af_favorites', JSON.stringify(favorites));

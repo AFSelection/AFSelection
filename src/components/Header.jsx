@@ -99,14 +99,20 @@ export default function Header({
           <nav className="header-left-nav desktop-nav-only">
             <button
               className={`nav-tab-btn ${activeSection === 'autos' ? 'active' : ''}`}
-              onClick={() => onScrollToSection && onScrollToSection('autos')}
+              onClick={() => {
+                if (setActiveSection) setActiveSection('autos');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
             >
               <span>Autos</span>
             </button>
 
             <button
               className={`nav-tab-btn ${activeSection === 'propiedades' ? 'active' : ''}`}
-              onClick={() => onScrollToSection && onScrollToSection('propiedades')}
+              onClick={() => {
+                if (setActiveSection) setActiveSection('propiedades');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
             >
               <span>Propiedades</span>
             </button>
@@ -309,7 +315,10 @@ export default function Header({
             <div className="mobile-nav-links-list">
               <button
                 className={`mobile-nav-item ${activeSection === 'autos' ? 'active' : ''}`}
-                onClick={() => handleMobileNavClick(() => onScrollToSection && onScrollToSection('autos'))}
+                onClick={() => handleMobileNavClick(() => {
+                  if (setActiveSection) setActiveSection('autos');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                })}
               >
                 <span className="mob-item-num">01</span>
                 <span className="mob-item-title">AUTOS</span>
@@ -318,7 +327,10 @@ export default function Header({
 
               <button
                 className={`mobile-nav-item ${activeSection === 'propiedades' ? 'active' : ''}`}
-                onClick={() => handleMobileNavClick(() => onScrollToSection && onScrollToSection('propiedades'))}
+                onClick={() => handleMobileNavClick(() => {
+                  if (setActiveSection) setActiveSection('propiedades');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                })}
               >
                 <span className="mob-item-num">02</span>
                 <span className="mob-item-title">PROPIEDADES</span>

@@ -9,7 +9,7 @@ export async function fetchListings() {
     console.error('Error fetching listings from Supabase:', error);
     return [];
   }
-  return data.map(mapListingFromDB);
+  return (data || []).map(mapListingFromDB);
 }
 
 export async function submitLead(lead) {

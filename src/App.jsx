@@ -15,11 +15,33 @@ import ListingCard from './components/ListingCard';
 import ProductDetailPage from './components/ProductDetailPage';
 import SellFormPage from './components/SellFormPage';
 import PropertyMapView from './components/PropertyMapView';
-import { getInitialData, subscribeToStorage } from './services/storage';
+import { fetchListings } from './services/storage';
 import { Heart, X, AlertCircle, Layers } from 'lucide-react';
 
 export default function App() {
-  const [data, setData] = useState(() => getInitialData());
+  const [data, setData] = useState({ sections: [], listings: [] });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const listings = await fetchListings();
+        setData({
+          sections: [
+            { id: 'autos', name: 'Autos', icon: 'Car' },
+            { id: 'propiedades', name: 'Propiedades', icon: 'Home' }
+          ],
+          listings
+        });
+      } catch (err) {
+        console.error('Error loading Supabase listings:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
+  }, []);
+
   const [activeSection, setActiveSection] = useState('all');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -255,6 +277,7 @@ export default function App() {
             favorites={favorites}
             toggleFavorite={toggleFavorite}
             onSelectListing={(item) => setSelectedListing(item)}
+            listings={data.listings || []}
           />
         ) : isHomepage ? (
           <div>

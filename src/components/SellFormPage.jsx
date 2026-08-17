@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, ArrowRight, Send, CheckCircle, Car, Home, ShieldCheck, FileText, User } from 'lucide-react';
-import { getInitialData, saveStorageData } from '../services/storage';
+import { submitLead } from '../services/storage';
 
 export default function SellFormPage({ onBack }) {
   const [step, setStep] = useState(1);
@@ -50,7 +50,7 @@ export default function SellFormPage({ onBack }) {
     setStep(prev => prev - 1);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.phone) {
       alert('Por favor completa todos los datos de contacto requeridos (*)');
@@ -66,22 +66,23 @@ export default function SellFormPage({ onBack }) {
     }
     descriptionText += `Expectativa de Precio: USD ${formData.priceExpectation}\nLinks a Fotos/Videos: ${formData.mediaLinks}\nComentarios: ${formData.message}`;
 
-    const data = getInitialData();
-    const newLead = {
-      id: `sell-${Date.now()}`,
-      listingId: 'sell_request',
-      listingTitle: assetType === 'autos' ? `Auto: ${formData.brandModel}` : `Propiedad en ${formData.location}`,
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
-      message: descriptionText,
-      date: new Date().toISOString(),
-      status: 'Pending'
-    };
+    try {
+      const newLead = {
+        id: `sell-${Date.now()}`,
+        listingId: null,
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        notes: descriptionText,
+        status: 'Pending',
+        type: 'sell'
+      };
 
-    data.leads = [newLead, ...(data.leads || [])];
-    saveStorageData(data);
-    setIsSubmitted(true);
+      await submitLead(newLead);
+      setIsSubmitted(true);
+    } catch (error) {
+      alert('Hubo un error al enviar tu solicitud de publicación. Por favor intentá nuevamente.');
+    }
   };
 
   return (

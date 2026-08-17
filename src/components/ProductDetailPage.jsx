@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, MessageCircle, Send, CheckCircle, ChevronLeft, ChevronRight, Play, Eye, FileText } from 'lucide-react';
-import { getInitialData, saveStorageData } from '../services/storage';
+import { submitLead } from '../services/storage';
 import ListingCard from './ListingCard';
 
-export default function ProductDetailPage({ item, onBack, onGoToSell, favorites, toggleFavorite, onSelectListing }) {
+export default function ProductDetailPage({ item, onBack, onGoToSell, favorites, toggleFavorite, onSelectListing, listings = [] }) {
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -44,33 +44,35 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
     }).format(val);
   };
 
-  const handleLeadSubmit = (e) => {
+  const handleLeadSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.email) return;
 
-    const data = getInitialData();
-    const newLead = {
-      id: `lead-${Date.now()}`,
-      listingId: item.id,
-      listingTitle: item.title,
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone || '-',
-      message: formData.message || 'Solicitó información de contacto para esta unidad.',
-      date: new Date().toISOString(),
-      status: 'Pending'
-    };
+    try {
+      const newLead = {
+        id: `lead-${Date.now()}`,
+        listingId: item.id,
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone || '-',
+        notes: formData.message || 'Solicitó información de contacto para esta unidad.',
+        status: 'Pending',
+        type: 'buy'
+      };
 
-    data.leads = [newLead, ...(data.leads || [])];
-    saveStorageData(data);
-    setIsSubmitted(true);
+      await submitLead(newLead);
+      setIsSubmitted(true);
+    } catch (error) {
+      alert('Hubo un error al enviar tu consulta. Por favor, intentalo de nuevo.');
+      console.error(error);
+    }
   };
 
   const whatsappMessage = encodeURIComponent(`Hola AF Selection, me interesa el activo: ${item.title} (${formatPrice(item.price)}). ¿Me podrían brindar más información?`);
   const whatsappUrl = `https://wa.me/5493810000000?text=${whatsappMessage}`;
 
   // Find related products (same section, excluding current)
-  const allListings = getInitialData().listings || [];
+  const allListings = listings || [];
   const relatedListings = allListings
     .filter(l => l.sectionId === item.sectionId && l.id !== item.id)
     .slice(0, 3);

@@ -3,6 +3,8 @@ import { Search, ArrowRight, ShieldCheck, MapPin } from 'lucide-react';
 
 export default function BannerHero({
   onScrollToSection,
+  onGoToSection,
+  onGoToAbout,
   onToggleMap,
   searchQuery,
   setSearchQuery
@@ -44,13 +46,13 @@ export default function BannerHero({
           </a>
 
           <div className="split-nav-links">
-            <button onClick={() => onScrollToSection('autos')} className="split-nav-link">
+            <button onClick={() => onGoToSection ? onGoToSection('autos') : onScrollToSection('autos')} className="split-nav-link">
               AUTOS
             </button>
-            <button onClick={() => onScrollToSection('propiedades')} className="split-nav-link">
+            <button onClick={() => onGoToSection ? onGoToSection('propiedades') : onScrollToSection('propiedades')} className="split-nav-link">
               PROPIEDADES
             </button>
-            <button onClick={() => onScrollToSection('por-que-elegirnos')} className="split-nav-link">
+            <button onClick={() => onGoToAbout ? onGoToAbout() : onScrollToSection('por-que-elegirnos')} className="split-nav-link">
               NOSOTROS
             </button>
           </div>
@@ -98,7 +100,7 @@ export default function BannerHero({
           <div className="split-actions-row">
             <button
               className="btn-split-primary"
-              onClick={() => onScrollToSection('autos')}
+              onClick={() => onGoToSection ? onGoToSection('autos') : onScrollToSection('autos')}
             >
               EXPLORAR CATÁLOGO
             </button>

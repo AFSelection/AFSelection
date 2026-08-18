@@ -213,6 +213,24 @@ export default function App() {
         {isHomepage && (
           <BannerHero
             onScrollToSection={scrollToSection}
+            onGoToSection={(sec) => {
+              setActiveSection(sec);
+              setSelectedCategory('all');
+              setShowMap(false);
+              setSelectedListing(null);
+              setShowSellPage(false);
+              setShowAboutPage(false);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            onGoToAbout={() => {
+              setShowAboutPage(true);
+              setSelectedListing(null);
+              setShowSellPage(false);
+              setActiveSection('all');
+              setShowFavoritesOnly(false);
+              setSearchQuery('');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
             onToggleMap={() => {
               setActiveSection('propiedades');
               setShowMap(true);

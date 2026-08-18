@@ -683,29 +683,18 @@ h1, h2, h3, h4, .font-display {
   background: #0B0D10;
 }
 
-/* ─── Ken Burns: constant smooth drift — scale + pan together, no oscillation ─── */
-
-/* Multi-image: one-directional drift, plays for the 7s slide window (well within 28s) */
-@keyframes kenburns-drift {
-  from { transform: scale(1.06) translate(0%, 0%); }
-  to   { transform: scale(1.14) translate(2%, -1%); }
+/* ─── Hero Smooth Motion: Pan Right + Gentle Zoom ─── */
+@keyframes hero-pan-right-zoom {
+  0% {
+    transform: scale(1.05) translate3d(0%, 0, 0);
+  }
+  100% {
+    transform: scale(1.18) translate3d(3.5%, 0, 0);
+  }
 }
 
-/* Single-image (loop): same motion, alternates direction every 28s — gently reverses */
-@keyframes kenburns-loop {
-  from { transform: scale(1.06) translate(0%, 0%); }
-  to   { transform: scale(1.14) translate(2%, -1%); }
-}
-
-@keyframes hero-fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-@keyframes hero-fade-out {
-  from { opacity: 1; }
-  to   { opacity: 0; }
-}
+@keyframes hero-fade-in  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes hero-fade-out { from { opacity: 1; } to { opacity: 0; } }
 
 .split-hero-media {
   position: absolute;
@@ -714,7 +703,6 @@ h1, h2, h3, h4, .font-display {
   overflow: hidden;
 }
 
-/* Each slide: stacked, invisible by default */
 .hero-slide {
   position: absolute;
   inset: 0;
@@ -723,32 +711,21 @@ h1, h2, h3, h4, .font-display {
   object-fit: cover;
   object-position: center;
   opacity: 0;
-  /* already slightly zoomed so there's no scale-from-1 snap at start */
-  transform: scale(1.06) translate(0%, 0%);
   transform-origin: center center;
   will-change: transform, opacity;
 }
 
-/* Active slide: fade in + constant linear drift */
+/* Active slide: fade in + continuous smooth rightward pan & zoom */
 .hero-slide--active {
+  opacity: 1;
   animation:
-    hero-fade-in 1.4s ease forwards,
-    kenburns-drift 28s linear forwards;
+    hero-fade-in 1.2s ease forwards,
+    hero-pan-right-zoom 14s linear infinite alternate;
 }
 
-/* Single-image loop: alternate so it reverses smoothly, ease-in-out softens the turns */
-.hero-slide--loop {
-  animation:
-    hero-fade-in 1.4s ease forwards,
-    kenburns-loop 28s ease-in-out infinite alternate;
-}
-
-/* Exit slide: fade out */
 .hero-slide--exit {
-  opacity: 0;
-  animation: hero-fade-out 1.4s ease forwards;
+  animation: hero-fade-out 1.2s ease forwards;
 }
-
 
 /* Slide dots */
 .hero-dots {

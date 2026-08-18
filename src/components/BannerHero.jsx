@@ -55,18 +55,12 @@ export default function BannerHero({
         {images.map((src, i) => {
           const isActive = i === current;
           const isPrev   = i === prev;
-          const isLoop   = images.length === 1 && isActive;
           return (
             <img
               key={src}
               src={src}
               alt={`AF • Select Showroom ${i + 1}`}
-              className={[
-                'hero-slide',
-                isLoop  ? 'hero-slide--loop'   : '',
-                !isLoop && isActive ? 'hero-slide--active' : '',
-                isPrev  ? 'hero-slide--exit'   : ''
-              ].join(' ').trim()}
+              className={`hero-slide ${isActive ? 'hero-slide--active' : ''} ${isPrev ? 'hero-slide--exit' : ''}`.trim()}
             />
           );
         })}

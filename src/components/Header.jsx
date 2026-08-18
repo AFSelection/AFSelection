@@ -10,6 +10,7 @@ export default function Header({
   onOpenFavorites,
   isVisible,
   onGoToSell,
+  onGoToAbout,
   onScrollToSection,
   listings = [],
   onSelectListing
@@ -119,7 +120,7 @@ export default function Header({
 
             <button
               className="nav-tab-btn"
-              onClick={() => onScrollToSection && onScrollToSection('nosotros')}
+              onClick={() => onGoToAbout && onGoToAbout()}
             >
               <span>Nosotros</span>
             </button>
@@ -149,7 +150,7 @@ export default function Header({
             <a href="#" className="brand-logo" onClick={handleLogoClick}>
               <span className="logo-text-bold">AF</span>
               <span className="brand-dot-black" />
-              <span className="logo-text-light">SELECTION</span>
+              <span className="logo-text-light">SELECT</span>
             </a>
           </div>
 
@@ -247,7 +248,7 @@ export default function Header({
             >
               <span className="logo-text-bold">AF</span>
               <span className="brand-dot-gold" style={{ backgroundColor: '#EF4444' }} />
-              <span className="logo-text-light">SELECTION</span>
+              <span className="logo-text-light">SELECT</span>
             </a>
 
             <button
@@ -339,7 +340,7 @@ export default function Header({
 
               <button
                 className="mobile-nav-item"
-                onClick={() => handleMobileNavClick(() => onScrollToSection && onScrollToSection('nosotros'))}
+                onClick={() => handleMobileNavClick(() => onGoToAbout && onGoToAbout())}
               >
                 <span className="mob-item-num">03</span>
                 <span className="mob-item-title">NOSOTROS</span>

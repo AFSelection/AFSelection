@@ -21,7 +21,7 @@ export default function NordBannerSection() {
       <div className="nord-giant-typo">
         <span>AF</span>
         <span className="brand-dot-large" />
-        <span>SELECTION</span>
+        <span>SELECT</span>
       </div>
     </section>
   );

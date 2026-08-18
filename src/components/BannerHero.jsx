@@ -19,7 +19,7 @@ export default function BannerHero({
       <div className="split-hero-media">
         <img
           src="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=2400&q=95"
-          alt="AF • Selection Showroom"
+          alt="AF • Select Showroom"
         />
         <div className="split-hero-dark-overlay" />
       </div>
@@ -29,7 +29,7 @@ export default function BannerHero({
         <a href="#" className="split-brand-logo mobile-logo-dark">
           <span className="logo-text-bold">AF</span>
           <span className="brand-dot-black" />
-          <span className="logo-text-light">SELECTION</span>
+          <span className="logo-text-light">SELECT</span>
         </a>
       </div>
 
@@ -40,7 +40,7 @@ export default function BannerHero({
           <a href="#" className="split-brand-logo">
             <span className="logo-text-bold">AF</span>
             <span className="brand-dot-black" />
-            <span className="logo-text-light">SELECTION</span>
+            <span className="logo-text-light">SELECT</span>
           </a>
 
           <div className="split-nav-links">

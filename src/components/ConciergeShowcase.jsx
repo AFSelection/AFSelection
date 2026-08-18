@@ -7,7 +7,7 @@ export default function ConciergeShowcase() {
       <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: '44px' }}>
           <span style={{ fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--accent-gold)' }}>
-            GARANTÍA AF SELECTION
+            GARANTÍA AF Select
           </span>
           <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2.4rem', color: '#FFF', marginTop: '6px' }}>
             ATENCIÓN PERSONALIZADA & CONFIANZA

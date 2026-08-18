@@ -27,7 +27,7 @@ export default function BlogAndConciergeSection() {
   ];
 
   const handleWhatsAppClick = () => {
-    const message = encodeURIComponent('Hola Agustín, estuve viendo la web de AF Selection y quisiera consultar por una búsqueda a medida.');
+    const message = encodeURIComponent('Hola Agustín, estuve viendo la web de AF Select y quisiera consultar por una búsqueda a medida.');
     window.open(`https://wa.me/5493815000000?text=${message}`, '_blank');
   };
 

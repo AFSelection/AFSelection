@@ -15,6 +15,7 @@ import ListingCard from './components/ListingCard';
 import ProductDetailPage from './components/ProductDetailPage';
 import SellFormPage from './components/SellFormPage';
 import PropertyMapView from './components/PropertyMapView';
+import AboutPage from './components/AboutPage';
 import { fetchListings } from './services/storage';
 import { Heart, X, AlertCircle, Layers } from 'lucide-react';
 
@@ -51,6 +52,7 @@ export default function App() {
 
   const [selectedListing, setSelectedListing] = useState(null);
   const [showSellPage, setShowSellPage] = useState(false);
+  const [showAboutPage, setShowAboutPage] = useState(false);
   const [favorites, setFavorites] = useState(() => {
     try {
       const saved = localStorage.getItem('af_favorites');
@@ -157,7 +159,7 @@ export default function App() {
     return (data.listings || []).filter((l) => l.sectionId !== 'autos' && l.sectionId !== 'propiedades');
   }, [data.listings]);
 
-  const isHomepage = activeSection === 'all' && !showFavoritesOnly && searchQuery.trim() === '' && !selectedListing && !showSellPage;
+  const isHomepage = activeSection === 'all' && !showFavoritesOnly && searchQuery.trim() === '' && !selectedListing && !showSellPage && !showAboutPage;
 
   return (
     <div>
@@ -170,6 +172,7 @@ export default function App() {
           if (sec !== 'propiedades') setShowMap(false);
           setSelectedListing(null);
           setShowSellPage(false);
+          setShowAboutPage(false);
         }}
         searchQuery={searchQuery}
         setSearchQuery={(q) => {
@@ -189,6 +192,16 @@ export default function App() {
         onGoToSell={() => {
           setShowSellPage(true);
           setSelectedListing(null);
+          setShowAboutPage(false);
+        }}
+        onGoToAbout={() => {
+          setShowAboutPage(true);
+          setSelectedListing(null);
+          setShowSellPage(false);
+          setActiveSection('all');
+          setShowFavoritesOnly(false);
+          setSearchQuery('');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
         onScrollToSection={scrollToSection}
         listings={data.listings || []}
@@ -259,7 +272,9 @@ export default function App() {
           </div>
         )}
 
-        {showSellPage ? (
+        {showAboutPage ? (
+          <AboutPage onBack={() => { setShowAboutPage(false); window.scrollTo({ top: 0 }); }} />
+        ) : showSellPage ? (
           <SellFormPage onBack={() => setShowSellPage(false)} />
         ) : selectedListing ? (
           <ProductDetailPage
@@ -278,6 +293,7 @@ export default function App() {
           <div>
             {/* FUNNEL STAGE 3: ⚡ BAJARON DE PRECIO (Urgency & Immediate Opportunities) */}
             <PriceDropShowcaseSection
+              listings={data.listings || []}
               onSelectListing={(item) => setSelectedListing(item)}
             />
 
@@ -410,7 +426,7 @@ export default function App() {
             <p style={{ color: 'var(--text-light-muted)', fontSize: '0.88rem' }}>Automotive & Real Estate Portfolio</p>
           </div>
           <div style={{ fontSize: '0.8rem', color: 'var(--text-light-muted)' }}>
-            © 2026 AF Selection Inc. All rights reserved.
+            © 2026 AF Select Inc. All rights reserved.
           </div>
         </div>
       </footer>

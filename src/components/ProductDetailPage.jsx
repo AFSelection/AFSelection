@@ -68,7 +68,7 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
     }
   };
 
-  const whatsappMessage = encodeURIComponent(`Hola AF Selection, me interesa el activo: ${item.title} (${formatPrice(item.price)}). ¿Me podrían brindar más información?`);
+  const whatsappMessage = encodeURIComponent(`Hola AF Select, me interesa el activo: ${item.title} (${formatPrice(item.price)}). ¿Me podrían brindar más información?`);
   const whatsappUrl = `https://wa.me/5493810000000?text=${whatsappMessage}`;
 
   // Find related products (same section, excluding current)
@@ -273,7 +273,7 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
               nosotros nos encargamos de todo el proceso de publicación y gestión de interesados.
             </p>
             <button className="btn-sell-redirect" onClick={onGoToSell}>
-              <span>PUBLICAR MI ACTIVO CON AF SELECTION</span>
+              <span>PUBLICAR MI ACTIVO CON AF Select</span>
               <Play size={10} fill="currentColor" />
             </button>
           </div>
@@ -285,7 +285,7 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
       <div className="detail-description-section">
         <h3 className="description-section-title">DESCRIPCIÓN DE LA UNIDAD</h3>
         <p className="description-text">
-          {item.description || 'Unidad disponible en AF Selection.'}
+          {item.description || 'Unidad disponible en AF Select.'}
         </p>
       </div>
 

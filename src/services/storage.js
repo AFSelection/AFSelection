@@ -29,7 +29,9 @@ function mapListingFromDB(db) {
   return {
     ...db,
     sectionId: db.section_id,
-    createdAt: db.created_at
+    createdAt: db.created_at,
+    isOffer: db.is_offer,
+    oldPrice: db.old_price
   };
 }
 

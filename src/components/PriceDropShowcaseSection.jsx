@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Zap, Clock } from 'lucide-react';
 
-export default function PriceDropShowcaseSection({ onSelectListing }) {
+export default function PriceDropShowcaseSection({ listings = [], onSelectListing }) {
   const [timeLeft, setTimeLeft] = useState({ hours: 6, minutes: 18, seconds: 36 });
 
   useEffect(() => {
@@ -16,7 +16,24 @@ export default function PriceDropShowcaseSection({ onSelectListing }) {
     return () => clearInterval(timer);
   }, []);
 
-  const priceDropItems = [
+  const dbOffers = listings
+    .filter((item) => item.isOffer && item.oldPrice)
+    .map((item) => {
+      const discountPct = Math.round(((item.oldPrice - item.price) / item.oldPrice) * 100);
+      return {
+        id: item.id,
+        title: item.title,
+        category: item.category,
+        oldPrice: item.oldPrice,
+        newPrice: item.price,
+        discount: `-${discountPct}%`,
+        image: item.images?.[0] || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80',
+        location: item.location,
+        sectionId: item.sectionId
+      };
+    });
+
+  const priceDropItems = dbOffers.length > 0 ? dbOffers : [
     {
       id: 'pd1',
       title: 'Casa con Pileta en Yerba Buena',

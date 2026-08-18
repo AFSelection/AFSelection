@@ -43,7 +43,7 @@ export default function ListingDetailsModal({ item, onClose }) {
     setIsSubmitted(true);
   };
 
-  const whatsappMessage = encodeURIComponent(`Hola AF Selection, me interesa la unidad: ${item.title} (${formatPrice(item.price)}). ¿Tienen disponibilidad para coordinar una reunión?`);
+  const whatsappMessage = encodeURIComponent(`Hola AF Select, me interesa la unidad: ${item.title} (${formatPrice(item.price)}). ¿Tienen disponibilidad para coordinar una reunión?`);
   const whatsappUrl = `https://wa.me/5491199998888?text=${whatsappMessage}`;
 
   return (
@@ -85,7 +85,7 @@ export default function ListingDetailsModal({ item, onClose }) {
             <div style={{ marginTop: '28px' }}>
               <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '1.1rem', marginBottom: '8px' }}>DESCRIPCIÓN DE LA UNIDAD</h4>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', lineHeight: '1.7' }}>
-                {item.description || 'Unidad seleccionada bajo los más estrictos controles de calidad de AF Selection.'}
+                {item.description || 'Unidad seleccionada bajo los más estrictos controles de calidad de AF Select.'}
               </p>
             </div>
           </div>

@@ -20,7 +20,6 @@ export default function BannerHero({
   const [images, setImages] = useState(DEFAULT_IMAGES);
   const [current, setCurrent] = useState(0);
   const [prev, setPrev] = useState(null);
-  const [animKey, setAnimKey] = useState(0); // force restart KB animation
 
   // Load hero images from Supabase on mount
   useEffect(() => {
@@ -33,7 +32,6 @@ export default function BannerHero({
     const next = (idx + total) % total;
     setPrev(current);
     setCurrent(next);
-    setAnimKey((k) => k + 1);
   }, [current]);
 
   // Auto advance
@@ -55,15 +53,20 @@ export default function BannerHero({
       {/* ── Full Bleed Slideshow ── */}
       <div className="split-hero-media">
         {images.map((src, i) => {
-          const isActive  = i === current;
-          const isPrev    = i === prev;
+          const isActive = i === current;
+          const isPrev   = i === prev;
+          const isLoop   = images.length === 1 && isActive;
           return (
             <img
               key={src}
               src={src}
               alt={`AF • Select Showroom ${i + 1}`}
-              className={`hero-slide ${isActive ? 'hero-slide--active' : ''} ${isPrev ? 'hero-slide--exit' : ''}`}
-              style={isActive ? { animationName: 'kenburns', animationKey: animKey } : {}}
+              className={[
+                'hero-slide',
+                isLoop  ? 'hero-slide--loop'   : '',
+                !isLoop && isActive ? 'hero-slide--active' : '',
+                isPrev  ? 'hero-slide--exit'   : ''
+              ].join(' ').trim()}
             />
           );
         })}

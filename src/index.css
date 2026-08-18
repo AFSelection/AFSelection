@@ -683,24 +683,116 @@ h1, h2, h3, h4, .font-display {
   background: #0B0D10;
 }
 
+/* Ken Burns + Crossfade Slideshow */
+@keyframes kenburns {
+  0%   { transform: scale(1)    translateX(0)    translateY(0); }
+  50%  { transform: scale(1.09) translateX(2%)   translateY(-0.8%); }
+  100% { transform: scale(1)    translateX(0)    translateY(0); }
+}
+
+@keyframes hero-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes hero-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
 .split-hero-media {
   position: absolute;
   inset: 0;
   z-index: 1;
+  overflow: hidden;
 }
 
-.split-hero-media img {
+/* Each slide is stacked absolutely */
+.hero-slide {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
-  transform: scale(1.02);
-  transition: transform 12s ease;
+  opacity: 0;
+  transform-origin: center center;
+  will-change: transform, opacity;
+  transition: none;
 }
 
-.split-hero-section:hover .split-hero-media img {
-  transform: scale(1.06);
+.hero-slide--active {
+  opacity: 1;
+  animation:
+    hero-fade-in 1.2s ease forwards,
+    kenburns 18s ease-in-out infinite;
 }
+
+.hero-slide--exit {
+  opacity: 0;
+  animation: hero-fade-out 1.2s ease forwards;
+}
+
+/* Slide dots */
+.hero-dots {
+  position: absolute;
+  bottom: 28px;
+  right: 32px;
+  z-index: 20;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.hero-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.hero-dot--active {
+  width: 20px;
+  border-radius: 3px;
+  background: #fff;
+}
+
+/* Prev / Next arrows */
+.hero-nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.hero-nav-arrow:hover {
+  background: rgba(255, 255, 255, 0.28);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.hero-nav-arrow--left  { left: 20px; }
+.hero-nav-arrow--right { right: 20px; }
+
+/* Remove old hover override */
+
+
 
 .split-hero-dark-overlay {
   position: absolute;

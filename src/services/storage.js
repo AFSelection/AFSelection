@@ -1,5 +1,25 @@
 import { supabase } from './supabase';
 
+const DEFAULT_HERO_IMAGES = [
+  'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=2400&q=95'
+];
+
+export async function fetchHeroImages() {
+  try {
+    const { data, error } = await supabase
+      .from('site_settings')
+      .select('value')
+      .eq('key', 'hero_images')
+      .maybeSingle();
+    if (error || !data) return DEFAULT_HERO_IMAGES;
+    const parsed = data.value;
+    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    return DEFAULT_HERO_IMAGES;
+  } catch {
+    return DEFAULT_HERO_IMAGES;
+  }
+}
+
 export async function fetchListings() {
   const { data, error } = await supabase
     .from('listings')

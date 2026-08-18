@@ -1,5 +1,12 @@
-import React, { useState } from 'react';
-import { Search, ArrowRight, ShieldCheck, MapPin } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Search, ArrowRight, ShieldCheck, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
+import { fetchHeroImages } from '../services/storage';
+
+const DEFAULT_IMAGES = [
+  'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=2400&q=95'
+];
+
+const SLIDE_DURATION = 7000; // ms per slide
 
 export default function BannerHero({
   onScrollToSection,
@@ -10,23 +17,90 @@ export default function BannerHero({
   setSearchQuery
 }) {
   const [localSearch, setLocalSearch] = useState('');
+  const [images, setImages] = useState(DEFAULT_IMAGES);
+  const [current, setCurrent] = useState(0);
+  const [prev, setPrev] = useState(null);
+  const [animKey, setAnimKey] = useState(0); // force restart KB animation
+
+  // Load hero images from Supabase on mount
+  useEffect(() => {
+    fetchHeroImages().then((imgs) => {
+      if (imgs && imgs.length > 0) setImages(imgs);
+    });
+  }, []);
+
+  const goTo = useCallback((idx, total) => {
+    const next = (idx + total) % total;
+    setPrev(current);
+    setCurrent(next);
+    setAnimKey((k) => k + 1);
+  }, [current]);
+
+  // Auto advance
+  useEffect(() => {
+    if (images.length <= 1) return;
+    const timer = setTimeout(() => {
+      goTo(current + 1, images.length);
+    }, SLIDE_DURATION);
+    return () => clearTimeout(timer);
+  }, [current, images.length, goTo]);
 
   const handleSearchSubmit = () => {
     setSearchQuery(localSearch);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
   return (
     <section className="split-hero-section">
-      {/* Full Bleed Background Media */}
+      {/* ── Full Bleed Slideshow ── */}
       <div className="split-hero-media">
-        <img
-          src="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=2400&q=95"
-          alt="AF • Select Showroom"
-        />
+        {images.map((src, i) => {
+          const isActive  = i === current;
+          const isPrev    = i === prev;
+          return (
+            <img
+              key={src}
+              src={src}
+              alt={`AF • Select Showroom ${i + 1}`}
+              className={`hero-slide ${isActive ? 'hero-slide--active' : ''} ${isPrev ? 'hero-slide--exit' : ''}`}
+              style={isActive ? { animationName: 'kenburns', animationKey: animKey } : {}}
+            />
+          );
+        })}
         <div className="split-hero-dark-overlay" />
       </div>
 
-      {/* Top Mobile Brand Header (Outside / Above Glass Panel - Solid Black Logo) */}
+      {/* ── Slide Dots + Arrows (only when >1 image) ── */}
+      {images.length > 1 && (
+        <>
+          <button
+            className="hero-nav-arrow hero-nav-arrow--left"
+            onClick={() => goTo(current - 1, images.length)}
+            aria-label="Anterior"
+          >
+            <ChevronLeft size={20} />
+          </button>
+          <button
+            className="hero-nav-arrow hero-nav-arrow--right"
+            onClick={() => goTo(current + 1, images.length)}
+            aria-label="Siguiente"
+          >
+            <ChevronRight size={20} />
+          </button>
+          <div className="hero-dots">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                className={`hero-dot ${i === current ? 'hero-dot--active' : ''}`}
+                onClick={() => goTo(i, images.length)}
+                aria-label={`Slide ${i + 1}`}
+              />
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* Top Mobile Brand Header */}
       <div className="mobile-top-brand-bar">
         <a href="#" className="split-brand-logo mobile-logo-dark">
           <span className="logo-text-bold">AF</span>
@@ -37,7 +111,7 @@ export default function BannerHero({
 
       {/* Glass Panel */}
       <div className="split-glass-panel">
-        {/* Navigation Bar Inside Glass Panel (Desktop Only) */}
+        {/* Navigation Bar (Desktop Only) */}
         <div className="split-glass-nav desktop-only-nav">
           <a href="#" className="split-brand-logo">
             <span className="logo-text-bold">AF</span>
@@ -58,14 +132,13 @@ export default function BannerHero({
           </div>
         </div>
 
-        {/* Spacious, Harmonious Editorial Content */}
+        {/* Editorial Content */}
         <div className="split-glass-body">
           <div className="split-badge-pill">
             <ShieldCheck size={14} className="dark-sparkle-icon" />
             <span>TRATO DIRECTO CON AGUSTÍN FIDALGO</span>
           </div>
 
-          {/* Strictly 2-Line Title: Line 1 All Black, Line 2 White with Black Highlight Badge */}
           <h1 className="split-hero-title">
             <span className="hero-line-strict line-black-text">GARAGE DE AUTOS</span>
             <span className="hero-line-strict line-black-highlight">
@@ -77,7 +150,7 @@ export default function BannerHero({
             Selección y gestión de vehículos y propiedades en Tucumán, Salta y Buenos Aires.
           </p>
 
-          {/* Sleek Compact Search Bar */}
+          {/* Search Bar */}
           <div className="split-search-box">
             <Search size={16} className="search-icon-muted" />
             <input
@@ -87,16 +160,12 @@ export default function BannerHero({
               onChange={(e) => setLocalSearch(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') handleSearchSubmit(); }}
             />
-            <button
-              className="split-search-btn"
-              onClick={handleSearchSubmit}
-              title="Buscar"
-            >
+            <button className="split-search-btn" onClick={handleSearchSubmit} title="Buscar">
               <ArrowRight size={14} />
             </button>
           </div>
 
-          {/* Action Buttons Row */}
+          {/* CTAs */}
           <div className="split-actions-row">
             <button
               className="btn-split-primary"
@@ -104,18 +173,14 @@ export default function BannerHero({
             >
               EXPLORAR CATÁLOGO
             </button>
-
-            <button
-              className="btn-split-secondary"
-              onClick={onToggleMap}
-            >
+            <button className="btn-split-secondary" onClick={onToggleMap}>
               <MapPin size={14} />
               <span>VER MAPA</span>
             </button>
           </div>
         </div>
 
-        {/* Footer info */}
+        {/* Footer */}
         <div className="split-glass-footer">
           <span className="split-footer-label">ATENCIÓN PERSONALIZADA</span>
           <span className="split-footer-val">LUN - SÁB: 09:00 - 20:00 HS</span>

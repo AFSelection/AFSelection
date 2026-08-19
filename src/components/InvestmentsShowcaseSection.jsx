@@ -85,10 +85,8 @@ export default function InvestmentsShowcaseSection({ listings = [], onOpenContac
     }
   };
 
-  // Use real data if available, otherwise show demo cards
-  const investments = listings.length > 0
-    ? listings.map(mapListingToInvestment)
-    : DEMO_INVESTMENTS;
+  const investments = listings.map(mapListingToInvestment);
+  const isEmpty = investments.length === 0;
 
   return (
     <section className="investments-section" style={{ marginBottom: '60px' }}>
@@ -145,6 +143,11 @@ export default function InvestmentsShowcaseSection({ listings = [], onOpenContac
       </div>
 
       {/* Horizontal Carousel Container */}
+      {isEmpty ? (
+        <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontFamily: 'var(--font-body)', padding: '32px 0', fontStyle: 'italic' }}>
+          Por el momento no hay inversiones disponibles.
+        </div>
+      ) : (
       <div
         ref={sliderRef}
         className="showcase-carousel-track investments-carousel-track"
@@ -224,6 +227,7 @@ export default function InvestmentsShowcaseSection({ listings = [], onOpenContac
           </div>
         ))}
       </div>
+      )}
     </section>
   );
 }

@@ -28,7 +28,10 @@ export default function App() {
   useEffect(() => {
     async function loadData() {
       try {
-        const listings = await fetchListings();
+        const [listings] = await Promise.all([
+          fetchListings(),
+          new Promise((res) => setTimeout(res, 2200))
+        ]);
         setData({
           sections: [
             { id: 'autos',        name: 'Autos',       icon: 'Car'       },

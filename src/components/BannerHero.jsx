@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Search, ArrowRight, ShieldCheck, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, ArrowRight, ShieldCheck, MapPin } from 'lucide-react';
 import { fetchHeroImages } from '../services/storage';
 
 const DEFAULT_IMAGES = [
@@ -67,34 +67,18 @@ export default function BannerHero({
         <div className="split-hero-dark-overlay" />
       </div>
 
-      {/* ── Slide Dots + Arrows (only when >1 image) ── */}
+      {/* ── Slide Dots (only when >1 image) ── */}
       {images.length > 1 && (
-        <>
-          <button
-            className="hero-nav-arrow hero-nav-arrow--left"
-            onClick={() => goTo(current - 1, images.length)}
-            aria-label="Anterior"
-          >
-            <ChevronLeft size={20} />
-          </button>
-          <button
-            className="hero-nav-arrow hero-nav-arrow--right"
-            onClick={() => goTo(current + 1, images.length)}
-            aria-label="Siguiente"
-          >
-            <ChevronRight size={20} />
-          </button>
-          <div className="hero-dots">
-            {images.map((_, i) => (
-              <button
-                key={i}
-                className={`hero-dot ${i === current ? 'hero-dot--active' : ''}`}
-                onClick={() => goTo(i, images.length)}
-                aria-label={`Slide ${i + 1}`}
-              />
-            ))}
-          </div>
-        </>
+        <div className="hero-dots">
+          {images.map((_, i) => (
+            <button
+              key={i}
+              className={`hero-dot ${i === current ? 'hero-dot--active' : ''}`}
+              onClick={() => goTo(i, images.length)}
+              aria-label={`Slide ${i + 1}`}
+            />
+          ))}
+        </div>
       )}
 
       {/* Top Mobile Brand Header */}

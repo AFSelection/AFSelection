@@ -99,6 +99,16 @@ export default function Header({
           {/* LEFT: Desktop navigation tabs */}
           <nav className="header-left-nav desktop-nav-only">
             <button
+              className={`nav-tab-btn ${activeSection === 'todos' ? 'active' : ''}`}
+              onClick={() => {
+                if (setActiveSection) setActiveSection('todos');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            >
+              <span>Todos</span>
+            </button>
+
+            <button
               className={`nav-tab-btn ${activeSection === 'autos' ? 'active' : ''}`}
               onClick={() => {
                 if (setActiveSection) setActiveSection('autos');
@@ -315,13 +325,25 @@ export default function Header({
             {/* Mobile Navigation Links */}
             <div className="mobile-nav-links-list">
               <button
+                className={`mobile-nav-item ${activeSection === 'todos' ? 'active' : ''}`}
+                onClick={() => handleMobileNavClick(() => {
+                  if (setActiveSection) setActiveSection('todos');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                })}
+              >
+                <span className="mob-item-num">01</span>
+                <span className="mob-item-title">TODOS LOS ACTIVOS</span>
+                <ArrowRight size={18} className="mob-arrow" />
+              </button>
+
+              <button
                 className={`mobile-nav-item ${activeSection === 'autos' ? 'active' : ''}`}
                 onClick={() => handleMobileNavClick(() => {
                   if (setActiveSection) setActiveSection('autos');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 })}
               >
-                <span className="mob-item-num">01</span>
+                <span className="mob-item-num">02</span>
                 <span className="mob-item-title">AUTOS</span>
                 <ArrowRight size={18} className="mob-arrow" />
               </button>
@@ -333,7 +355,7 @@ export default function Header({
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 })}
               >
-                <span className="mob-item-num">02</span>
+                <span className="mob-item-num">03</span>
                 <span className="mob-item-title">PROPIEDADES</span>
                 <ArrowRight size={18} className="mob-arrow" />
               </button>
@@ -342,7 +364,7 @@ export default function Header({
                 className="mobile-nav-item"
                 onClick={() => handleMobileNavClick(() => onGoToAbout && onGoToAbout())}
               >
-                <span className="mob-item-num">03</span>
+                <span className="mob-item-num">04</span>
                 <span className="mob-item-title">NOSOTROS</span>
                 <ArrowRight size={18} className="mob-arrow" />
               </button>
@@ -352,7 +374,7 @@ export default function Header({
                 onClick={() => handleMobileNavClick(onGoToSell)}
                 style={{ border: '1px solid rgba(239, 68, 68, 0.4)' }}
               >
-                <span className="mob-item-num" style={{ color: '#EF4444' }}>04</span>
+                <span className="mob-item-num" style={{ color: '#EF4444' }}>05</span>
                 <span className="mob-item-title" style={{ color: '#EF4444' }}>VENDER MI ACTIVO</span>
                 <ArrowRight size={18} className="mob-arrow" style={{ color: '#EF4444' }} />
               </button>
@@ -361,7 +383,7 @@ export default function Header({
                 className="mobile-nav-item"
                 onClick={() => handleMobileNavClick(onOpenFavorites)}
               >
-                <span className="mob-item-num">05</span>
+                <span className="mob-item-num">06</span>
                 <span className="mob-item-title">MIS FAVORITOS ({favoritesCount})</span>
                 <Heart size={18} className="mob-arrow" />
               </button>

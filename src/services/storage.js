@@ -51,7 +51,8 @@ function mapListingFromDB(db) {
     sectionId: db.section_id,
     createdAt: db.created_at,
     isOffer: db.is_offer,
-    oldPrice: db.old_price
+    oldPrice: db.old_price,
+    operationType: db.operation_type || 'Venta',
   };
 }
 

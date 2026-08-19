@@ -1,16 +1,80 @@
-import React from 'react';
-import { ArrowLeft, Grid, List, MapPin } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { ArrowLeft, MapPin, SlidersHorizontal, ChevronDown } from 'lucide-react';
+import FiltersPopup from './FiltersPopup';
+
+const SORT_OPTIONS = [
+  { value: 'recent',     label: 'Más recientes' },
+  { value: 'price_asc',  label: 'Precio: menor a mayor' },
+  { value: 'price_desc', label: 'Precio: mayor a menor' },
+];
+const SORT_OPTIONS_AUTOS = [
+  ...SORT_OPTIONS,
+  { value: 'year_desc', label: 'Año más nuevo' },
+  { value: 'km_asc',    label: 'Menor kilometraje' },
+];
+
+function SortDropdown({ value, onChange, activeSection }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  const options = activeSection === 'autos' ? SORT_OPTIONS_AUTOS : SORT_OPTIONS;
+  const current = options.find((o) => o.value === value) || options[0];
+
+  useEffect(() => {
+    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  return (
+    <div ref={ref} className="sort-dropdown-wrap">
+      <button
+        type="button"
+        className={`btn-square-sm sort-dropdown-trigger${open ? ' active-btn-dark' : ''}`}
+        onClick={() => setOpen((o) => !o)}
+      >
+        <span>{current.label}</span>
+        <ChevronDown size={13} style={{ transition: 'transform 0.18s', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+      </button>
+
+      {open && (
+        <div className="sort-dropdown-menu">
+          {options.map((opt) => (
+            <button
+              key={opt.value}
+              type="button"
+              className={`sort-dropdown-item${opt.value === value ? ' active' : ''}`}
+              onClick={() => { onChange(opt.value); setOpen(false); }}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function CatalogHeaderBanner({
   activeSection,
   onBackToHome,
   totalCount,
-  viewLayout,
-  setViewLayout,
   showMap,
   setShowMap,
-  searchQuery
+  searchQuery,
+  sortBy,          setSortBy,
+  priceMin,        setPriceMin,
+  priceMax,        setPriceMax,
+  selectedCategory, setSelectedCategory,
+  availableCategories,
+  filterRooms,     setFilterRooms,
+  filterCurrency,  setFilterCurrency,
+  filterOperationType, setFilterOperationType,
+  filterCondition, setFilterCondition,
+  filterFuel, setFilterFuel,
+  onResetFilters,
 }) {
+  const [showFilters, setShowFilters] = useState(false);
+
   const getBannerInfo = () => {
     if (searchQuery && searchQuery.trim() !== '') {
       return {
@@ -19,33 +83,35 @@ export default function CatalogHeaderBanner({
       };
     }
     if (activeSection === 'autos') {
-      return {
-        title: 'GARAJE DE AUTOS',
-        subtitle: 'Vehículos inspeccionados y listos para transferir.'
-      };
+      return { title: 'GARAJE DE AUTOS', subtitle: 'Vehículos inspeccionados y listos para transferir.' };
     }
     if (activeSection === 'propiedades') {
-      return {
-        title: 'PROPIEDADES',
-        subtitle: 'Casas, departamentos y terrenos en venta.'
-      };
+      return { title: 'PROPIEDADES', subtitle: 'Casas, departamentos y terrenos en venta.' };
     }
-    return {
-      title: 'CATÁLOGO GENERAL',
-      subtitle: 'Selección de vehículos y propiedades con atención directa.'
-    };
+    if (activeSection === 'todos') {
+      return { title: 'CATÁLOGO COMPLETO', subtitle: 'Todos los activos disponibles: autos, propiedades e inversiones.' };
+    }
+    return { title: 'CATÁLOGO GENERAL', subtitle: 'Selección de vehículos y propiedades con atención directa.' };
   };
 
   const info = getBannerInfo();
 
+  const activeFilterCount = [
+    selectedCategory && selectedCategory !== 'all',
+    filterRooms && filterRooms !== 'all',
+    filterCurrency && filterCurrency !== 'all',
+    filterOperationType && filterOperationType !== 'all',
+    filterCondition && filterCondition !== 'all',
+    filterFuel && filterFuel !== 'all',
+    priceMin !== '',
+    priceMax !== '',
+  ].filter(Boolean).length;
+
   return (
     <div className="open-catalog-header">
-      {/* Top Action Controls Row (No Container Box) */}
+      {/* Top controls */}
       <div className="open-catalog-controls">
-        <button
-          className="btn-back-text"
-          onClick={onBackToHome}
-        >
+        <button className="btn-back-text" onClick={onBackToHome}>
           <ArrowLeft size={16} />
           <span>VOLVER AL INICIO</span>
         </button>
@@ -54,6 +120,18 @@ export default function CatalogHeaderBanner({
           <span className="catalog-count-pill">
             {totalCount} {totalCount === 1 ? 'ACTIVO DISPONIBLE' : 'ACTIVOS DISPONIBLES'}
           </span>
+
+          {/* Custom sort dropdown */}
+          <SortDropdown value={sortBy} onChange={setSortBy} activeSection={activeSection} />
+
+          {/* Filters button */}
+          <button
+            className={`btn-square-sm${activeFilterCount > 0 ? ' active-btn-dark' : ''}`}
+            onClick={() => setShowFilters(true)}
+          >
+            <SlidersHorizontal size={14} />
+            <span>FILTROS{activeFilterCount > 0 ? ` (${activeFilterCount})` : ''}</span>
+          </button>
 
           {activeSection === 'propiedades' && (
             <button
@@ -64,39 +142,37 @@ export default function CatalogHeaderBanner({
               <span>{showMap ? 'OCULTAR MAPA' : 'VER MAPA'}</span>
             </button>
           )}
-
-          <div className="layout-toggles-pill">
-            <button
-              className={`btn-layout-toggle ${viewLayout === 'grid' ? 'active' : ''}`}
-              onClick={() => setViewLayout('grid')}
-              title="Vista Grilla"
-            >
-              <Grid size={15} />
-            </button>
-            <button
-              className={`btn-layout-toggle ${viewLayout === 'list' ? 'active' : ''}`}
-              onClick={() => setViewLayout('list')}
-              title="Vista Lista"
-            >
-              <List size={15} />
-            </button>
-          </div>
         </div>
       </div>
 
-      {/* Main Title & Subtitle Directly On Background */}
+      {/* Title */}
       <div className="open-catalog-title-block">
-        <h1 className="open-catalog-title">
-          {info.title}
-        </h1>
-
-        <p className="open-catalog-subtitle">
-          {info.subtitle}
-        </p>
+        <h1 className="open-catalog-title">{info.title}</h1>
+        <p className="open-catalog-subtitle">{info.subtitle}</p>
       </div>
 
-      {/* Subtle Separator Line */}
       <div className="open-catalog-divider" />
+
+      {/* Filters popup */}
+      {showFilters && (
+        <FiltersPopup
+          onClose={() => setShowFilters(false)}
+          dark={false}
+          activeSection={activeSection}
+          sortBy={sortBy}            setSortBy={setSortBy}
+          priceMin={priceMin}        setPriceMin={setPriceMin}
+          priceMax={priceMax}        setPriceMax={setPriceMax}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+          availableCategories={availableCategories || []}
+          filterRooms={filterRooms}               setFilterRooms={setFilterRooms}
+          filterCurrency={filterCurrency}          setFilterCurrency={setFilterCurrency}
+          filterOperationType={filterOperationType} setFilterOperationType={setFilterOperationType}
+          filterCondition={filterCondition}          setFilterCondition={setFilterCondition}
+          filterFuel={filterFuel}                    setFilterFuel={setFilterFuel}
+          onReset={onResetFilters}
+        />
+      )}
     </div>
   );
 }

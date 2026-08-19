@@ -1,7 +1,81 @@
 import React, { useRef } from 'react';
 import { TrendingUp, ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
-export default function InvestmentsShowcaseSection({ onOpenContact }) {
+const DEMO_INVESTMENTS = [
+  {
+    id: 'inv1',
+    title: 'Torre Alem, Yerba Buena',
+    developer: 'Grupo Constructor Alem',
+    risk: 'RIESGO BAJO',
+    riskColor: '#10B981',
+    minInvestment: 'USD 18.000',
+    estimatedReturn: '14-17% Anual',
+    termMonths: '18 meses',
+    progress: 62,
+    location: 'Yerba Buena, Tucumán'
+  },
+  {
+    id: 'inv2',
+    title: 'Galpones Ruta 9',
+    developer: 'Fidalgo Inversiones',
+    risk: 'RIESGO MEDIO',
+    riskColor: '#F59E0B',
+    minInvestment: 'USD 35.000',
+    estimatedReturn: '19-22% Anual',
+    termMonths: '24 meses',
+    progress: 70,
+    location: 'Cevil Redondo, Tucumán'
+  },
+  {
+    id: 'inv3',
+    title: 'Residencias del Parque',
+    developer: 'Desarrollos Del Sur',
+    risk: 'RIESGO BAJO',
+    riskColor: '#10B981',
+    minInvestment: 'USD 22.000',
+    estimatedReturn: '15-18% Anual',
+    termMonths: '20 meses',
+    progress: 45,
+    location: 'San Miguel, Tucumán'
+  },
+  {
+    id: 'inv4',
+    title: 'Distrito Comercial Norte',
+    developer: 'Boutique Real Estate',
+    risk: 'RIESGO MEDIO',
+    riskColor: '#F59E0B',
+    minInvestment: 'USD 40.000',
+    estimatedReturn: '20-24% Anual',
+    termMonths: '30 meses',
+    progress: 80,
+    location: 'Tucumán Capital'
+  }
+];
+
+function getRiskInfo(category) {
+  const cat = (category || '').toLowerCase();
+  if (cat.includes('bajo') || cat.includes('low'))  return { label: 'RIESGO BAJO',  color: '#10B981' };
+  if (cat.includes('alto') || cat.includes('high')) return { label: 'RIESGO ALTO',  color: '#EF4444' };
+  return { label: 'RIESGO MEDIO', color: '#F59E0B' };
+}
+
+function mapListingToInvestment(item) {
+  const risk = getRiskInfo(item.category);
+  return {
+    id: item.id,
+    title: item.title,
+    developer: item.subtitle || 'AF Select',
+    risk: risk.label,
+    riskColor: risk.color,
+    minInvestment: `${item.currency || 'USD'} ${(item.price ?? 0).toLocaleString('es-AR')}`,
+    estimatedReturn: item.fuel || 'Consultar',
+    termMonths: item.rooms ? `${item.rooms} meses` : 'Consultar',
+    progress: item.surface ? Math.min(100, Number(item.surface)) : 0,
+    location: item.location || '',
+  };
+}
+
+export default function InvestmentsShowcaseSection({ listings = [], onOpenContact }) {
   const sliderRef = useRef(null);
 
   const scroll = (direction) => {
@@ -11,56 +85,10 @@ export default function InvestmentsShowcaseSection({ onOpenContact }) {
     }
   };
 
-  const investments = [
-    {
-      id: 'inv1',
-      title: 'Torre Alem, Yerba Buena',
-      developer: 'Grupo Constructor Alem',
-      risk: 'RIESGO BAJO',
-      riskColor: '#10B981',
-      minInvestment: 'USD 18.000',
-      estimatedReturn: '14-17% Anual',
-      termMonths: '18 meses',
-      progress: 62,
-      location: 'Yerba Buena, Tucumán'
-    },
-    {
-      id: 'inv2',
-      title: 'Galpones Ruta 9',
-      developer: 'Fidalgo Inversiones',
-      risk: 'RIESGO MEDIO',
-      riskColor: '#F59E0B',
-      minInvestment: 'USD 35.000',
-      estimatedReturn: '19-22% Anual',
-      termMonths: '24 meses',
-      progress: 70,
-      location: 'Cevil Redondo, Tucumán'
-    },
-    {
-      id: 'inv3',
-      title: 'Residencias del Parque',
-      developer: 'Desarrollos Del Sur',
-      risk: 'RIESGO BAJO',
-      riskColor: '#10B981',
-      minInvestment: 'USD 22.000',
-      estimatedReturn: '15-18% Anual',
-      termMonths: '20 meses',
-      progress: 45,
-      location: 'San Miguel, Tucumán'
-    },
-    {
-      id: 'inv4',
-      title: 'Distrito Comercial Norte',
-      developer: 'Boutique Real Estate',
-      risk: 'RIESGO MEDIO',
-      riskColor: '#F59E0B',
-      minInvestment: 'USD 40.000',
-      estimatedReturn: '20-24% Anual',
-      termMonths: '30 meses',
-      progress: 80,
-      location: 'Tucumán Capital'
-    }
-  ];
+  // Use real data if available, otherwise show demo cards
+  const investments = listings.length > 0
+    ? listings.map(mapListingToInvestment)
+    : DEMO_INVESTMENTS;
 
   return (
     <section className="investments-section" style={{ marginBottom: '60px' }}>

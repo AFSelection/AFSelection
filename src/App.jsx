@@ -15,6 +15,7 @@ import ListingCard from './components/ListingCard';
 import ProductDetailPage from './components/ProductDetailPage';
 import SellFormPage from './components/SellFormPage';
 import PropertyMapView from './components/PropertyMapView';
+import MapSplitView from './components/MapSplitView';
 import AboutPage from './components/AboutPage';
 import { fetchListings } from './services/storage';
 import { Heart, X, AlertCircle, Layers } from 'lucide-react';
@@ -29,8 +30,9 @@ export default function App() {
         const listings = await fetchListings();
         setData({
           sections: [
-            { id: 'autos', name: 'Autos', icon: 'Car' },
-            { id: 'propiedades', name: 'Propiedades', icon: 'Home' }
+            { id: 'autos',        name: 'Autos',       icon: 'Car'       },
+            { id: 'propiedades',  name: 'Propiedades', icon: 'Home'      },
+            { id: 'inversiones',  name: 'Inversiones', icon: 'TrendingUp'}
           ],
           listings
         });
@@ -46,7 +48,14 @@ export default function App() {
   const [activeSection, setActiveSection] = useState('all');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [viewLayout, setViewLayout] = useState('grid');
+  const [sortBy, setSortBy] = useState('recent');
+  const [priceMin, setPriceMin] = useState('');
+  const [priceMax, setPriceMax] = useState('');
+  const [filterRooms, setFilterRooms] = useState('all');
+  const [filterCurrency, setFilterCurrency] = useState('all');
+  const [filterOperationType, setFilterOperationType] = useState('all');
+  const [filterCondition, setFilterCondition] = useState('all');
+  const [filterFuel, setFilterFuel] = useState('all');
   const [showMap, setShowMap] = useState(false);
   const [showScrolledNav, setShowScrolledNav] = useState(false);
 
@@ -125,13 +134,41 @@ export default function App() {
     setSelectedCategory('all');
     setSearchQuery('');
     setShowFavoritesOnly(false);
+    setSortBy('recent');
+    setPriceMin('');
+    setPriceMax('');
+    setFilterRooms('all');
+    setFilterCurrency('all');
+    setFilterOperationType('all');
+    setFilterCondition('all');
+    setFilterFuel('all');
   };
 
   const filteredListings = useMemo(() => {
-    return (data.listings || []).filter((item) => {
-      if (activeSection !== 'all' && item.sectionId !== activeSection) return false;
+    const filtered = (data.listings || []).filter((item) => {
+      // 'todos' = show all sections; 'all' = homepage mode (also all)
+      if (activeSection !== 'all' && activeSection !== 'todos' && item.sectionId !== activeSection) return false;
       if (selectedCategory !== 'all' && item.category !== selectedCategory) return false;
       if (showFavoritesOnly && !favorites.includes(item.id)) return false;
+      if (priceMin !== '' && (item.price ?? 0) < Number(priceMin)) return false;
+      if (priceMax !== '' && (item.price ?? 0) > Number(priceMax)) return false;
+      if (filterCurrency !== 'all' && item.currency !== filterCurrency) return false;
+
+      // Autos-specific filters
+      if (item.sectionId === 'autos') {
+        if (filterCondition !== 'all' && item.condition !== filterCondition) return false;
+        if (filterFuel !== 'all' && item.fuel !== filterFuel) return false;
+      }
+
+      // Propiedades-specific filters
+      if (item.sectionId === 'propiedades') {
+        if (filterOperationType !== 'all' && item.operationType !== filterOperationType) return false;
+        if (filterRooms !== 'all') {
+          const r = item.rooms ?? 0;
+          if (filterRooms === '5+') { if (r < 5) return false; }
+          else if (r !== Number(filterRooms)) return false;
+        }
+      }
 
       if (searchQuery.trim() !== '') {
         const q = searchQuery.toLowerCase();
@@ -144,7 +181,17 @@ export default function App() {
 
       return true;
     });
-  }, [data.listings, activeSection, selectedCategory, searchQuery, showFavoritesOnly, favorites]);
+
+    const sorted = [...filtered];
+    switch (sortBy) {
+      case 'price_asc':  sorted.sort((a, b) => (a.price ?? 0) - (b.price ?? 0)); break;
+      case 'price_desc': sorted.sort((a, b) => (b.price ?? 0) - (a.price ?? 0)); break;
+      case 'year_desc':  sorted.sort((a, b) => (b.year  ?? 0) - (a.year  ?? 0)); break;
+      case 'km_asc':     sorted.sort((a, b) => (a.kilometers ?? 0) - (b.kilometers ?? 0)); break;
+      default: break;
+    }
+    return sorted;
+  }, [data.listings, activeSection, selectedCategory, searchQuery, showFavoritesOnly, favorites, sortBy, priceMin, priceMax, filterRooms, filterCurrency, filterOperationType, filterCondition, filterFuel]);
 
   // Dataset splits for Homepage Carousels
   const allAutosListings = useMemo(() => {
@@ -155,11 +202,24 @@ export default function App() {
     return (data.listings || []).filter((l) => l.sectionId === 'propiedades');
   }, [data.listings]);
 
+  const allInversionesListings = useMemo(() => {
+    return (data.listings || []).filter((l) => l.sectionId === 'inversiones');
+  }, [data.listings]);
+
+  // Dynamic categories for the active section (unfiltered, for stable chip list)
+  const availableCategories = useMemo(() => {
+    const src =
+      activeSection === 'propiedades' ? allPropiedadesListings :
+      activeSection === 'autos' ? allAutosListings :
+      (data.listings || []);
+    return [...new Set(src.map((l) => l.category).filter(Boolean))].sort();
+  }, [activeSection, allPropiedadesListings, allAutosListings, data.listings]);
+
   const dynamicOtherListings = useMemo(() => {
     return (data.listings || []).filter((l) => l.sectionId !== 'autos' && l.sectionId !== 'propiedades');
   }, [data.listings]);
 
-  const isHomepage = activeSection === 'all' && !showFavoritesOnly && searchQuery.trim() === '' && !selectedListing && !showSellPage && !showAboutPage;
+  const isHomepage = activeSection === 'all' && !showFavoritesOnly && searchQuery.trim() === '' && !selectedListing && !showSellPage && !showAboutPage && !showMap;
 
   return (
     <div>
@@ -169,7 +229,8 @@ export default function App() {
         setActiveSection={(sec) => {
           setActiveSection(sec);
           setSelectedCategory('all');
-          if (sec !== 'propiedades') setShowMap(false);
+          setSortBy('recent');
+          setShowMap(false);
           setSelectedListing(null);
           setShowSellPage(false);
           setShowAboutPage(false);
@@ -188,7 +249,7 @@ export default function App() {
           setSelectedListing(null);
           setShowSellPage(false);
         }}
-        isVisible={!isHomepage || showScrolledNav}
+        isVisible={showMap || !isHomepage || showScrolledNav}
         onGoToSell={() => {
           setShowSellPage(true);
           setSelectedListing(null);
@@ -207,6 +268,35 @@ export default function App() {
         listings={data.listings || []}
         onSelectListing={(item) => setSelectedListing(item)}
       />
+
+      {/* Map Split View — OUTSIDE main-wrapper, true full-viewport fixed overlay */}
+      {showMap && !selectedListing && !showSellPage && (
+        <MapSplitView
+          listings={data.listings}
+          onSelectListing={(item) => setSelectedListing(item)}
+          favorites={favorites}
+          onToggleFavorite={toggleFavorite}
+          onClose={() => {
+            setShowMap(false);
+            setActiveSection('propiedades');
+          }}
+          sortBy={sortBy}
+          setSortBy={setSortBy}
+          priceMin={priceMin}
+          setPriceMin={setPriceMin}
+          priceMax={priceMax}
+          setPriceMax={setPriceMax}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+          availableCategories={availableCategories}
+          filterRooms={filterRooms}
+          setFilterRooms={setFilterRooms}
+          filterCurrency={filterCurrency}
+          setFilterCurrency={setFilterCurrency}
+          filterOperationType={filterOperationType}
+          setFilterOperationType={setFilterOperationType}
+        />
+      )}
 
       <main className="main-wrapper" style={{ paddingTop: '0' }}>
         {/* FUNNEL STAGE 1: Full Viewport Monumental Hero Banner */}
@@ -280,15 +370,6 @@ export default function App() {
           </div>
         )}
 
-        {/* Map View Frame */}
-        {showMap && !selectedListing && !showSellPage && (
-          <div className="map-frame" style={{ marginTop: !isHomepage ? '120px' : '0' }}>
-            <PropertyMapView
-              listings={data.listings.filter((l) => l.sectionId === 'propiedades')}
-              onSelectListing={(item) => setSelectedListing(item)}
-            />
-          </div>
-        )}
 
         {showAboutPage ? (
           <AboutPage onBack={() => { setShowAboutPage(false); window.scrollTo({ top: 0 }); }} />
@@ -343,8 +424,9 @@ export default function App() {
               />
             </div>
 
-            {/* FUNNEL STAGE 7: Inversiones & Desarrollo (Retorno Estimado 14-17%) */}
+            {/* FUNNEL STAGE 7: Inversiones & Desarrollo */}
             <InvestmentsShowcaseSection
+              listings={allInversionesListings}
               onOpenContact={() => {
                 const dummyItem = {
                   id: 'inv_contact',
@@ -352,7 +434,7 @@ export default function App() {
                   location: 'Tucumán, Salta y Buenos Aires',
                   price: 180000,
                   images: ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80'],
-                  sectionId: 'propiedades'
+                  sectionId: 'inversiones'
                 };
                 setSelectedListing(dummyItem);
               }}
@@ -403,11 +485,29 @@ export default function App() {
                 handleResetFilters();
               }}
               totalCount={filteredListings.length}
-              viewLayout={viewLayout}
-              setViewLayout={setViewLayout}
               showMap={showMap}
               setShowMap={setShowMap}
               searchQuery={searchQuery}
+              sortBy={sortBy}
+              setSortBy={setSortBy}
+              priceMin={priceMin}
+              setPriceMin={setPriceMin}
+              priceMax={priceMax}
+              setPriceMax={setPriceMax}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+              availableCategories={availableCategories}
+              filterRooms={filterRooms}
+              setFilterRooms={setFilterRooms}
+              filterCurrency={filterCurrency}
+              setFilterCurrency={setFilterCurrency}
+              filterOperationType={filterOperationType}
+              setFilterOperationType={setFilterOperationType}
+              filterCondition={filterCondition}
+              setFilterCondition={setFilterCondition}
+              filterFuel={filterFuel}
+              setFilterFuel={setFilterFuel}
+              onResetFilters={handleResetFilters}
             />
 
             {filteredListings.length === 0 ? (
@@ -419,7 +519,7 @@ export default function App() {
                 </button>
               </div>
             ) : (
-              <div className={viewLayout === 'grid' ? 'cards-grid' : 'cards-list'} style={{ marginBottom: '60px' }}>
+              <div className="cards-grid" style={{ marginBottom: '60px' }}>
                 {filteredListings.map((item) => (
                   <ListingCard
                     key={item.id}
@@ -427,7 +527,7 @@ export default function App() {
                     isFavorite={favorites.includes(item.id)}
                     onToggleFavorite={toggleFavorite}
                     onSelect={(selected) => setSelectedListing(selected)}
-                    layout={viewLayout}
+                    layout="grid"
                   />
                 ))}
               </div>

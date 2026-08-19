@@ -225,7 +225,7 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
                     <td>{item.year}</td>
                   </tr>
                 )}
-                {item.kilometers !== undefined && (
+                {item.kilometers != null && (
                   <tr>
                     <td>Kilometraje</td>
                     <td>{item.kilometers.toLocaleString()} km</td>

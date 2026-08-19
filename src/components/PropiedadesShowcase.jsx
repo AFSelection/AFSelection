@@ -19,7 +19,7 @@ export default function PropiedadesShowcase({
     }
   };
 
-  if (listings.length === 0) return null;
+  const isEmpty = listings.length === 0;
 
   return (
     <section className="dark-section-block" style={{ marginBottom: '60px' }}>
@@ -87,39 +87,32 @@ export default function PropiedadesShowcase({
         </div>
       </div>
 
-      {/* Horizontal Carousel Container */}
-      <div
-        ref={sliderRef}
-        className="showcase-carousel-track"
-        style={{
-          display: 'flex',
-          gap: '24px',
-          overflowX: 'auto',
-          scrollSnapType: 'x mandatory',
-          paddingBottom: '16px'
-        }}
-      >
-        {listings.map((item) => (
-          <div
-            key={item.id}
-            style={{
-              width: '360px',
-              minWidth: '360px',
-              maxWidth: '360px',
-              flex: '0 0 360px',
-              scrollSnapAlign: 'start'
-            }}
-          >
-            <ListingCard
-              item={item}
-              isFavorite={favorites.includes(item.id)}
-              onToggleFavorite={toggleFavorite}
-              onSelect={onSelectListing}
-              layout="grid"
-            />
-          </div>
-        ))}
-      </div>
+      {isEmpty ? (
+        <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.9rem', fontFamily: 'var(--font-body)', padding: '32px 0', fontStyle: 'italic' }}>
+          Por el momento no hay propiedades disponibles.
+        </div>
+      ) : (
+        <div
+          ref={sliderRef}
+          className="showcase-carousel-track"
+          style={{ display: 'flex', gap: '24px', overflowX: 'auto', scrollSnapType: 'x mandatory', paddingBottom: '16px' }}
+        >
+          {listings.map((item) => (
+            <div
+              key={item.id}
+              style={{ width: '360px', minWidth: '360px', maxWidth: '360px', flex: '0 0 360px', scrollSnapAlign: 'start' }}
+            >
+              <ListingCard
+                item={item}
+                isFavorite={favorites.includes(item.id)}
+                onToggleFavorite={toggleFavorite}
+                onSelect={onSelectListing}
+                layout="grid"
+              />
+            </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }

@@ -686,10 +686,10 @@ h1, h2, h3, h4, .font-display {
 /* ─── Hero Smooth Motion: Pan Right + Gentle Zoom ─── */
 @keyframes hero-pan-right-zoom {
   0% {
-    transform: scale(1.0) translate3d(0%, 0, 0);
+    transform: scale(1.05) translate3d(0%, 0, 0);
   }
   100% {
-    transform: scale(1.04) translate3d(1.5%, 0, 0);
+    transform: scale(1.13) translate3d(2.5%, 0, 0);
   }
 }
 
@@ -709,7 +709,7 @@ h1, h2, h3, h4, .font-display {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: center 20%;
   opacity: 0;
   transform-origin: center center;
   will-change: transform, opacity;

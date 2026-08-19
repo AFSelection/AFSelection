@@ -19,6 +19,7 @@ import MapSplitView from './components/MapSplitView';
 import AboutPage from './components/AboutPage';
 import { fetchListings } from './services/storage';
 import { Heart, X, AlertCircle, Layers } from 'lucide-react';
+import Loader from './components/Loader';
 
 export default function App() {
   const [data, setData] = useState({ sections: [], listings: [] });
@@ -223,6 +224,8 @@ export default function App() {
 
   return (
     <div>
+      <Loader visible={loading} />
+
       {/* Floating Header */}
       <Header
         activeSection={activeSection}

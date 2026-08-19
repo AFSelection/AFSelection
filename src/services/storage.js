@@ -44,8 +44,18 @@ export async function submitLead(lead) {
 }
 
 // Helper mappings JavaScript <-> PostgreSQL columns
+function maskAddressNumber(location) {
+  if (!location) return location;
+  const parts = location.split(',');
+  if (parts.length > 1 && /\d/.test(parts[0])) {
+    return parts.slice(1).join(',').trim();
+  }
+  return location;
+}
+
 function mapListingFromDB(db) {
   if (!db) return null;
+  const showAddress = db.show_address ?? true;
   return {
     ...db,
     sectionId: db.section_id,
@@ -53,6 +63,8 @@ function mapListingFromDB(db) {
     isOffer: db.is_offer,
     oldPrice: db.old_price,
     operationType: db.operation_type || 'Venta',
+    showAddress,
+    location: showAddress ? db.location : maskAddressNumber(db.location),
   };
 }
 

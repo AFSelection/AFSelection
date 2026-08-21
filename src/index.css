@@ -376,6 +376,16 @@ h1, h2, h3, h4, .font-display {
 /* ==========================================================================
    DARK AND LIGHT SECTION CONTAINERS
    ========================================================================== */
+.testimonial-photo-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(239, 68, 68, 0.4) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+.testimonial-photo-card:hover img {
+  transform: scale(1.04);
+}
+
 .dark-section-block {
   background: var(--bg-dark) !important;
   color: #FFF !important;
@@ -2607,6 +2617,13 @@ h1, h2, h3, h4, .font-display {
     min-width: clamp(260px, 78vw, 310px) !important;
     max-width: clamp(260px, 78vw, 310px) !important;
     flex: 0 0 clamp(260px, 78vw, 310px) !important;
+  }
+
+  .testimonial-photo-card {
+    width: clamp(270px, 82vw, 320px) !important;
+    min-width: clamp(270px, 82vw, 320px) !important;
+    max-width: clamp(270px, 82vw, 320px) !important;
+    flex: 0 0 clamp(270px, 82vw, 320px) !important;
   }
 
   .price-drop-grid::-webkit-scrollbar,

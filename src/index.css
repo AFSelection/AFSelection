@@ -53,6 +53,12 @@ input:focus, input:focus-visible, a:focus, a:focus-visible {
   outline: none !important;
 }
 
+html, body, #root {
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
 html {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -65,8 +71,9 @@ body {
   min-height: 100vh;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-  width: 100%;
+  overflow-x: hidden !important;
+  width: 100% !important;
+  max-width: 100% !important;
 }
 
 /* Hide all scrollbars */
@@ -2282,11 +2289,22 @@ h1, h2, h3, h4, .font-display {
     flex-direction: column !important;
     align-items: flex-start !important;
     gap: 12px !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   .open-catalog-right-controls {
     width: 100% !important;
-    justify-content: space-between !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+  }
+
+  .open-catalog-right-controls > * {
+    flex: 0 1 auto !important;
+    max-width: 100% !important;
   }
 
   .open-catalog-title {
@@ -2300,11 +2318,11 @@ h1, h2, h3, h4, .font-display {
   /* Full Bleed Mobile Hero Section with PEEK-SCROLL HEIGHT */
   .split-hero-section {
     position: relative;
-    width: 100vw !important;
-    left: 50% !important;
-    right: 50% !important;
-    margin-left: -50vw !important;
-    margin-right: -50vw !important;
+    width: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
     height: 78vh !important;
     min-height: 520px !important;
     max-height: 680px !important;

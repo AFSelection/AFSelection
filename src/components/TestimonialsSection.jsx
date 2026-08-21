@@ -1,294 +1,148 @@
-import React, { useRef } from 'react';
-import { MapPin, ExternalLink, ChevronLeft, ChevronRight, Star, Heart, CheckCircle2 } from 'lucide-react';
+import React from 'react';
+import { MapPin, ExternalLink, Star, Heart, CheckCircle2, ShieldCheck, ArrowUpRight } from 'lucide-react';
 
 export default function TestimonialsSection() {
-  const sliderRef = useRef(null);
-
-  const scroll = (direction) => {
-    if (sliderRef.current) {
-      const scrollAmount = direction === 'left' ? -380 : 380;
-      sliderRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    }
-  };
-
   const googleMapsSearchUrl = 'https://www.google.com/maps/search/?api=1&query=AF+Selection+Tucuman';
 
   const reviews = [
     {
       id: 'r1',
       rating: '5.0',
-      quote: 'Le compré la Hilux sin verla en persona. Me mandó video, kilometraje real y la historia oficial de servicios.',
+      quote: 'Le compré la Hilux sin verla en persona. Me mandó video detallado, kilometraje real y la historia oficial de servicios antes de la entrega.',
       author: 'Martín R.',
       location: 'San Miguel de Tucumán',
       tag: 'Compra Automotriz',
-      date: 'Entrega en Tucumán',
+      date: 'Hilux SRX 4x4',
       image: '/testimonials/hilux.jpg'
     },
     {
       id: 'r2',
       rating: '5.0',
-      quote: 'Invertí en Torre Alem por recomendación. Reportes de avance de obra mes a mes sin falta. Excelente gestión.',
+      quote: 'Invertí en Torre Alem por recomendación. Me enviaron los reportes de avance de obra mes a mes sin falta. Asesoramiento legal 10/10.',
       author: 'Carolina D.',
       location: 'Buenos Aires',
       tag: 'Inversión Inmobiliaria',
-      date: 'Inversión Off-Market',
+      date: 'Desarrollo Alem',
       image: '/testimonials/property.jpg'
     },
     {
       id: 'r3',
       rating: '5.0',
-      quote: 'Vendí mi departamento en Yerba Buena en menos de 20 días. Tasación impecable y escribanía ultra rápida.',
+      quote: 'Vendí mi departamento en Yerba Buena en menos de 20 días. La tasación fue precisa y la coordinación en escribanía ultra rápida.',
       author: 'Gonzalo S.',
       location: 'Yerba Buena, Tucumán',
-      tag: 'Venta de Residencia',
-      date: 'Entrega 911 Carrera',
+      tag: 'Venta Inmobiliaria',
+      date: 'Residencia Premium',
       image: '/testimonials/porsche.jpg'
     },
     {
       id: 'r4',
       rating: '5.0',
-      quote: 'Compré mi lote en Barrio Privado con total tranquilidad. Transparencia absoluta en títulos y documentación.',
+      quote: 'Compré mi lote en Barrio Privado con total tranquilidad. Transparencia absoluta en estudio de títulos y posesión inmediata.',
       author: 'Luciana M.',
       location: 'Tucumán Capital',
       tag: 'Compra de Lote',
-      date: 'Escritura Inmediata',
+      date: 'Lote Barrio Privado',
       image: '/testimonials/land.jpg'
     }
   ];
 
   return (
-    <section className="dark-section-block testimonials-section" style={{ marginBottom: '60px', padding: '36px 28px' }}>
-      {/* Header Container */}
-      <div className="testimonials-header-row" style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '32px',
-        paddingBottom: '20px',
-        borderBottom: '1px solid var(--border-dark)',
-        flexWrap: 'wrap',
-        gap: '20px'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{
-            background: 'linear-gradient(135deg, #EF4444 0%, #B91C1C 100%)',
-            color: '#FFF',
-            width: '48px',
-            height: '48px',
-            minWidth: '48px',
-            minHeight: '48px',
-            borderRadius: '16px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-            boxShadow: '0 8px 20px rgba(239, 68, 68, 0.3)'
-          }}>
-            <Heart size={24} fill="#FFF" color="#FFF" />
+    <section className="dark-section-block happy-clients-section">
+      {/* ── Section Header ── */}
+      <div className="happy-clients-header">
+        <div className="happy-clients-title-area">
+          <div className="happy-clients-badge">
+            <Heart size={14} fill="#EF4444" color="#EF4444" />
+            <span>CLIENTES FELICES • HISTORIAS DE CONFIANZA</span>
           </div>
-          <div>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.5rem, 3vw, 2.2rem)', color: '#FFF', lineHeight: '1.05', letterSpacing: '-0.02em' }}>
-              CLIENTES FELICES <span style={{ color: '#EF4444' }}>•</span>
-            </h2>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px' }}>
-              <div style={{ display: 'flex', gap: '2px', color: '#F59E0B' }}>
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={14} fill="#F59E0B" color="#F59E0B" />
-                ))}
-              </div>
-              <span style={{ fontSize: '0.82rem', color: '#F59E0B', fontWeight: '800' }}>5.0 Puntuación</span>
-              <span style={{ fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.5)' }}>en Google Reviews</span>
-            </div>
-          </div>
+
+          <h2 className="happy-clients-main-title">
+            LO QUE DICEN QUIENES CONFÍAN EN AF SELECT
+          </h2>
+          <p className="happy-clients-subtitle">
+            Entregas reales, tasaciones transparentes y atención 1-a-1 en Tucumán, Salta y Buenos Aires.
+          </p>
         </div>
 
-        {/* Controls */}
-        <div className="showcase-actions-group" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div className="carousel-nav-arrows" style={{ display: 'flex', gap: '8px' }}>
-            <button onClick={() => scroll('left')} className="btn-arrow-circle" title="Anterior">
-              <ChevronLeft size={18} />
-            </button>
-            <button onClick={() => scroll('right')} className="btn-arrow-circle" title="Siguiente">
-              <ChevronRight size={18} />
-            </button>
+        {/* Rating & Google Maps Button */}
+        <div className="happy-clients-rating-box">
+          <div className="google-stars-score">
+            <span className="score-num">5.0</span>
+            <div className="score-stars">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} size={14} fill="#F59E0B" color="#F59E0B" />
+              ))}
+            </div>
+            <span className="score-source">Google Reviews</span>
           </div>
 
           <a
             href={googleMapsSearchUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-square-sm"
-            style={{
-              background: 'rgba(255, 255, 255, 0.08)',
-              color: '#FFF',
-              borderColor: 'rgba(255, 255, 255, 0.15)',
-              textDecoration: 'none',
-              padding: '10px 16px',
-              borderRadius: '12px'
-            }}
+            className="btn-google-maps"
           >
-            <MapPin size={14} color="#EA4335" />
-            <span>VER GOOGLE MAPS</span>
-            <ExternalLink size={13} />
+            <MapPin size={15} color="#EA4335" />
+            <span>VER EN GOOGLE MAPS</span>
+            <ArrowUpRight size={14} />
           </a>
         </div>
       </div>
 
-      {/* Horizontal Carousel Track */}
-      <div
-        ref={sliderRef}
-        className="showcase-carousel-track testimonials-carousel-track"
-        style={{
-          display: 'flex',
-          gap: '24px',
-          overflowX: 'auto',
-          scrollSnapType: 'x mandatory',
-          paddingBottom: '16px',
-          scrollbarWidth: 'none'
-        }}
-      >
+      {/* ── Static Editorial 2x2 Grid (NO CAROUSEL, NO HORIZONTAL SCROLL) ── */}
+      <div className="happy-clients-grid">
         {reviews.map((rev) => (
-          <div
-            key={rev.id}
-            className="testimonial-photo-card"
-            style={{
-              width: '360px',
-              minWidth: '360px',
-              maxWidth: '360px',
-              flex: '0 0 360px',
-              scrollSnapAlign: 'start',
-              background: 'rgba(255, 255, 255, 0.04)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              borderRadius: '24px',
-              overflow: 'hidden',
-              display: 'flex',
-              flexDirection: 'column',
-              transition: 'transform 0.3s ease, border-color 0.3s ease'
-            }}
-          >
-            {/* Image Header with Badge Overlay */}
-            <div style={{ position: 'relative', width: '100%', height: '210px', overflow: 'hidden' }}>
-              <img
-                src={rev.image}
-                alt={rev.author}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  filter: 'brightness(0.95)'
-                }}
-              />
-              <div style={{
-                position: 'absolute',
-                inset: 0,
-                background: 'linear-gradient(to top, rgba(17, 19, 23, 0.95) 0%, transparent 60%)'
-              }} />
+          <div key={rev.id} className="happy-client-card">
+            {/* Image Column / Top Photo */}
+            <div className="client-card-image-wrap">
+              <img src={rev.image} alt={rev.author} className="client-card-img" />
+              <div className="client-card-img-overlay" />
 
-              {/* Tag Pill Overlay */}
-              <div style={{
-                position: 'absolute',
-                top: '14px',
-                left: '14px',
-                background: 'rgba(17, 19, 23, 0.75)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                color: '#FFF',
-                fontSize: '0.7rem',
-                fontWeight: '800',
-                padding: '5px 12px',
-                borderRadius: '20px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.04em'
-              }}>
-                {rev.tag}
-              </div>
+              {/* Tag Pill */}
+              <span className="client-card-tag-badge">{rev.tag}</span>
 
-              {/* Verification Badge Overlay */}
-              <div style={{
-                position: 'absolute',
-                bottom: '12px',
-                left: '14px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                color: '#10B981',
-                fontSize: '0.75rem',
-                fontWeight: '800'
-              }}>
-                <CheckCircle2 size={15} fill="#10B981" color="#111317" />
-                <span style={{ color: '#FFF' }}>{rev.date}</span>
+              {/* Verified Pill */}
+              <div className="client-card-verified">
+                <CheckCircle2 size={14} fill="#10B981" color="#111317" />
+                <span>{rev.date}</span>
               </div>
             </div>
 
-            {/* Card Content Body */}
-            <div style={{ padding: '20px 22px 22px', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
+            {/* Content Body */}
+            <div className="client-card-body">
               <div>
-                {/* Rating & Source */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
+                <div className="client-card-top-meta">
+                  <div className="client-card-stars">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} size={13} fill="#F59E0B" color="#F59E0B" />
                     ))}
-                    <span style={{ fontSize: '0.78rem', fontWeight: '800', color: '#FFF', marginLeft: '4px' }}>5.0</span>
+                    <span className="rating-text">5.0 / 5.0</span>
                   </div>
 
-                  <span style={{
-                    fontSize: '0.68rem',
-                    fontWeight: '800',
-                    color: 'rgba(255, 255, 255, 0.7)',
-                    background: 'rgba(255, 255, 255, 0.08)',
-                    padding: '3px 9px',
-                    borderRadius: '8px'
-                  }}>
-                    Google Review
+                  <span className="google-badge-pill">
+                    <span style={{ color: '#4285F4', fontWeight: 900 }}>G</span>oogle Review
                   </span>
                 </div>
 
-                {/* Quote */}
-                <p style={{
-                  fontSize: '0.9rem',
-                  lineHeight: '1.55',
-                  color: 'rgba(255, 255, 255, 0.88)',
-                  fontStyle: 'italic',
-                  marginBottom: '20px'
-                }}>
+                <p className="client-card-quote">
                   "{rev.quote}"
                 </p>
               </div>
 
-              {/* Author & Footer */}
-              <div style={{
-                borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-                paddingTop: '14px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between'
-              }}>
+              {/* Card Footer */}
+              <div className="client-card-footer">
                 <div>
-                  <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.98rem', fontWeight: '800', color: '#FFF' }}>
-                    {rev.author}
-                  </div>
-                  <div style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.5)' }}>
-                    {rev.location}
-                  </div>
+                  <h4 className="client-card-author">{rev.author}</h4>
+                  <span className="client-card-location">{rev.location}</span>
                 </div>
 
                 <a
                   href={googleMapsSearchUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '50%',
-                    background: 'rgba(255, 255, 255, 0.08)',
-                    color: '#FFF',
-                    transition: 'all 0.2s ease'
-                  }}
-                  title="Ver reseña original"
+                  className="client-card-link-icon"
+                  title="Ver en Google Maps"
                 >
                   <ExternalLink size={14} />
                 </a>
@@ -296,6 +150,23 @@ export default function TestimonialsSection() {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* ── Bottom Guarantee Banner ── */}
+      <div className="happy-clients-footer-banner">
+        <div className="footer-banner-left">
+          <ShieldCheck size={20} className="text-emerald-400" />
+          <span>Atención y negociación 100% directa con Agustín Fidalgo en cada operación.</span>
+        </div>
+        <a
+          href={googleMapsSearchUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="footer-banner-link"
+        >
+          <span>VER TODAS LAS RESEÑAS</span>
+          <ArrowUpRight size={14} />
+        </a>
       </div>
     </section>
   );

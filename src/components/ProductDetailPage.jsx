@@ -4,6 +4,7 @@ import { submitLead } from '../services/storage';
 import { getWhatsAppUrl } from '../utils/whatsapp';
 import { isInstagramUrl, parseInstagramUrl, getListingVideos } from '../utils/instagram';
 import { ExternalLink } from 'lucide-react';
+import ListingCard from './ListingCard';
 
 export default function ProductDetailPage({ item, onBack, onGoToSell, favorites, toggleFavorite, onSelectListing, listings = [] }) {
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);

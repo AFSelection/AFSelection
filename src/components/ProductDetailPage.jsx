@@ -270,7 +270,7 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
               width: '100%',
               padding: '16px 20px',
               borderRadius: '14px',
-              background: 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)',
+              background: '#25D366',
               color: '#FFFFFF',
               fontFamily: 'var(--font-display)',
               fontSize: '0.88rem',
@@ -278,8 +278,8 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
               letterSpacing: '0.04em',
               textDecoration: 'none',
               marginBottom: '28px',
-              boxShadow: '0 8px 24px rgba(37, 211, 102, 0.28)',
-              transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+              boxShadow: '0 6px 20px rgba(37, 211, 102, 0.22)',
+              transition: 'transform 0.2s ease, background 0.2s ease'
             }}
           >
             <svg width="22" height="22" viewBox="0 0 24 24" fill="#FFFFFF" style={{ display: 'block', flexShrink: 0 }}>

@@ -96,50 +96,104 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
   const renderVideoEmbed = (url) => {
     if (isInstagramUrl(url)) {
       const ig = parseInstagramUrl(url);
-      const embedUrl = ig.shortcode 
-        ? `https://www.instagram.com/p/${ig.shortcode}/embed`
-        : ig.embedUrl;
-
       return (
-        <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: '480px', background: '#000', borderRadius: '16px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <iframe
-            src={embedUrl}
-            width="100%"
-            height="100%"
-            frameBorder="0"
-            scrolling="no"
-            allowTransparency="true"
-            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-            title="Instagram Reel"
-            style={{ border: 'none', width: '100%', height: '100%', minHeight: '480px', background: '#000' }}
-          />
-          <a
-            href={ig.directUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              position: 'absolute',
-              top: '12px',
-              right: '12px',
-              zIndex: 10,
-              background: 'rgba(17, 19, 23, 0.85)',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              backdropFilter: 'blur(8px)',
-              color: '#FFFFFF',
-              padding: '6px 14px',
-              borderRadius: '9999px',
-              fontSize: '0.7rem',
-              fontWeight: '800',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              textDecoration: 'none'
-            }}
-          >
-            <span>ABRIR EN IG</span>
-            <ExternalLink size={12} />
-          </a>
-        </div>
+        <a
+          href={ig.directUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            position: 'relative',
+            width: '100%',
+            height: '100%',
+            minHeight: '380px',
+            background: 'radial-gradient(circle at center, #1c2029 0%, #0d0e12 100%)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '32px',
+            textDecoration: 'none',
+            color: '#FFFFFF',
+            borderRadius: '20px',
+            boxSizing: 'border-box',
+            border: '1px solid rgba(255, 255, 255, 0.12)',
+            cursor: 'pointer',
+            overflow: 'hidden'
+          }}
+        >
+          {/* Instagram Pill Badge */}
+          <div style={{
+            background: 'rgba(255, 255, 255, 0.08)',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            padding: '6px 14px',
+            borderRadius: '20px',
+            fontSize: '0.72rem',
+            fontWeight: '800',
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            color: '#E0E0E0',
+            marginBottom: '24px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px'
+          }}>
+            <span>INSTAGRAM REEL PRESENTACIÓN</span>
+          </div>
+
+          {/* Glowing Play Circle Button */}
+          <div style={{
+            width: '72px',
+            height: '72px',
+            borderRadius: '50%',
+            background: 'linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 10px 30px rgba(220, 39, 67, 0.5)',
+            marginBottom: '20px'
+          }}>
+            <Play size={28} fill="#FFFFFF" color="#FFFFFF" style={{ marginLeft: '4px' }} />
+          </div>
+
+          <h4 style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: '1.25rem',
+            fontWeight: '800',
+            color: '#FFFFFF',
+            marginBottom: '8px',
+            textAlign: 'center'
+          }}>
+            VER REEL EN INSTAGRAM
+          </h4>
+
+          <p style={{
+            fontSize: '0.82rem',
+            color: 'rgba(255, 255, 255, 0.65)',
+            textAlign: 'center',
+            maxWidth: '320px',
+            lineHeight: '1.4',
+            marginBottom: '24px'
+          }}>
+            Tocá para abrir la video-presentación HD directamente en Instagram
+          </p>
+
+          {/* Action Button */}
+          <div style={{
+            background: 'linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)',
+            color: '#FFFFFF',
+            padding: '12px 24px',
+            borderRadius: '9999px',
+            fontSize: '0.8rem',
+            fontWeight: '800',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)'
+          }}>
+            <span>ABRIR EN INSTAGRAM</span>
+            <ExternalLink size={14} />
+          </div>
+        </a>
       );
     }
     if (url.includes('youtube.com') || url.includes('youtu.be')) {

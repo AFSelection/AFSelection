@@ -1,8 +1,9 @@
 import React from 'react';
 import { ShieldCheck, UserCheck, Award, MessageSquare } from 'lucide-react';
+import { getWhatsAppUrl } from '../utils/whatsapp';
 
 export default function AboutPage() {
-  const whatsappUrl = "https://wa.me/5493810000000?text=Hola%20Agust%C3%ADn,%20estuve%20leyendo%20sobre%20AF%20Select%20y%20quisiera%20ponerme%20en%20contacto.";
+  const whatsappUrl = getWhatsAppUrl("Hola Agustín, estuve leyendo sobre AF Select y quisiera ponerme en contacto.");
 
   return (
     <div className="about-page-wrapper" style={{ minHeight: '100vh', background: 'var(--bg-canvas)', paddingTop: '140px', paddingBottom: '80px' }}>

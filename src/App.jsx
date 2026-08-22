@@ -18,6 +18,7 @@ import PropertyMapView from './components/PropertyMapView';
 import MapSplitView from './components/MapSplitView';
 import AboutPage from './components/AboutPage';
 import { fetchListings } from './services/storage';
+import { getWhatsAppUrl } from './utils/whatsapp';
 import { Heart, X, AlertCircle, Layers } from 'lucide-react';
 import Loader from './components/Loader';
 
@@ -557,7 +558,7 @@ export default function App() {
 
       {/* Floating WhatsApp Button (Reveals AFTER scrolling past Hero) */}
       <a
-        href="https://wa.me/5493810000000?text=Hola%20Agust%C3%ADn,%20quisiera%20consultar%20por%20un%20activo%20en%20AF%20Selection"
+        href={getWhatsAppUrl('Hola Agustín, quisiera consultar por un activo en AF Select')}
         target="_blank"
         rel="noopener noreferrer"
         className={`floating-whatsapp-btn ${showScrolledNav ? 'visible' : ''}`}

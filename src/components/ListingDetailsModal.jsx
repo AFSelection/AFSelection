@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Send, MessageCircle, CheckCircle, ArrowUpRight } from 'lucide-react';
 import { getInitialData, saveStorageData } from '../services/storage';
+import { getWhatsAppUrl } from '../utils/whatsapp';
 
 export default function ListingDetailsModal({ item, onClose }) {
   const [activeImgIndex, setActiveImgIndex] = useState(0);
@@ -43,8 +44,8 @@ export default function ListingDetailsModal({ item, onClose }) {
     setIsSubmitted(true);
   };
 
-  const whatsappMessage = encodeURIComponent(`Hola AF Select, me interesa la unidad: ${item.title} (${formatPrice(item.price)}). ¿Tienen disponibilidad para coordinar una reunión?`);
-  const whatsappUrl = `https://wa.me/5491199998888?text=${whatsappMessage}`;
+  const whatsappMessage = `Hola AF Select, me interesa la unidad: ${item.title} (${formatPrice(item.price)}). ¿Tienen disponibilidad para coordinar una reunión?`;
+  const whatsappUrl = getWhatsAppUrl(whatsappMessage);
 
   return (
     <div className="modal-backdrop" onClick={onClose}>

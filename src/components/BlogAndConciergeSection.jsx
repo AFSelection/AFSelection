@@ -1,21 +1,22 @@
 import React from 'react';
-import { BookOpen, MessageCircle, ArrowRight, Search } from 'lucide-react';
+import { BookOpen, Search } from 'lucide-react';
+import { getWhatsAppUrl } from '../utils/whatsapp';
 
 export default function BlogAndConciergeSection() {
   const articles = [
     {
       id: 'b1',
-      category: 'GUÍA DE COMPRA',
-      subhead: 'Nota sobre compra de vehículos',
-      title: 'Qué mirar antes de comprar una pick-up usada en Argentina',
+      category: 'GUÍA DE INVERSIÓN',
+      subhead: 'Requisitos y documentación para transferir un auto en Tucumán',
+      title: 'Todo lo que tenés que saber antes de comprar un auto usado',
       readTime: '4 min de lectura'
     },
     {
       id: 'b2',
-      category: 'INVERSIONES',
-      subhead: 'Nota sobre inversión inmobiliaria',
-      title: 'Pozo, ladrillo o dólares: cómo pensar una inversión en 2026',
-      readTime: '6 min de lectura'
+      category: 'TASACIONES',
+      subhead: 'Cómo valuamos residencias y vehículos de alta gama',
+      title: 'Criterios clave para obtener el valor real de tu activo',
+      readTime: '3 min de lectura'
     },
     {
       id: 'b3',
@@ -27,8 +28,7 @@ export default function BlogAndConciergeSection() {
   ];
 
   const handleWhatsAppClick = () => {
-    const message = encodeURIComponent('Hola Agustín, estuve viendo la web de AF Select y quisiera consultar por una búsqueda a medida.');
-    window.open(`https://wa.me/5493815000000?text=${message}`, '_blank');
+    window.open(getWhatsAppUrl('Hola Agustín, estuve viendo la web de AF Select y quisiera consultar por una búsqueda a medida.'), '_blank');
   };
 
   return (

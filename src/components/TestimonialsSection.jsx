@@ -2,7 +2,7 @@ import React from 'react';
 import { MapPin, ExternalLink, Star, Heart, CheckCircle2, ArrowUpRight } from 'lucide-react';
 
 export default function TestimonialsSection() {
-  const googleMapsSearchUrl = 'https://www.google.com/maps/search/?api=1&query=AF+Selection+Tucuman';
+  const googleMapsSearchUrl = 'https://www.google.com/maps/search/?api=1&query=AF+Select+Tucuman';
 
   const reviews = [
     {

@@ -602,7 +602,7 @@ export default function App() {
       <footer className="editorial-footer">
         <div style={{ maxWidth: '1440px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '24px' }}>
           <div>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.6rem', marginBottom: '4px' }}>AF • Selection</h2>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.6rem', marginBottom: '4px' }}>AF • Select</h2>
             <p style={{ color: 'var(--text-light-muted)', fontSize: '0.88rem' }}>Automotive & Real Estate Portfolio</p>
           </div>
           <div style={{ fontSize: '0.8rem', color: 'var(--text-light-muted)' }}>

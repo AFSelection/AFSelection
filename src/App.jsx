@@ -29,10 +29,7 @@ export default function App() {
   useEffect(() => {
     async function loadData() {
       try {
-        const [listings] = await Promise.all([
-          fetchListings(),
-          new Promise((res) => setTimeout(res, 2200))
-        ]);
+        const listings = await fetchListings();
         setData({
           sections: [
             { id: 'autos',        name: 'Autos',       icon: 'Car'       },
@@ -81,9 +78,88 @@ export default function App() {
   const propiedadesRef = useRef(null);
   const whyChooseUsRef = useRef(null);
 
+  // Centralized Navigation Handlers with URL Hash Persistence
+  const handleSelectListing = (item) => {
+    if (item) {
+      setSelectedListing(item);
+      setShowSellPage(false);
+      setShowAboutPage(false);
+      window.location.hash = `#/producto/${item.id}`;
+      window.scrollTo(0, 0);
+    } else {
+      setSelectedListing(null);
+      if (window.location.hash.startsWith('#/producto/')) {
+        window.location.hash = '#/';
+      }
+      window.scrollTo(0, 0);
+    }
+  };
+
+  const handleOpenSell = () => {
+    setShowSellPage(true);
+    setSelectedListing(null);
+    setShowAboutPage(false);
+    window.location.hash = '#/vender';
+    window.scrollTo(0, 0);
+  };
+
+  const handleOpenAbout = () => {
+    setShowAboutPage(true);
+    setSelectedListing(null);
+    setShowSellPage(false);
+    setActiveSection('all');
+    setShowFavoritesOnly(false);
+    setSearchQuery('');
+    window.location.hash = '#/nosotros';
+    window.scrollTo(0, 0);
+  };
+
+  // Sync URL hash state on initial load and browser refresh/navigation
+  useEffect(() => {
+    if (loading || !data.listings || data.listings.length === 0) return;
+
+    const syncHashState = () => {
+      const hash = window.location.hash || '';
+      if (hash.startsWith('#/producto/')) {
+        const id = hash.replace('#/producto/', '').trim();
+        const found = data.listings.find((l) => String(l.id) === String(id));
+        if (found) {
+          setSelectedListing(found);
+          setShowSellPage(false);
+          setShowAboutPage(false);
+          window.scrollTo(0, 0);
+        }
+      } else if (hash === '#/vender') {
+        setShowSellPage(true);
+        setSelectedListing(null);
+        setShowAboutPage(false);
+        window.scrollTo(0, 0);
+      } else if (hash === '#/nosotros') {
+        setShowAboutPage(true);
+        setSelectedListing(null);
+        setShowSellPage(false);
+        window.scrollTo(0, 0);
+      } else if (hash === '#/autos') {
+        setActiveSection('autos');
+        setSelectedListing(null);
+        setShowSellPage(false);
+        setShowAboutPage(false);
+      } else if (hash === '#/propiedades') {
+        setActiveSection('propiedades');
+        setSelectedListing(null);
+        setShowSellPage(false);
+        setShowAboutPage(false);
+      }
+    };
+
+    syncHashState();
+    window.addEventListener('hashchange', syncHashState);
+    return () => window.removeEventListener('hashchange', syncHashState);
+  }, [loading, data.listings]);
+
   const scrollToSection = (sec) => {
     // Reset view states first so we are on the homepage
-    setSelectedListing(null);
+    handleSelectListing(null);
     setShowSellPage(false);
     setShowFavoritesOnly(false);
     setSearchQuery('');
@@ -238,14 +314,15 @@ export default function App() {
           setSelectedCategory('all');
           setSortBy('recent');
           setShowMap(false);
-          setSelectedListing(null);
+          handleSelectListing(null);
           setShowSellPage(false);
           setShowAboutPage(false);
+          window.location.hash = sec === 'all' ? '#/' : `#/${sec}`;
         }}
         searchQuery={searchQuery}
         setSearchQuery={(q) => {
           setSearchQuery(q);
-          setSelectedListing(null);
+          handleSelectListing(null);
           setShowSellPage(false);
         }}
         favoritesCount={favorites.length}
@@ -253,34 +330,22 @@ export default function App() {
         setShowMap={setShowMap}
         onOpenFavorites={() => {
           setShowFavoritesOnly(!showFavoritesOnly);
-          setSelectedListing(null);
+          handleSelectListing(null);
           setShowSellPage(false);
         }}
         isVisible={showMap || !isHomepage || showScrolledNav}
-        onGoToSell={() => {
-          setShowSellPage(true);
-          setSelectedListing(null);
-          setShowAboutPage(false);
-        }}
-        onGoToAbout={() => {
-          setShowAboutPage(true);
-          setSelectedListing(null);
-          setShowSellPage(false);
-          setActiveSection('all');
-          setShowFavoritesOnly(false);
-          setSearchQuery('');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
+        onGoToSell={handleOpenSell}
+        onGoToAbout={handleOpenAbout}
         onScrollToSection={scrollToSection}
         listings={data.listings || []}
-        onSelectListing={(item) => setSelectedListing(item)}
+        onSelectListing={handleSelectListing}
       />
 
       {/* Map Split View — OUTSIDE main-wrapper, true full-viewport fixed overlay */}
       {showMap && !selectedListing && !showSellPage && (
         <MapSplitView
           listings={data.listings}
-          onSelectListing={(item) => setSelectedListing(item)}
+          onSelectListing={handleSelectListing}
           favorites={favorites}
           onToggleFavorite={toggleFavorite}
           onClose={() => {
@@ -314,20 +379,13 @@ export default function App() {
               setActiveSection(sec);
               setSelectedCategory('all');
               setShowMap(false);
-              setSelectedListing(null);
+              handleSelectListing(null);
               setShowSellPage(false);
               setShowAboutPage(false);
+              window.location.hash = `#/${sec}`;
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            onGoToAbout={() => {
-              setShowAboutPage(true);
-              setSelectedListing(null);
-              setShowSellPage(false);
-              setActiveSection('all');
-              setShowFavoritesOnly(false);
-              setSearchQuery('');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onGoToAbout={handleOpenAbout}
             onToggleMap={() => {
               setActiveSection('propiedades');
               setShowMap(true);
@@ -379,20 +437,17 @@ export default function App() {
 
 
         {showAboutPage ? (
-          <AboutPage onBack={() => { setShowAboutPage(false); window.scrollTo({ top: 0 }); }} />
+          <AboutPage onBack={() => handleSelectListing(null)} />
         ) : showSellPage ? (
-          <SellFormPage onBack={() => setShowSellPage(false)} />
+          <SellFormPage onBack={() => handleSelectListing(null)} />
         ) : selectedListing ? (
           <ProductDetailPage
             item={selectedListing}
-            onBack={() => setSelectedListing(null)}
-            onGoToSell={() => {
-              setSelectedListing(null);
-              setShowSellPage(true);
-            }}
+            onBack={() => handleSelectListing(null)}
+            onGoToSell={handleOpenSell}
             favorites={favorites}
             toggleFavorite={toggleFavorite}
-            onSelectListing={(item) => setSelectedListing(item)}
+            onSelectListing={handleSelectListing}
             listings={data.listings || []}
           />
         ) : isHomepage ? (
@@ -400,7 +455,7 @@ export default function App() {
             {/* FUNNEL STAGE 3: ⚡ BAJARON DE PRECIO (Urgency & Immediate Opportunities) */}
             <PriceDropShowcaseSection
               listings={data.listings || []}
-              onSelectListing={(item) => setSelectedListing(item)}
+              onSelectListing={handleSelectListing}
             />
 
             {/* FUNNEL STAGE 4: Garaje de Autos de Luxe */}
@@ -409,7 +464,7 @@ export default function App() {
                 listings={allAutosListings}
                 favorites={favorites}
                 toggleFavorite={toggleFavorite}
-                onSelectListing={(item) => setSelectedListing(item)}
+                onSelectListing={handleSelectListing}
                 onViewAll={() => setActiveSection('autos')}
               />
             </div>
@@ -425,7 +480,7 @@ export default function App() {
                 listings={allPropiedadesListings}
                 favorites={favorites}
                 toggleFavorite={toggleFavorite}
-                onSelectListing={(item) => setSelectedListing(item)}
+                onSelectListing={handleSelectListing}
                 onViewAll={() => setActiveSection('propiedades')}
                 onToggleMap={() => setShowMap(!showMap)}
               />
@@ -474,7 +529,7 @@ export default function App() {
                       item={item}
                       isFavorite={favorites.includes(item.id)}
                       onToggleFavorite={toggleFavorite}
-                      onSelect={(selected) => setSelectedListing(selected)}
+                      onSelect={(selected) => handleSelectListing(selected)}
                       layout="grid"
                     />
                   ))}
@@ -533,7 +588,7 @@ export default function App() {
                     item={item}
                     isFavorite={favorites.includes(item.id)}
                     onToggleFavorite={toggleFavorite}
-                    onSelect={(selected) => setSelectedListing(selected)}
+                    onSelect={(selected) => handleSelectListing(selected)}
                     layout="grid"
                   />
                 ))}

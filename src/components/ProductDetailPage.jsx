@@ -85,7 +85,7 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
     if (isInstagramUrl(url)) {
       const ig = parseInstagramUrl(url);
       const embedUrl = ig.shortcode 
-        ? `https://www.instagram.com/reel/${ig.shortcode}/embed/captioned/`
+        ? `https://www.instagram.com/p/${ig.shortcode}/embed`
         : ig.embedUrl;
 
       return (

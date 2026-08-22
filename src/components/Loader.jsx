@@ -5,7 +5,7 @@ export default function Loader({ visible }) {
 
   useEffect(() => {
     if (!visible) {
-      const t = setTimeout(() => setMounted(false), 650);
+      const t = setTimeout(() => setMounted(false), 150);
       return () => clearTimeout(t);
     }
   }, [visible]);

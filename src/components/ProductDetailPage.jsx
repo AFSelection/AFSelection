@@ -187,7 +187,13 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
         <div className="detail-gallery-column">
           <div className="gallery-viewport">
             {activeMedia.type === 'image' ? (
-              <img src={activeMedia.url} alt={item.title} className="gallery-main-media" />
+              <img
+                src={activeMedia.url}
+                alt={item.title}
+                className="gallery-main-media"
+                loading="eager"
+                decoding="async"
+              />
             ) : (
               <div className="video-player-container">
                 {renderVideoEmbed(activeMedia.url)}

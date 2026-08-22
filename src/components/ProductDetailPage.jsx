@@ -314,19 +314,6 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
             </table>
           </div>
 
-          {/* Prompt to Sell instead of Buy */}
-          <div className="sell-callout-box" style={{ marginTop: '24px' }}>
-            <h4 className="sell-callout-title">¿Querés vender tu unidad?</h4>
-            <p className="sell-callout-text">
-              Si en lugar de comprar estás buscando vender tu vehículo o propiedad, 
-              nosotros nos encargamos de todo el proceso de publicación y gestión de interesados.
-            </p>
-            <button className="btn-sell-redirect" onClick={onGoToSell}>
-              <span>PUBLICAR MI ACTIVO CON AF Select</span>
-              <Play size={10} fill="currentColor" />
-            </button>
-          </div>
-
         </div>
       </div>
 
@@ -336,6 +323,19 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
         <p className="description-text">
           {item.description || 'Unidad disponible en AF Select.'}
         </p>
+
+        {/* Prompt to Sell instead of Buy (Placed below description) */}
+        <div className="sell-callout-box" style={{ marginTop: '36px' }}>
+          <h4 className="sell-callout-title">¿QUERÉS VENDER TU UNIDAD?</h4>
+          <p className="sell-callout-text">
+            Si en lugar de comprar estás buscando vender tu vehículo o propiedad, 
+            nosotros nos encargamos de todo el proceso de publicación y gestión de interesados.
+          </p>
+          <button className="btn-sell-redirect" onClick={onGoToSell} style={{ maxWidth: '320px' }}>
+            <span>PUBLICAR MI ACTIVO CON AF Select</span>
+            <Play size={10} fill="currentColor" />
+          </button>
+        </div>
       </div>
 
       {/* Related Products Section */}

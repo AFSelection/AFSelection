@@ -271,7 +271,13 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
                 {item.kilometers != null && (
                   <tr>
                     <td>Kilometraje</td>
-                    <td>{item.kilometers.toLocaleString()} km</td>
+                    <td>
+                      {(() => {
+                        const num = Number(String(item.kilometers).replace(/[^\d]/g, ''));
+                        if (isNaN(num) || num === 0) return '0 km (Nuevo)';
+                        return `${num.toLocaleString('es-AR')} km`;
+                      })()}
+                    </td>
                   </tr>
                 )}
                 {item.fuel && (

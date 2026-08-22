@@ -122,10 +122,16 @@ export default function ListingDetailsModal({ item, onClose }) {
                     <td>{item.year}</td>
                   </tr>
                 )}
-                {item.kilometers !== undefined && (
+                {item.kilometers !== undefined && item.kilometers !== null && (
                   <tr>
                     <td>Kilometraje</td>
-                    <td>{item.kilometers.toLocaleString()} km</td>
+                    <td>
+                      {(() => {
+                        const num = Number(String(item.kilometers).replace(/[^\d]/g, ''));
+                        if (isNaN(num) || num === 0) return '0 km (Nuevo)';
+                        return `${num.toLocaleString('es-AR')} km`;
+                      })()}
+                    </td>
                   </tr>
                 )}
                 {item.fuel && (

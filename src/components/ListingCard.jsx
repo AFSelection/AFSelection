@@ -78,10 +78,17 @@ export default function ListingCard({
 
           {/* Key Technical Features Bar */}
           <div className="wander-specs-bar">
-            {isAuto ? (
-              <span>{item.year || '2023'} • {item.kms ? `${item.kms.toLocaleString()} km` : '0km'} • Nafta</span>
-            ) : (
-              <span>{item.features?.sqm ? `${item.features.sqm} m²` : '280 m²'} • {item.features?.rooms ? `${item.features.rooms} Amb` : '4 Amb'} • Cochera</span>
+            {isAuto ? (() => {
+              const kmRaw = item.kilometers ?? item.kms;
+              const kmNum = kmRaw !== undefined && kmRaw !== null ? Number(String(kmRaw).replace(/[^\d]/g, '')) : null;
+              const kmText = (kmNum !== null && !isNaN(kmNum) && kmNum > 0)
+                ? `${kmNum.toLocaleString('es-AR')} km`
+                : '0km';
+              return (
+                <span>{item.year || '2024'} • {kmText} • {item.fuel || 'Nafta'}</span>
+              );
+            })() : (
+              <span>{item.features?.sqm ? `${item.features.sqm} m²` : (item.surface ? `${item.surface} m²` : '280 m²')} • {item.features?.rooms ? `${item.features.rooms} Amb` : (item.rooms ? `${item.rooms} Amb` : '4 Amb')} • Cochera</span>
             )}
           </div>
         </div>

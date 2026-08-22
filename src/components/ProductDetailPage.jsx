@@ -18,6 +18,18 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
     setIsSubmitted(false);
   }, [item]);
 
+  useEffect(() => {
+    // Load Instagram official Embed SDK to process embeds seamlessly
+    if (window.instgrm) {
+      try { window.instgrm.Embeds.process(); } catch {}
+    } else {
+      const s = document.createElement('script');
+      s.src = 'https://www.instagram.com/embed.js';
+      s.async = true;
+      document.body.appendChild(s);
+    }
+  }, [activeMediaIndex, item]);
+
   if (!item) return null;
 
   // Gather media (images + videos)

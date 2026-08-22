@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, MessageCircle, Send, CheckCircle, ChevronLeft, ChevronRight, Play, Eye, FileText } from 'lucide-react';
 import { submitLead } from '../services/storage';
 import { getWhatsAppUrl } from '../utils/whatsapp';
-import ListingCard from './ListingCard';
+import { isInstagramUrl, parseInstagramUrl, getListingVideos } from '../utils/instagram';
+import { ExternalLink } from 'lucide-react';
 
 export default function ProductDetailPage({ item, onBack, onGoToSell, favorites, toggleFavorite, onSelectListing, listings = [] }) {
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
@@ -23,16 +24,14 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
     'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80'
   ];
 
-  // We support an optional "videos" array in listing item.
-  // E.g. YouTube embed URLs, Vimeo, or raw mp4 links.
-  const videos = item.videos || [];
+  // We support videos (Instagram Reels, YouTube, Vimeo, MP4) with default fallback
+  const videos = getListingVideos(item);
 
   // Combine media into a single array for the carousel
-  // format: { type: 'image' | 'video', url: string, isEmbed?: boolean }
   const mediaItems = [
     ...images.map(img => ({ type: 'image', url: img })),
     ...videos.map(vid => {
-      const isEmbed = vid.includes('youtube.com') || vid.includes('youtu.be') || vid.includes('vimeo.com');
+      const isEmbed = isInstagramUrl(vid) || vid.includes('youtube.com') || vid.includes('youtu.be') || vid.includes('vimeo.com');
       return { type: 'video', url: vid, isEmbed };
     })
   ];
@@ -80,8 +79,51 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
 
   const activeMedia = mediaItems[activeMediaIndex];
 
-  // Video embed helper
+  // Video embed helper (Supports Instagram Reels, YouTube, Vimeo, MP4)
   const renderVideoEmbed = (url) => {
+    if (isInstagramUrl(url)) {
+      const ig = parseInstagramUrl(url);
+      return (
+        <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: '480px', background: '#000', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+          <iframe
+            src={ig.embedUrl}
+            width="100%"
+            height="100%"
+            frameBorder="0"
+            scrolling="no"
+            allowTransparency="true"
+            title="Instagram Reel"
+            style={{ border: 'none', width: '100%', height: '100%', minHeight: '480px' }}
+          />
+          {/* Floating Direct Instagram Button */}
+          <a
+            href={ig.directUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              position: 'absolute',
+              top: '16px',
+              right: '16px',
+              zIndex: 30,
+              background: 'linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)',
+              color: '#FFFFFF',
+              padding: '8px 18px',
+              borderRadius: '9999px',
+              fontSize: '0.75rem',
+              fontWeight: '800',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              textDecoration: 'none',
+              boxShadow: '0 6px 20px rgba(0,0,0,0.4)'
+            }}
+          >
+            <span>VER EN INSTAGRAM</span>
+            <ExternalLink size={14} />
+          </a>
+        </div>
+      );
+    }
     if (url.includes('youtube.com') || url.includes('youtu.be')) {
       let videoId = '';
       if (url.includes('v=')) {

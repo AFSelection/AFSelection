@@ -5697,4 +5697,26 @@ h1, h2, h3, h4, .font-display {
   animation: loader-line-pulse 1.4s ease-in-out 0.7s infinite;
 }
 
+/* ==========================================================================
+   PERFORMANCE & ZERO LAYOUT SHIFT (ELIMINATES CURTAIN LOADING EFFECT)
+   ========================================================================== */
+.wander-image-container {
+  aspect-ratio: 16 / 10 !important;
+  contain: paint;
+}
+
+@media (min-width: 768px) {
+  .price-drop-section,
+  .autos-carousel-section,
+  .staggered-showcase-section,
+  .propiedades-showcase-section,
+  .investments-showcase-section,
+  .testimonials-section,
+  .why-choose-us-section,
+  .concierge-section {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 500px;
+  }
+}
+
 

@@ -1,8 +1,16 @@
 /**
  * Utility functions for detecting and parsing Instagram video/reel URLs.
  */
+import { fetchDefaultVideo } from '../services/storage';
 
 export const DEFAULT_INSTAGRAM_REEL = 'https://www.instagram.com/reel/C3x9-V4xgL1/';
+
+let cachedDefaultVideo = DEFAULT_INSTAGRAM_REEL;
+
+// Fetch dynamic default video setting from Supabase site_settings
+fetchDefaultVideo().then((url) => {
+  if (url) cachedDefaultVideo = url;
+});
 
 export function isInstagramUrl(url) {
   if (!url || typeof url !== 'string') return false;
@@ -32,5 +40,5 @@ export function getListingVideos(item) {
   if (item && Array.isArray(item.videos) && item.videos.length > 0) {
     return item.videos;
   }
-  return [DEFAULT_INSTAGRAM_REEL];
+  return [cachedDefaultVideo];
 }

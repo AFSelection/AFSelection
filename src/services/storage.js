@@ -20,6 +20,24 @@ export async function fetchHeroImages() {
   }
 }
 
+const DEFAULT_INSTAGRAM_REEL = 'https://www.instagram.com/reel/C3x9-V4xgL1/';
+
+export async function fetchDefaultVideo() {
+  try {
+    const { data, error } = await supabase
+      .from('site_settings')
+      .select('value')
+      .eq('key', 'default_video')
+      .maybeSingle();
+    if (error || !data) return DEFAULT_INSTAGRAM_REEL;
+    const val = data.value;
+    if (typeof val === 'string' && val.trim()) return val.trim();
+    return DEFAULT_INSTAGRAM_REEL;
+  } catch {
+    return DEFAULT_INSTAGRAM_REEL;
+  }
+}
+
 export async function fetchListings() {
   const { data, error } = await supabase
     .from('listings')

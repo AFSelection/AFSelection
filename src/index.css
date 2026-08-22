@@ -3140,7 +3140,7 @@ h1, h2, h3, h4, .font-display {
 
 .detail-main-split {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: minmax(0, 1fr) 440px;
   gap: 48px;
   align-items: start;
   margin-bottom: 48px;

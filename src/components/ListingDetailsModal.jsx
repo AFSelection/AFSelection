@@ -54,7 +54,7 @@ export default function ListingDetailsModal({ item, onClose }) {
           <X size={20} />
         </button>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '0' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 420px', gap: '0' }}>
           {/* Left Gallery Section */}
           <div style={{ padding: '36px', background: 'var(--bg-canvas)', borderRight: '1px solid var(--border-light)' }}>
             <div style={{ width: '100%', height: '400px', borderRadius: '12px', overflow: 'hidden', marginBottom: '16px' }}>

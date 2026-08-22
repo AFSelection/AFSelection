@@ -109,49 +109,50 @@ export default function CatalogHeaderBanner({
 
   return (
     <div className="open-catalog-header">
-      {/* Top controls */}
-      <div className="open-catalog-controls">
+      {/* 1. Back button at top */}
+      <div style={{ marginBottom: '16px' }}>
         <button className="btn-back-text" onClick={onBackToHome}>
           <ArrowLeft size={16} />
           <span>VOLVER AL INICIO</span>
         </button>
-
-        <div className="open-catalog-right-controls">
-          <span className="catalog-count-pill">
-            {totalCount} {totalCount === 1 ? 'ACTIVO DISPONIBLE' : 'ACTIVOS DISPONIBLES'}
-          </span>
-
-          {/* Custom sort dropdown */}
-          <SortDropdown value={sortBy} onChange={setSortBy} activeSection={activeSection} />
-
-          {/* Filters button */}
-          <button
-            className={`btn-square-sm${activeFilterCount > 0 ? ' active-btn-dark' : ''}`}
-            onClick={() => setShowFilters(true)}
-          >
-            <SlidersHorizontal size={14} />
-            <span>FILTROS{activeFilterCount > 0 ? ` (${activeFilterCount})` : ''}</span>
-          </button>
-
-          {activeSection === 'propiedades' && (
-            <button
-              className={`btn-square-sm ${showMap ? 'active-btn-dark' : ''}`}
-              onClick={() => setShowMap(!showMap)}
-            >
-              <MapPin size={14} />
-              <span>{showMap ? 'OCULTAR MAPA' : 'VER MAPA'}</span>
-            </button>
-          )}
-        </div>
       </div>
 
-      {/* Title */}
-      <div className="open-catalog-title-block">
+      {/* 2. Title Block */}
+      <div className="open-catalog-title-block" style={{ marginBottom: '16px' }}>
         <h1 className="open-catalog-title">{info.title}</h1>
         <p className="open-catalog-subtitle">{info.subtitle}</p>
       </div>
 
-      <div className="open-catalog-divider" />
+      {/* 3. Controls Row BELOW Title */}
+      <div className="open-catalog-bottom-controls-row">
+        <span className="catalog-count-pill">
+          {totalCount} {totalCount === 1 ? 'ACTIVO DISPONIBLE' : 'ACTIVOS DISPONIBLES'}
+        </span>
+
+        {/* Custom sort dropdown */}
+        <SortDropdown value={sortBy} onChange={setSortBy} activeSection={activeSection} />
+
+        {/* Compact Filters button */}
+        <button
+          className={`btn-square-sm compact-filter-btn${activeFilterCount > 0 ? ' active-btn-dark' : ''}`}
+          onClick={() => setShowFilters(true)}
+        >
+          <SlidersHorizontal size={14} />
+          <span>FILTROS{activeFilterCount > 0 ? ` (${activeFilterCount})` : ''}</span>
+        </button>
+
+        {activeSection === 'propiedades' && (
+          <button
+            className={`btn-square-sm compact-filter-btn ${showMap ? 'active-btn-dark' : ''}`}
+            onClick={() => setShowMap(!showMap)}
+          >
+            <MapPin size={14} />
+            <span>{showMap ? 'OCULTAR MAPA' : 'VER MAPA'}</span>
+          </button>
+        )}
+      </div>
+
+      <div className="open-catalog-divider" style={{ marginTop: '20px' }} />
 
       {/* Filters popup */}
       {showFilters && (

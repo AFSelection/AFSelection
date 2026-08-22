@@ -438,6 +438,24 @@ h1, h2, h3, h4, .font-display {
   gap: 12px;
 }
 
+.open-catalog-bottom-controls-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.compact-filter-btn {
+  width: auto !important;
+  flex: 0 0 auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 8px 16px !important;
+  white-space: nowrap !important;
+}
+
 .btn-back-text {
   background: transparent;
   border: none;

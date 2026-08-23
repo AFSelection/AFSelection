@@ -230,13 +230,46 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
         />
       );
     }
+    const igVideo = videos.find(v => isInstagramUrl(v)) || (item.videos && item.videos.find(v => isInstagramUrl(v)));
+    const igData = igVideo ? parseInstagramUrl(igVideo) : null;
+
     return (
-      <video
-        src={url}
-        controls
-        autoPlay
-        style={{ width: '100%', height: '100%', objectFit: 'contain', background: '#000' }}
-      />
+      <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: '380px', background: '#000', borderRadius: '16px', overflow: 'hidden' }}>
+        <video
+          src={url}
+          controls
+          autoPlay
+          playsInline
+          style={{ width: '100%', height: '100%', objectFit: 'contain', background: '#000' }}
+        />
+        {igData && (
+          <a
+            href={igData.directUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              position: 'absolute',
+              top: '14px',
+              right: '14px',
+              zIndex: 25,
+              background: 'linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)',
+              color: '#FFFFFF',
+              padding: '8px 16px',
+              borderRadius: '9999px',
+              fontSize: '0.72rem',
+              fontWeight: '800',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              textDecoration: 'none',
+              boxShadow: '0 6px 20px rgba(0, 0, 0, 0.5)'
+            }}
+          >
+            <span>VER EN INSTAGRAM</span>
+            <ExternalLink size={13} />
+          </a>
+        )}
+      </div>
     );
   };
 

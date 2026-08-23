@@ -161,7 +161,7 @@ export default function CatalogHeaderBanner({
             onClick={() => setSelectedCategory('all')}
             style={{ padding: '6px 14px', fontSize: '0.72rem', whiteSpace: 'nowrap' }}
           >
-            <span>TODOS (PROPIEDADES E INVERSIONES)</span>
+            <span>TODAS (PROPIEDADES E INVERSIONES)</span>
           </button>
           <button
             type="button"
@@ -169,7 +169,7 @@ export default function CatalogHeaderBanner({
             onClick={() => setSelectedCategory('propiedades')}
             style={{ padding: '6px 14px', fontSize: '0.72rem', whiteSpace: 'nowrap' }}
           >
-            <span>PROPIEDADES SOLAS</span>
+            <span>PROPIEDADES</span>
           </button>
           <button
             type="button"
@@ -177,7 +177,7 @@ export default function CatalogHeaderBanner({
             onClick={() => setSelectedCategory('inversiones')}
             style={{ padding: '6px 14px', fontSize: '0.72rem', whiteSpace: 'nowrap' }}
           >
-            <span>INVERSIONES SOLAS</span>
+            <span>INVERSIONES</span>
           </button>
         </div>
       )}

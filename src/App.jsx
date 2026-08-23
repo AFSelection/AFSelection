@@ -512,30 +512,6 @@ export default function App() {
 
             {/* FUNNEL STAGE 10: Cierre de Conversión (Informes de Mercado + WhatsApp Directo Agustín - ¿Buscás algo puntual?) */}
             <BlogAndConciergeSection />
-
-            {/* Dynamic Product Sections if any */}
-            {dynamicOtherListings.length > 0 && (
-              <section style={{ marginBottom: '60px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px', paddingBottom: '16px', borderBottom: '1px solid var(--border-light)' }}>
-                  <Layers size={22} />
-                  <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem' }}>
-                    SECCIONES ESPECIALES DE PRODUCTOS
-                  </h2>
-                </div>
-                <div className="cards-grid">
-                  {dynamicOtherListings.map((item) => (
-                    <ListingCard
-                      key={item.id}
-                      item={item}
-                      isFavorite={favorites.includes(item.id)}
-                      onToggleFavorite={toggleFavorite}
-                      onSelect={(selected) => handleSelectListing(selected)}
-                      layout="grid"
-                    />
-                  ))}
-                </div>
-              </section>
-            )}
           </div>
         ) : (
           /* DEDICATED CATALOG VIEW */

@@ -78,18 +78,24 @@ export default function App() {
   const propiedadesRef = useRef(null);
   const whyChooseUsRef = useRef(null);
 
-  // Centralized Navigation Handlers with URL Hash Persistence
+  const setUrlPath = (path) => {
+    if (window.location.pathname !== path) {
+      window.history.pushState({}, '', path);
+    }
+  };
+
+  // Centralized Navigation Handlers with Clean URL Persistence
   const handleSelectListing = (item) => {
     if (item) {
       setSelectedListing(item);
       setShowSellPage(false);
       setShowAboutPage(false);
-      window.location.hash = `#/producto/${item.id}`;
+      setUrlPath(`/producto/${item.id}`);
       window.scrollTo(0, 0);
     } else {
       setSelectedListing(null);
-      if (window.location.hash.startsWith('#/producto/')) {
-        window.location.hash = '#/';
+      if (window.location.pathname.startsWith('/producto/')) {
+        setUrlPath('/');
       }
       window.scrollTo(0, 0);
     }
@@ -99,7 +105,7 @@ export default function App() {
     setShowSellPage(true);
     setSelectedListing(null);
     setShowAboutPage(false);
-    window.location.hash = '#/vender';
+    setUrlPath('/vender');
     window.scrollTo(0, 0);
   };
 
@@ -110,18 +116,25 @@ export default function App() {
     setActiveSection('all');
     setShowFavoritesOnly(false);
     setSearchQuery('');
-    window.location.hash = '#/nosotros';
+    setUrlPath('/nosotros');
     window.scrollTo(0, 0);
   };
 
-  // Sync URL hash state on initial load and browser refresh/navigation
+  // Sync URL path state on initial load and browser refresh/navigation
   useEffect(() => {
     if (loading || !data.listings || data.listings.length === 0) return;
 
-    const syncHashState = () => {
-      const hash = window.location.hash || '';
-      if (hash.startsWith('#/producto/')) {
-        const id = hash.replace('#/producto/', '').trim();
+    const syncPathState = () => {
+      // Clean up legacy hash if present (e.g. /#/vender -> /vender)
+      if (window.location.hash) {
+        const legacyHash = window.location.hash.replace(/^#/, '');
+        window.history.replaceState({}, '', legacyHash || '/');
+      }
+
+      const path = window.location.pathname || '/';
+
+      if (path.startsWith('/producto/')) {
+        const id = path.replace('/producto/', '').trim();
         const found = data.listings.find((l) => String(l.id) === String(id));
         if (found) {
           setSelectedListing(found);
@@ -129,22 +142,22 @@ export default function App() {
           setShowAboutPage(false);
           window.scrollTo(0, 0);
         }
-      } else if (hash === '#/vender') {
+      } else if (path === '/vender') {
         setShowSellPage(true);
         setSelectedListing(null);
         setShowAboutPage(false);
         window.scrollTo(0, 0);
-      } else if (hash === '#/nosotros') {
+      } else if (path === '/nosotros') {
         setShowAboutPage(true);
         setSelectedListing(null);
         setShowSellPage(false);
         window.scrollTo(0, 0);
-      } else if (hash === '#/autos') {
+      } else if (path === '/autos') {
         setActiveSection('autos');
         setSelectedListing(null);
         setShowSellPage(false);
         setShowAboutPage(false);
-      } else if (hash === '#/propiedades') {
+      } else if (path === '/propiedades') {
         setActiveSection('propiedades');
         setSelectedListing(null);
         setShowSellPage(false);
@@ -152,9 +165,9 @@ export default function App() {
       }
     };
 
-    syncHashState();
-    window.addEventListener('hashchange', syncHashState);
-    return () => window.removeEventListener('hashchange', syncHashState);
+    syncPathState();
+    window.addEventListener('popstate', syncPathState);
+    return () => window.removeEventListener('popstate', syncPathState);
   }, [loading, data.listings]);
 
   const scrollToSection = (sec) => {
@@ -336,7 +349,7 @@ export default function App() {
           handleSelectListing(null);
           setShowSellPage(false);
           setShowAboutPage(false);
-          window.location.hash = sec === 'all' ? '#/' : `#/${sec}`;
+          setUrlPath(sec === 'all' ? '/' : `/${sec}`);
         }}
         searchQuery={searchQuery}
         setSearchQuery={(q) => {
@@ -401,7 +414,7 @@ export default function App() {
               handleSelectListing(null);
               setShowSellPage(false);
               setShowAboutPage(false);
-              window.location.hash = `#/${sec}`;
+              setUrlPath(`/${sec}`);
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             onGoToAbout={handleOpenAbout}

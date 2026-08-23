@@ -952,7 +952,7 @@ h1, h2, h3, h4, .font-display {
   border: 1px solid rgba(255, 255, 255, 0.6) !important;
   color: #111317 !important;
   padding: 4px 16px;
-  border-radius: 9999px !important;
+  border-radius: 0 !important;
   display: inline-block;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }

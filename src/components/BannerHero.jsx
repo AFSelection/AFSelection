@@ -115,19 +115,17 @@ export default function BannerHero({
 
         {/* Editorial Content */}
         <div className="split-glass-body">
-          <div className="mobile-title-glass-box">
-            <div className="split-badge-pill">
-              <ShieldCheck size={14} className="dark-sparkle-icon" />
-              <span>TRATO DIRECTO CON AGUSTÍN FIDALGO</span>
-            </div>
-
-            <h1 className="split-hero-title">
-              <span className="hero-line-strict line-black-text">GARAGE DE AUTOS</span>
-              <span className="hero-line-strict line-black-highlight">
-                <span className="highlight-badge-inner">Y PROPIEDADES</span>
-              </span>
-            </h1>
+          <div className="split-badge-pill">
+            <ShieldCheck size={14} className="dark-sparkle-icon" />
+            <span>TRATO DIRECTO CON AGUSTÍN FIDALGO</span>
           </div>
+
+          <h1 className="split-hero-title">
+            <span className="hero-line-strict line-black-text">GARAGE DE AUTOS</span>
+            <span className="hero-line-strict line-black-highlight">
+              <span className="highlight-badge-inner">Y PROPIEDADES</span>
+            </span>
+          </h1>
 
           <p className="split-hero-desc desktop-only-desc">
             Selección y gestión de vehículos y propiedades en Tucumán, Salta y Buenos Aires.

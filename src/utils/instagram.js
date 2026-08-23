@@ -1,15 +1,15 @@
-/**
- * Utility functions for detecting and parsing Instagram video/reel URLs.
- */
-import { fetchDefaultVideo } from '../services/storage';
+import { fetchDefaultMediaSettings } from '../services/storage';
 
 export const DEFAULT_INSTAGRAM_REEL = 'https://www.instagram.com/reel/C3x9-V4xgL1/';
 
-let cachedDefaultVideo = DEFAULT_INSTAGRAM_REEL;
+let cachedDefaultMedia = {
+  instagramUrl: DEFAULT_INSTAGRAM_REEL,
+  videoFile: null
+};
 
-// Fetch dynamic default video setting from Supabase site_settings
-fetchDefaultVideo().then((url) => {
-  if (url) cachedDefaultVideo = url;
+// Fetch dynamic default video settings from Supabase site_settings
+fetchDefaultMediaSettings().then((media) => {
+  if (media) cachedDefaultMedia = media;
 });
 
 export function isInstagramUrl(url) {
@@ -40,5 +40,12 @@ export function getListingVideos(item) {
   if (item && Array.isArray(item.videos) && item.videos.length > 0) {
     return item.videos;
   }
-  return [cachedDefaultVideo];
+  const defaults = [];
+  if (cachedDefaultMedia.videoFile) {
+    defaults.push(cachedDefaultMedia.videoFile);
+  }
+  if (cachedDefaultMedia.instagramUrl) {
+    defaults.push(cachedDefaultMedia.instagramUrl);
+  }
+  return defaults.length > 0 ? defaults : [DEFAULT_INSTAGRAM_REEL];
 }

@@ -38,6 +38,23 @@ export async function fetchDefaultVideo() {
   }
 }
 
+export async function fetchDefaultMediaSettings() {
+  try {
+    const { data: reelData } = await supabase.from('site_settings').select('value').eq('key', 'default_video').maybeSingle();
+    const { data: fileData } = await supabase.from('site_settings').select('value').eq('key', 'default_video_file').maybeSingle();
+
+    return {
+      instagramUrl: typeof reelData?.value === 'string' && reelData.value.trim() ? reelData.value.trim() : DEFAULT_INSTAGRAM_REEL,
+      videoFile: typeof fileData?.value === 'string' && fileData.value.trim() ? fileData.value.trim() : null
+    };
+  } catch {
+    return {
+      instagramUrl: DEFAULT_INSTAGRAM_REEL,
+      videoFile: null
+    };
+  }
+}
+
 export async function fetchListings() {
   const { data, error } = await supabase
     .from('listings')

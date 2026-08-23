@@ -992,14 +992,16 @@ h1, h2, h3, h4, .font-display {
   background: #111317;
   color: #FFF;
   border: none;
-  width: 34px;
-  height: 34px;
-  border-radius: 6px;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, transform 0.15s ease;
   flex-shrink: 0;
 }
 
@@ -2556,28 +2558,28 @@ h1, h2, h3, h4, .font-display {
   /* Full Bleed Mobile Hero Section with PEEK-SCROLL HEIGHT */
   .split-hero-section {
     position: relative;
-    width: 100% !important;
-    left: 0 !important;
-    right: 0 !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    height: 82vh !important;
-    min-height: 560px !important;
-    max-height: 720px !important;
+    width: calc(100% + 32px) !important;
+    left: auto !important;
+    right: auto !important;
+    margin-left: -16px !important;
+    margin-right: -16px !important;
+    height: 76vh !important;
+    min-height: 520px !important;
+    max-height: 640px !important;
     border-radius: 0 !important;
     overflow: hidden !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: flex-end !important;
-    padding: 60px 16px 36px !important;
+    padding: 60px 20px 32px !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
   }
 
   /* Mobile Dark Overlay: Gradient from subtle dark top to rich dark bottom for high photography visibility */
   .split-hero-dark-overlay {
-    background: linear-gradient(180deg, rgba(17, 19, 23, 0.45) 0%, rgba(17, 19, 23, 0.15) 30%, rgba(17, 19, 23, 0.75) 65%, rgba(17, 19, 23, 0.96) 100%) !important;
+    background: linear-gradient(180deg, rgba(17, 19, 23, 0.35) 0%, rgba(17, 19, 23, 0.1) 30%, rgba(17, 19, 23, 0.7) 65%, rgba(17, 19, 23, 0.95) 100%) !important;
   }
 
   /* Mobile Top Brand Bar */
@@ -2607,7 +2609,8 @@ h1, h2, h3, h4, .font-display {
 
   .desktop-only-nav,
   .desktop-only-btn,
-  .desktop-only-footer {
+  .desktop-only-footer,
+  .desktop-only-desc {
     display: none !important;
   }
 
@@ -2640,7 +2643,7 @@ h1, h2, h3, h4, .font-display {
     margin-right: auto !important;
     font-size: 0.68rem !important;
     padding: 6px 14px !important;
-    margin-bottom: 12px !important;
+    margin-bottom: 14px !important;
     border-radius: 9999px !important;
     background: rgba(17, 19, 23, 0.85) !important;
     color: #E5C158 !important;
@@ -2652,7 +2655,7 @@ h1, h2, h3, h4, .font-display {
   .split-hero-title {
     font-size: clamp(1.4rem, 5.8vw, 2.1rem) !important;
     line-height: 1.2 !important;
-    margin-bottom: 10px !important;
+    margin-bottom: 16px !important;
     width: 100% !important;
     color: #FFFFFF !important;
   }
@@ -2679,22 +2682,11 @@ h1, h2, h3, h4, .font-display {
     border: 1px solid rgba(255, 255, 255, 0.2) !important;
   }
 
-  .split-hero-desc {
-    font-size: 0.84rem !important;
-    line-height: 1.45 !important;
-    margin-bottom: 16px !important;
-    text-align: center !important;
-    color: rgba(255, 255, 255, 0.85) !important;
-    font-weight: 500 !important;
-    max-width: 90% !important;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.8) !important;
-  }
-
   .split-search-box {
     max-width: 100% !important;
     width: 100% !important;
     padding: 6px 6px 6px 16px !important;
-    margin-bottom: 14px !important;
+    margin-bottom: 16px !important;
     border-radius: 9999px !important;
     background: rgba(255, 255, 255, 0.96) !important;
     border: 1px solid rgba(255, 255, 255, 1) !important;
@@ -2727,7 +2719,7 @@ h1, h2, h3, h4, .font-display {
 
   /* MERCADO LIBRE STYLE SQUARE SHORTCUTS BAR (MOBILE OVERLAPPING HERO) */
   .sections-bar-container {
-    margin-top: -24px !important;
+    margin-top: 16px !important;
     position: relative !important;
     z-index: 30 !important;
     margin-bottom: 28px !important;

@@ -127,7 +127,7 @@ export default function BannerHero({
             </span>
           </h1>
 
-          <p className="split-hero-desc">
+          <p className="split-hero-desc desktop-only-desc">
             Selección y gestión de vehículos y propiedades en Tucumán, Salta y Buenos Aires.
           </p>
 

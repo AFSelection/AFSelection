@@ -152,6 +152,36 @@ export default function CatalogHeaderBanner({
         )}
       </div>
 
+      {/* Sub-filter Pills Row for Propiedades & Inversiones */}
+      {activeSection === 'propiedades' && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', overflowX: 'auto', marginTop: '14px', paddingBottom: '4px', scrollbarWidth: 'none' }}>
+          <button
+            type="button"
+            className={`btn-square-sm ${selectedCategory === 'all' ? 'active-btn-dark' : ''}`}
+            onClick={() => setSelectedCategory('all')}
+            style={{ padding: '6px 14px', fontSize: '0.72rem', whiteSpace: 'nowrap' }}
+          >
+            <span>TODOS (PROPIEDADES E INVERSIONES)</span>
+          </button>
+          <button
+            type="button"
+            className={`btn-square-sm ${selectedCategory === 'propiedades' ? 'active-btn-dark' : ''}`}
+            onClick={() => setSelectedCategory('propiedades')}
+            style={{ padding: '6px 14px', fontSize: '0.72rem', whiteSpace: 'nowrap' }}
+          >
+            <span>PROPIEDADES SOLAS</span>
+          </button>
+          <button
+            type="button"
+            className={`btn-square-sm ${selectedCategory === 'inversiones' ? 'active-btn-dark' : ''}`}
+            onClick={() => setSelectedCategory('inversiones')}
+            style={{ padding: '6px 14px', fontSize: '0.72rem', whiteSpace: 'nowrap' }}
+          >
+            <span>INVERSIONES SOLAS</span>
+          </button>
+        </div>
+      )}
+
       <div className="open-catalog-divider" style={{ marginTop: '20px' }} />
 
       {/* Filters popup */}

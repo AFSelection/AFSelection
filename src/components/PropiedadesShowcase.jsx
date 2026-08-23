@@ -92,25 +92,36 @@ export default function PropiedadesShowcase({
           Por el momento no hay propiedades disponibles.
         </div>
       ) : (
-        <div
-          ref={sliderRef}
-          className="showcase-carousel-track"
-          style={{ display: 'flex', gap: '24px', overflowX: 'auto', scrollSnapType: 'x mandatory', paddingBottom: '16px' }}
-        >
-          {listings.map((item) => (
-            <div
-              key={item.id}
-              style={{ width: '360px', minWidth: '360px', maxWidth: '360px', flex: '0 0 360px', scrollSnapAlign: 'start' }}
-            >
-              <ListingCard
-                item={item}
-                isFavorite={favorites.includes(item.id)}
-                onToggleFavorite={toggleFavorite}
-                onSelect={onSelectListing}
-                layout="grid"
-              />
-            </div>
-          ))}
+        <div className="carousel-track-wrapper">
+          <div
+            ref={sliderRef}
+            className="showcase-carousel-track"
+            style={{
+              display: 'flex',
+              gap: '24px',
+              overflowX: 'auto',
+              scrollSnapType: 'x mandatory',
+              padding: '16px 8px 24px 8px',
+              margin: '-16px -8px -24px -8px',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none'
+            }}
+          >
+            {listings.map((item) => (
+              <div
+                key={item.id}
+                style={{ width: '360px', minWidth: '360px', maxWidth: '360px', flex: '0 0 360px', scrollSnapAlign: 'start' }}
+              >
+                <ListingCard
+                  item={item}
+                  isFavorite={favorites.includes(item.id)}
+                  onToggleFavorite={toggleFavorite}
+                  onSelect={onSelectListing}
+                  layout="grid"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </section>

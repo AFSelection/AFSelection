@@ -148,85 +148,90 @@ export default function InvestmentsShowcaseSection({ listings = [], onOpenContac
           Por el momento no hay inversiones disponibles.
         </div>
       ) : (
-      <div
-        ref={sliderRef}
-        className="showcase-carousel-track investments-carousel-track"
-        style={{
-          display: 'flex',
-          gap: '20px',
-          overflowX: 'auto',
-          scrollSnapType: 'x mandatory',
-          paddingBottom: '12px'
-        }}
-      >
-        {investments.map((inv) => (
+        <div className="carousel-track-wrapper">
           <div
-            key={inv.id}
-            className="investment-compact-card"
+            ref={sliderRef}
+            className="showcase-carousel-track investments-carousel-track"
             style={{
-              width: '320px',
-              minWidth: '320px',
-              maxWidth: '320px',
-              flex: '0 0 320px',
-              scrollSnapAlign: 'start'
+              display: 'flex',
+              gap: '20px',
+              overflowX: 'auto',
+              scrollSnapType: 'x mandatory',
+              padding: '16px 8px 24px 8px',
+              margin: '-16px -8px -24px -8px',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none'
             }}
           >
-            <div className="inv-top-row" style={{ marginBottom: '14px' }}>
-              <div>
-                <h3 className="inv-title" style={{ fontSize: '1.1rem', marginBottom: '2px' }}>{inv.title}</h3>
-                <span className="inv-developer" style={{ fontSize: '0.78rem' }}>{inv.developer}</span>
-              </div>
-              <span
-                className="inv-risk-badge"
+            {investments.map((inv) => (
+              <div
+                key={inv.id}
+                className="investment-compact-card"
                 style={{
-                  background: `${inv.riskColor}15`,
-                  color: inv.riskColor,
-                  borderColor: `${inv.riskColor}30`,
-                  fontSize: '0.68rem',
-                  padding: '3px 8px'
+                  width: '320px',
+                  minWidth: '320px',
+                  maxWidth: '320px',
+                  flex: '0 0 320px',
+                  scrollSnapAlign: 'start'
                 }}
               >
-                {inv.risk}
-              </span>
-            </div>
+                <div className="inv-top-row" style={{ marginBottom: '14px' }}>
+                  <div>
+                    <h3 className="inv-title" style={{ fontSize: '1.1rem', marginBottom: '2px' }}>{inv.title}</h3>
+                    <span className="inv-developer" style={{ fontSize: '0.78rem' }}>{inv.developer}</span>
+                  </div>
+                  <span
+                    className="inv-risk-badge"
+                    style={{
+                      background: `${inv.riskColor}15`,
+                      color: inv.riskColor,
+                      borderColor: `${inv.riskColor}30`,
+                      fontSize: '0.68rem',
+                      padding: '3px 8px'
+                    }}
+                  >
+                    {inv.risk}
+                  </span>
+                </div>
 
-            <div className="inv-metrics-grid" style={{ gap: '10px', marginBottom: '14px' }}>
-              <div className="inv-metric-box" style={{ padding: '8px 12px' }}>
-                <div className="inv-metric-val" style={{ fontSize: '1.05rem' }}>{inv.minInvestment}</div>
-                <div className="inv-metric-lbl" style={{ fontSize: '0.7rem' }}>Min. Inversión</div>
-              </div>
-              <div className="inv-metric-box" style={{ padding: '8px 12px' }}>
-                <div className="inv-metric-val highlight-green" style={{ fontSize: '1.05rem' }}>{inv.estimatedReturn}</div>
-                <div className="inv-metric-lbl" style={{ fontSize: '0.7rem' }}>Retorno Est.</div>
-              </div>
-              <div className="inv-metric-box" style={{ padding: '8px 12px' }}>
-                <div className="inv-metric-val" style={{ fontSize: '1.05rem' }}>{inv.termMonths}</div>
-                <div className="inv-metric-lbl" style={{ fontSize: '0.7rem' }}>Plazo</div>
-              </div>
-              <div className="inv-metric-box" style={{ padding: '8px 12px' }}>
-                <div className="inv-metric-val" style={{ fontSize: '1.05rem' }}>{inv.progress}%</div>
-                <div className="inv-metric-lbl" style={{ fontSize: '0.7rem' }}>Avance Obra</div>
-              </div>
-            </div>
+                <div className="inv-metrics-grid" style={{ gap: '10px', marginBottom: '14px' }}>
+                  <div className="inv-metric-box" style={{ padding: '8px 12px' }}>
+                    <div className="inv-metric-val" style={{ fontSize: '1.05rem' }}>{inv.minInvestment}</div>
+                    <div className="inv-metric-lbl" style={{ fontSize: '0.7rem' }}>Min. Inversión</div>
+                  </div>
+                  <div className="inv-metric-box" style={{ padding: '8px 12px' }}>
+                    <div className="inv-metric-val highlight-green" style={{ fontSize: '1.05rem' }}>{inv.estimatedReturn}</div>
+                    <div className="inv-metric-lbl" style={{ fontSize: '0.7rem' }}>Retorno Est.</div>
+                  </div>
+                  <div className="inv-metric-box" style={{ padding: '8px 12px' }}>
+                    <div className="inv-metric-val" style={{ fontSize: '1.05rem' }}>{inv.termMonths}</div>
+                    <div className="inv-metric-lbl" style={{ fontSize: '0.7rem' }}>Plazo</div>
+                  </div>
+                  <div className="inv-metric-box" style={{ padding: '8px 12px' }}>
+                    <div className="inv-metric-val" style={{ fontSize: '1.05rem' }}>{inv.progress}%</div>
+                    <div className="inv-metric-lbl" style={{ fontSize: '0.7rem' }}>Avance Obra</div>
+                  </div>
+                </div>
 
-            <div className="inv-progress-bar-wrap" style={{ height: '6px', marginBottom: '14px' }}>
-              <div className="inv-progress-fill" style={{ width: `${inv.progress}%` }} />
-            </div>
+                <div className="inv-progress-bar-wrap" style={{ height: '6px', marginBottom: '14px' }}>
+                  <div className="inv-progress-fill" style={{ width: `${inv.progress}%` }} />
+                </div>
 
-            <div className="inv-footer-row" style={{ paddingTop: '12px' }}>
-              <span className="inv-loc" style={{ fontSize: '0.78rem' }}>{inv.location}</span>
-              <button
-                className="btn-square-sm"
-                onClick={onOpenContact}
-                style={{ padding: '6px 12px', fontSize: '0.72rem' }}
-              >
-                <span>CONSULTAR</span>
-                <ArrowUpRight size={13} />
-              </button>
-            </div>
+                <div className="inv-footer-row" style={{ paddingTop: '12px' }}>
+                  <span className="inv-loc" style={{ fontSize: '0.78rem' }}>{inv.location}</span>
+                  <button
+                    className="btn-square-sm"
+                    onClick={onOpenContact}
+                    style={{ padding: '6px 12px', fontSize: '0.72rem' }}
+                  >
+                    <span>CONSULTAR</span>
+                    <ArrowUpRight size={13} />
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
       )}
     </section>
   );

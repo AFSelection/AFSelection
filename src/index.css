@@ -2950,22 +2950,27 @@ h1, h2, h3, h4, .font-display {
   background: linear-gradient(to left, #111317 0%, rgba(17, 19, 23, 0) 100%);
 }
 
-  /* HORIZONTAL SWIPEABLE CAROUSEL ROW WITH EDGE FADE-OUT MASK IN MOBILE */
+  /* HORIZONTAL SWIPEABLE CAROUSEL ROW IN MOBILE */
+  .carousel-track-wrapper::before,
+  .carousel-track-wrapper::after {
+    display: none !important;
+  }
+
   .price-drop-grid,
   .showcase-carousel-track {
     display: flex !important;
     gap: 16px !important;
     overflow-x: auto !important;
     scroll-snap-type: x mandatory !important;
-    padding: 8px 12px 20px 8px !important;
+    padding: 12px 16px 20px 16px !important;
     margin-left: 0 !important;
     margin-right: 0 !important;
     margin-bottom: 0 !important;
     width: 100% !important;
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;
-    mask-image: linear-gradient(to right, #000 0%, #000 calc(100% - 40px), transparent 100%) !important;
-    -webkit-mask-image: linear-gradient(to right, #000 0%, #000 calc(100% - 40px), transparent 100%) !important;
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
   }
 
   .showcase-carousel-track > div {

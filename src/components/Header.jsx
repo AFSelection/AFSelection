@@ -129,6 +129,16 @@ export default function Header({
             </button>
 
             <button
+              className={`nav-tab-btn ${activeSection === 'inversiones' ? 'active' : ''}`}
+              onClick={() => {
+                if (setActiveSection) setActiveSection('inversiones');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            >
+              <span>Inversiones</span>
+            </button>
+
+            <button
               className="nav-tab-btn"
               onClick={() => onGoToAbout && onGoToAbout()}
             >

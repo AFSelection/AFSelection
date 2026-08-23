@@ -227,9 +227,24 @@ export default function App() {
 
   const filteredListings = useMemo(() => {
     const filtered = (data.listings || []).filter((item) => {
-      // 'todos' = show all sections; 'all' = homepage mode (also all)
-      if (activeSection !== 'all' && activeSection !== 'todos' && item.sectionId !== activeSection) return false;
-      if (selectedCategory !== 'all' && item.category !== selectedCategory) return false;
+      // 'todos' or 'all' = show all sections (autos, propiedades, inversiones)
+      if (activeSection === 'propiedades') {
+        // In propiedades view, show both propiedades and inversiones
+        if (item.sectionId !== 'propiedades' && item.sectionId !== 'inversiones') return false;
+      } else if (activeSection !== 'all' && activeSection !== 'todos') {
+        if (item.sectionId !== activeSection) return false;
+      }
+
+      if (selectedCategory !== 'all') {
+        if (selectedCategory === 'inversiones') {
+          if (item.sectionId !== 'inversiones') return false;
+        } else if (selectedCategory === 'propiedades') {
+          if (item.sectionId !== 'propiedades') return false;
+        } else if (item.category !== selectedCategory) {
+          return false;
+        }
+      }
+
       if (showFavoritesOnly && !favorites.includes(item.id)) return false;
       if (priceMin !== '' && (item.price ?? 0) < Number(priceMin)) return false;
       if (priceMax !== '' && (item.price ?? 0) > Number(priceMax)) return false;
@@ -241,9 +256,9 @@ export default function App() {
         if (filterFuel !== 'all' && item.fuel !== filterFuel) return false;
       }
 
-      // Propiedades-specific filters
-      if (item.sectionId === 'propiedades') {
-        if (filterOperationType !== 'all' && item.operationType !== filterOperationType) return false;
+      // Propiedades/Inversiones specific filters
+      if (item.sectionId === 'propiedades' || item.sectionId === 'inversiones') {
+        if (filterOperationType !== 'all' && item.operationType && item.operationType !== filterOperationType) return false;
         if (filterRooms !== 'all') {
           const r = item.rooms ?? 0;
           if (filterRooms === '5+') { if (r < 5) return false; }
@@ -289,12 +304,16 @@ export default function App() {
 
   // Dynamic categories for the active section (unfiltered, for stable chip list)
   const availableCategories = useMemo(() => {
-    const src =
-      activeSection === 'propiedades' ? allPropiedadesListings :
-      activeSection === 'autos' ? allAutosListings :
-      (data.listings || []);
+    let src = data.listings || [];
+    if (activeSection === 'propiedades') {
+      src = src.filter((l) => l.sectionId === 'propiedades' || l.sectionId === 'inversiones');
+    } else if (activeSection === 'autos') {
+      src = src.filter((l) => l.sectionId === 'autos');
+    } else if (activeSection === 'inversiones') {
+      src = src.filter((l) => l.sectionId === 'inversiones');
+    }
     return [...new Set(src.map((l) => l.category).filter(Boolean))].sort();
-  }, [activeSection, allPropiedadesListings, allAutosListings, data.listings]);
+  }, [activeSection, data.listings]);
 
   const dynamicOtherListings = useMemo(() => {
     return (data.listings || []).filter((l) => l.sectionId !== 'autos' && l.sectionId !== 'propiedades');

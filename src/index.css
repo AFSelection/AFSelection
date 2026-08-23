@@ -2662,9 +2662,10 @@ h1, h2, h3, h4, .font-display {
   }
 
   .split-hero-title {
-    font-size: clamp(1.4rem, 5.8vw, 2.1rem) !important;
-    line-height: 1.2 !important;
-    margin-bottom: 16px !important;
+    font-size: clamp(1.8rem, 7.5vw, 2.75rem) !important;
+    line-height: 1.12 !important;
+    font-weight: 900 !important;
+    margin-bottom: 22px !important;
     width: 100% !important;
     color: #FFFFFF !important;
   }

@@ -2727,6 +2727,36 @@ h1, h2, h3, h4, .font-display {
     width: 100% !important;
   }
 
+  .split-actions-row {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin-bottom: 0 !important;
+  }
+
+  .btn-split-primary {
+    width: 100% !important;
+    max-width: 320px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 14px 24px !important;
+    font-size: 0.82rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.06em !important;
+    border-radius: 9999px !important;
+    background: #FFFFFF !important;
+    color: #111317 !important;
+    border: 1px solid rgba(255, 255, 255, 1) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  .hero-dots {
+    display: none !important;
+  }
+
   /* MERCADO LIBRE STYLE SQUARE SHORTCUTS BAR (MOBILE OVERLAPPING HERO) */
   .sections-bar-container {
     margin-top: 16px !important;

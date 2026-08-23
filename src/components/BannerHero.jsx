@@ -67,20 +67,6 @@ export default function BannerHero({
         <div className="split-hero-dark-overlay" />
       </div>
 
-      {/* ── Slide Dots (only when >1 image) ── */}
-      {images.length > 1 && (
-        <div className="hero-dots">
-          {images.map((_, i) => (
-            <button
-              key={i}
-              className={`hero-dot ${i === current ? 'hero-dot--active' : ''}`}
-              onClick={() => goTo(i, images.length)}
-              aria-label={`Slide ${i + 1}`}
-            />
-          ))}
-        </div>
-      )}
-
       {/* Top Mobile Brand Header */}
       <div className="mobile-top-brand-bar">
         <a href="#" className="split-brand-logo mobile-logo-dark">

@@ -2638,6 +2638,24 @@ h1, h2, h3, h4, .font-display {
     z-index: 20 !important;
   }
 
+  /* Mobile Light Glassmorphism Card for Title Area */
+  .mobile-title-glass-box {
+    background: rgba(255, 255, 255, 0.42) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
+    border-radius: 18px !important;
+    padding: 18px 16px 14px !important;
+    margin-bottom: 16px !important;
+    width: 100% !important;
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.25) !important;
+  }
+
+  .mobile-title-glass-box .line-black-text {
+    color: #111317 !important;
+    text-shadow: none !important;
+  }
+
   .split-badge-pill {
     margin-left: auto !important;
     margin-right: auto !important;

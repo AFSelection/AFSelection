@@ -102,7 +102,7 @@ export default function BannerHero({
         {/* Editorial Content */}
         <div className="split-glass-body">
           <div className="split-badge-pill">
-            <ShieldCheck size={14} style={{ color: '#FFFFFF' }} />
+            <ShieldCheck size={14} style={{ color: '#111317', flexShrink: 0 }} />
             <span>TRATO DIRECTO CON AGUSTÍN FIDALGO</span>
           </div>
 

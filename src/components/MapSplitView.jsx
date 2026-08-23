@@ -121,10 +121,20 @@ export default function MapSplitView({
   };
 
   const propiedades = useMemo(() => {
-    let list = listings.filter((l) => l.sectionId === 'propiedades');
+    let list = listings.filter((l) => l.sectionId === 'propiedades' || l.sectionId === 'inversiones');
     if (priceMin !== '') list = list.filter((l) => (l.price ?? 0) >= Number(priceMin));
     if (priceMax !== '') list = list.filter((l) => (l.price ?? 0) <= Number(priceMax));
-    if (selectedCategory && selectedCategory !== 'all') list = list.filter((l) => l.category === selectedCategory);
+    
+    if (selectedCategory && selectedCategory !== 'all') {
+      if (selectedCategory === 'inversiones') {
+        list = list.filter((l) => l.sectionId === 'inversiones');
+      } else if (selectedCategory === 'propiedades') {
+        list = list.filter((l) => l.sectionId === 'propiedades');
+      } else {
+        list = list.filter((l) => l.category === selectedCategory);
+      }
+    }
+
     if (filterCurrency && filterCurrency !== 'all') list = list.filter((l) => l.currency === filterCurrency);
     if (filterOperationType && filterOperationType !== 'all') list = list.filter((l) => l.operationType === filterOperationType);
     if (filterRooms && filterRooms !== 'all') {

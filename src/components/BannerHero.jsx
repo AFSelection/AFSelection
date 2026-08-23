@@ -69,10 +69,10 @@ export default function BannerHero({
 
       {/* Top Mobile Brand Header */}
       <div className="mobile-top-brand-bar">
-        <a href="#" className="split-brand-logo mobile-logo-dark">
-          <span className="logo-text-bold">AF</span>
-          <span className="brand-dot-black" />
-          <span className="logo-text-light">SELECT</span>
+        <a href="#" className="split-brand-logo mobile-logo-pill">
+          <span className="logo-text-bold" style={{ color: '#FFF' }}>AF</span>
+          <span className="brand-dot-black" style={{ backgroundColor: '#FFF' }} />
+          <span className="logo-text-light" style={{ color: '#FFF' }}>SELECT</span>
         </a>
       </div>
 

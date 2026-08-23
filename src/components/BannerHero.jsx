@@ -136,7 +136,7 @@ export default function BannerHero({
             <Search size={16} className="search-icon-muted" />
             <input
               type="text"
-              placeholder="Buscar Toyota, Honda, Yerba Buena..."
+              placeholder="Buscar Toyota, Hilux, Yerba Buena..."
               value={localSearch}
               onChange={(e) => setLocalSearch(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') handleSearchSubmit(); }}
@@ -154,15 +154,15 @@ export default function BannerHero({
             >
               EXPLORAR CATÁLOGO
             </button>
-            <button className="btn-split-secondary" onClick={onToggleMap}>
+            <button className="btn-split-secondary desktop-only-btn" onClick={onToggleMap}>
               <MapPin size={14} />
               <span>VER MAPA</span>
             </button>
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="split-glass-footer">
+        {/* Footer (Desktop Only) */}
+        <div className="split-glass-footer desktop-only-footer">
           <span className="split-footer-label">ATENCIÓN PERSONALIZADA</span>
           <span className="split-footer-val">LUN - SÁB: 09:00 - 20:00 HS</span>
         </div>

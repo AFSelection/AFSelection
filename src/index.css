@@ -2561,25 +2561,30 @@ h1, h2, h3, h4, .font-display {
     right: 0 !important;
     margin-left: 0 !important;
     margin-right: 0 !important;
-    height: 78vh !important;
-    min-height: 520px !important;
-    max-height: 680px !important;
+    height: 82vh !important;
+    min-height: 560px !important;
+    max-height: 720px !important;
     border-radius: 0 !important;
     overflow: hidden !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
-    justify-content: center !important;
-    padding: 60px 20px 20px !important;
+    justify-content: flex-end !important;
+    padding: 60px 16px 36px !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
+  }
+
+  /* Mobile Dark Overlay: Gradient from subtle dark top to rich dark bottom for high photography visibility */
+  .split-hero-dark-overlay {
+    background: linear-gradient(180deg, rgba(17, 19, 23, 0.45) 0%, rgba(17, 19, 23, 0.15) 30%, rgba(17, 19, 23, 0.75) 65%, rgba(17, 19, 23, 0.96) 100%) !important;
   }
 
   /* Mobile Top Brand Bar */
   .mobile-top-brand-bar {
     display: flex !important;
     position: absolute !important;
-    top: 28px !important;
+    top: 24px !important;
     left: 0 !important;
     right: 0 !important;
     z-index: 25 !important;
@@ -2593,37 +2598,41 @@ h1, h2, h3, h4, .font-display {
     font-size: 1.55rem !important;
     font-weight: 900 !important;
     letter-spacing: 0.04em !important;
-    color: #111317 !important;
+    color: #FFFFFF !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6) !important;
     display: flex !important;
     align-items: center !important;
     gap: 8px !important;
   }
 
-  .desktop-only-nav {
+  .desktop-only-nav,
+  .desktop-only-btn,
+  .desktop-only-footer {
     display: none !important;
   }
 
-  /* Rectangular Non-Rounded Mobile Glass Container */
+  /* Clean Edge-to-Edge Hero Panel on Mobile (No Opaque Box blocking the photo!) */
   .split-glass-panel {
     position: relative !important;
     top: auto !important;
     left: auto !important;
     bottom: auto !important;
     width: 100% !important;
-    max-width: 440px !important;
+    max-width: 100% !important;
     height: auto !important;
     border-radius: 0 !important;
-    background: rgba(255, 255, 255, 0.42) !important;
-    backdrop-filter: blur(28px) !important;
-    -webkit-backdrop-filter: blur(28px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.6) !important;
-    padding: 28px 24px 24px !important;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3) !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
     text-align: center !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
-    margin: auto 0 !important;
+    margin: 0 !important;
+    z-index: 20 !important;
   }
 
   .split-badge-pill {
@@ -2632,14 +2641,20 @@ h1, h2, h3, h4, .font-display {
     font-size: 0.68rem !important;
     padding: 6px 14px !important;
     margin-bottom: 12px !important;
-    border-radius: 6px !important;
+    border-radius: 9999px !important;
+    background: rgba(17, 19, 23, 0.85) !important;
+    color: #E5C158 !important;
+    border: 1px solid rgba(229, 193, 88, 0.35) !important;
+    backdrop-filter: blur(8px) !important;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.4) !important;
   }
 
   .split-hero-title {
     font-size: clamp(1.4rem, 5.8vw, 2.1rem) !important;
-    line-height: 1.25 !important;
-    margin-bottom: 12px !important;
+    line-height: 1.2 !important;
+    margin-bottom: 10px !important;
     width: 100% !important;
+    color: #FFFFFF !important;
   }
 
   .hero-line-strict {
@@ -2647,63 +2662,72 @@ h1, h2, h3, h4, .font-display {
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
+    color: #FFFFFF !important;
+  }
+
+  .line-black-text {
+    color: #FFFFFF !important;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.7) !important;
   }
 
   .highlight-badge-inner {
     padding: 4px 12px !important;
     font-size: 0.9em !important;
-    border-radius: 6px !important;
+    border-radius: 8px !important;
+    background: #111317 !important;
+    color: #FFFFFF !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
   }
 
   .split-hero-desc {
-    font-size: 0.88rem !important;
-    line-height: 1.5 !important;
+    font-size: 0.84rem !important;
+    line-height: 1.45 !important;
     margin-bottom: 16px !important;
     text-align: center !important;
-    color: #1A1D24 !important;
-    font-weight: 600 !important;
-    max-width: 100% !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-weight: 500 !important;
+    max-width: 90% !important;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.8) !important;
   }
 
   .split-search-box {
     max-width: 100% !important;
+    width: 100% !important;
     padding: 6px 6px 6px 16px !important;
-    margin-bottom: 16px !important;
-    border-radius: 8px !important;
+    margin-bottom: 14px !important;
+    border-radius: 9999px !important;
+    background: rgba(255, 255, 255, 0.96) !important;
+    border: 1px solid rgba(255, 255, 255, 1) !important;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35) !important;
   }
 
   .split-search-box input {
     font-size: 0.82rem !important;
+    color: #111317 !important;
   }
 
   .split-actions-row {
     width: 100% !important;
     flex-direction: column !important;
     gap: 10px !important;
-    margin-bottom: 14px !important;
+    margin-bottom: 0 !important;
   }
 
-  .btn-split-primary, .btn-split-secondary {
+  .btn-split-primary {
     width: 100% !important;
     justify-content: center !important;
-    padding: 12px 20px !important;
+    padding: 13px 20px !important;
     font-size: 0.78rem !important;
-    border-radius: 8px !important;
-  }
-
-  .split-glass-footer {
-    flex-direction: column !important;
-    gap: 4px !important;
-    text-align: center !important;
-    padding-top: 12px !important;
-    margin-top: 12px !important;
-    font-size: 0.72rem !important;
-    border-top: 1px solid rgba(0, 0, 0, 0.2) !important;
+    border-radius: 9999px !important;
+    background: #111317 !important;
+    color: #FFFFFF !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
   }
 
   /* MERCADO LIBRE STYLE SQUARE SHORTCUTS BAR (MOBILE OVERLAPPING HERO) */
   .sections-bar-container {
-    margin-top: -38px !important;
+    margin-top: -24px !important;
     position: relative !important;
     z-index: 30 !important;
     margin-bottom: 28px !important;

@@ -131,8 +131,8 @@ export default function BannerHero({
             Selección y gestión de vehículos y propiedades en Tucumán, Salta y Buenos Aires.
           </p>
 
-          {/* Search Bar */}
-          <div className="split-search-box">
+          {/* Search Bar (Desktop Only) */}
+          <div className="split-search-box desktop-only-search">
             <Search size={16} className="search-icon-muted" />
             <input
               type="text"

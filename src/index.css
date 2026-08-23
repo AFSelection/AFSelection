@@ -2296,6 +2296,10 @@ h1, h2, h3, h4, .font-display {
   border-top: 1px solid var(--border-dark);
 }
 
+.mobile-search-bar-wrap {
+  display: none;
+}
+
 /* ==========================================================================
    STRICT MOBILE RESPONSIVE ADAPTATIONS (@media (max-width: 1024px))
    DESKTOP (min-width: 1025px) IS STRICTLY UNTOUCHED!
@@ -2690,39 +2694,36 @@ h1, h2, h3, h4, .font-display {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18) !important;
   }
 
-  .split-search-box {
-    max-width: 100% !important;
-    width: 100% !important;
-    padding: 6px 6px 6px 16px !important;
-    margin-bottom: 16px !important;
-    border-radius: 9999px !important;
-    background: rgba(255, 255, 255, 0.96) !important;
-    border: 1px solid rgba(255, 255, 255, 1) !important;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35) !important;
+  .desktop-only-search {
+    display: none !important;
   }
 
-  .split-search-box input {
-    font-size: 0.82rem !important;
-    color: #111317 !important;
+  .mobile-search-bar-wrap {
+    display: block !important;
+    width: 100% !important;
+    padding: 0 0 16px 0 !important;
   }
 
-  .split-actions-row {
-    width: 100% !important;
-    flex-direction: column !important;
+  .mobile-integrated-search-box {
+    display: flex !important;
+    align-items: center !important;
     gap: 10px !important;
-    margin-bottom: 0 !important;
+    background: #FFFFFF !important;
+    border: 1px solid rgba(0, 0, 0, 0.12) !important;
+    border-radius: 9999px !important;
+    padding: 11px 18px !important;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06) !important;
+    width: 100% !important;
   }
 
-  .btn-split-primary {
+  .mobile-integrated-search-box input {
+    border: none !important;
+    outline: none !important;
+    background: transparent !important;
+    font-family: var(--font-body) !important;
+    font-size: 0.86rem !important;
+    color: #111317 !important;
     width: 100% !important;
-    justify-content: center !important;
-    padding: 13px 20px !important;
-    font-size: 0.78rem !important;
-    border-radius: 9999px !important;
-    background: #111317 !important;
-    color: #FFFFFF !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
   }
 
   /* MERCADO LIBRE STYLE SQUARE SHORTCUTS BAR (MOBILE OVERLAPPING HERO) */

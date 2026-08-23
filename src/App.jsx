@@ -425,6 +425,8 @@ export default function App() {
               setActiveSection('propiedades');
               setShowMap(true);
             }}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
           />
         )}
 

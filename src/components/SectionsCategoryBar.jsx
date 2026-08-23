@@ -1,13 +1,21 @@
-import React from 'react';
-import { Car, Home, Layers, MapPin, Grid } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Car, Home, Layers, MapPin, Grid, Search, X } from 'lucide-react';
 
 export default function SectionsCategoryBar({
   sections,
   activeSection,
   setActiveSection,
   onToggleMap,
-  showMap
+  showMap,
+  searchQuery = '',
+  setSearchQuery
 }) {
+  const [localSearch, setLocalSearch] = useState(searchQuery);
+
+  useEffect(() => {
+    setLocalSearch(searchQuery);
+  }, [searchQuery]);
+
   const getSectionIcon = (iconName) => {
     switch (iconName) {
       case 'Car': return <Car size={22} />;
@@ -40,6 +48,35 @@ export default function SectionsCategoryBar({
         >
           <span>TODAS LAS SECCIONES</span>
         </button>
+      </div>
+
+      {/* MOBILE INTEGRATED SEARCH BAR (Visible ONLY on Mobile) */}
+      <div className="mobile-search-bar-wrap">
+        <div className="mobile-integrated-search-box">
+          <Search size={16} style={{ color: 'var(--text-muted)', flexShrink: 0 }} />
+          <input
+            type="text"
+            placeholder="Buscar por Toyota, Hilux, Yerba Buena..."
+            value={localSearch}
+            onChange={(e) => {
+              setLocalSearch(e.target.value);
+              if (setSearchQuery) setSearchQuery(e.target.value);
+            }}
+          />
+          {localSearch && (
+            <button
+              type="button"
+              className="clear-search-btn"
+              onClick={() => {
+                setLocalSearch('');
+                if (setSearchQuery) setSearchQuery('');
+              }}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center', color: 'var(--text-muted)' }}
+            >
+              <X size={15} />
+            </button>
+          )}
+        </div>
       </div>
 
       {/* MOBILE MERCADO LIBRE STYLE SQUARE SHORTCUTS (Visible ONLY on Mobile) */}

@@ -683,14 +683,6 @@ export default function App() {
         </svg>
         <span className="wtp-label">WhatsApp Directo</span>
       </a>
-
-      {/* Inquiry Modal */}
-      {inquiryItem && (
-        <InquiryModal
-          item={inquiryItem}
-          onClose={() => setInquiryItem(null)}
-        />
-      )}
     </div>
   );
 }

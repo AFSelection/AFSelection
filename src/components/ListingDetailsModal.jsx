@@ -210,19 +210,16 @@ export default function ListingDetailsModal({ item, onClose, onOpenInquiry }) {
                 </form>
               )}
 
-              <button
-                type="button"
-                onClick={() => {
-                  onClose();
-                  if (onOpenInquiry) onOpenInquiry(item);
-                  else window.open(whatsappUrl, '_blank');
-                }}
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noreferrer"
                 className="btn-pill"
-                style={{ width: '100%', justifyContent: 'center', marginTop: '8px', background: '#25D366', color: '#FFF', borderColor: '#25D366', cursor: 'pointer' }}
+                style={{ width: '100%', justifyContent: 'center', marginTop: '8px', background: '#25D366', color: '#FFF', borderColor: '#25D366' }}
               >
                 <MessageCircle size={14} />
                 <span>Contactar por WhatsApp</span>
-              </button>
+              </a>
             </div>
           </div>
         </div>

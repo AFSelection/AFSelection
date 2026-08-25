@@ -3,7 +3,7 @@ import { X, Send, MessageCircle, CheckCircle, ArrowUpRight } from 'lucide-react'
 import { getInitialData, saveStorageData } from '../services/storage';
 import { getWhatsAppUrl } from '../utils/whatsapp';
 
-export default function ListingDetailsModal({ item, onClose }) {
+export default function ListingDetailsModal({ item, onClose, onOpenInquiry }) {
   const [activeImgIndex, setActiveImgIndex] = useState(0);
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -210,16 +210,19 @@ export default function ListingDetailsModal({ item, onClose }) {
                 </form>
               )}
 
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noreferrer"
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  if (onOpenInquiry) onOpenInquiry(item);
+                  else window.open(whatsappUrl, '_blank');
+                }}
                 className="btn-pill"
-                style={{ width: '100%', justifyContent: 'center', marginTop: '8px', background: '#25D366', color: '#FFF', borderColor: '#25D366' }}
+                style={{ width: '100%', justifyContent: 'center', marginTop: '8px', background: '#25D366', color: '#FFF', borderColor: '#25D366', cursor: 'pointer' }}
               >
                 <MessageCircle size={14} />
                 <span>Contactar por WhatsApp</span>
-              </a>
+              </button>
             </div>
           </div>
         </div>

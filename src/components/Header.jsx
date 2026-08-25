@@ -11,6 +11,7 @@ export default function Header({
   isVisible,
   onGoToSell,
   onGoToAbout,
+  onGoToContact,
   onScrollToSection,
   listings = [],
   onSelectListing
@@ -223,6 +224,10 @@ export default function Header({
               <Heart size={14} className={favoritesCount > 0 ? 'fill-current text-red-500' : ''} />
               <span>Favoritos ({favoritesCount})</span>
             </button>
+
+            <button className="nav-tab-btn nav-tab-contact" onClick={onGoToContact} style={{ marginLeft: '8px', fontWeight: 700 }}>
+              <span>Contacto</span>
+            </button>
           </div>
 
           {/* MOBILE RIGHT: Favorites Button */}
@@ -377,6 +382,15 @@ export default function Header({
                 <span className="mob-item-num" style={{ color: '#EF4444' }}>05</span>
                 <span className="mob-item-title" style={{ color: '#EF4444' }}>VENDER MI ACTIVO</span>
                 <ArrowRight size={18} className="mob-arrow" style={{ color: '#EF4444' }} />
+              </button>
+
+              <button
+                className="mobile-nav-item"
+                onClick={() => handleMobileNavClick(() => onGoToContact && onGoToContact())}
+              >
+                <span className="mob-item-num">06</span>
+                <span className="mob-item-title">CONTACTO</span>
+                <ArrowRight size={18} className="mob-arrow" />
               </button>
 
               <button

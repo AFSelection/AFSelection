@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { sendLeadNotificationEmail } from './emailService';
 
 const DEFAULT_HERO_IMAGES = [
   'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=2400&q=95'
@@ -76,6 +77,11 @@ export async function submitLead(lead) {
     console.error('Error submitting lead to Supabase:', error);
     throw error;
   }
+
+  // Trigger Web3Forms email notification asynchronously to Agustín
+  sendLeadNotificationEmail(lead).catch((err) => {
+    console.error('Non-blocking error sending email notification:', err);
+  });
 }
 
 // Helper mappings JavaScript <-> PostgreSQL columns

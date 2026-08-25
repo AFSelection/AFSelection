@@ -17,6 +17,8 @@ import SellFormPage from './components/SellFormPage';
 import PropertyMapView from './components/PropertyMapView';
 import MapSplitView from './components/MapSplitView';
 import AboutPage from './components/AboutPage';
+import ContactPage from './components/ContactPage';
+import InquiryModal from './components/InquiryModal';
 import { fetchListings } from './services/storage';
 import { getWhatsAppUrl } from './utils/whatsapp';
 import { Heart, X, AlertCircle, Layers } from 'lucide-react';
@@ -64,6 +66,8 @@ export default function App() {
   const [selectedListing, setSelectedListing] = useState(null);
   const [showSellPage, setShowSellPage] = useState(false);
   const [showAboutPage, setShowAboutPage] = useState(false);
+  const [showContactPage, setShowContactPage] = useState(false);
+  const [inquiryItem, setInquiryItem] = useState(null);
   const [favorites, setFavorites] = useState(() => {
     try {
       const saved = localStorage.getItem('af_favorites');
@@ -84,16 +88,32 @@ export default function App() {
     }
   };
 
+  const handleBackToHome = () => {
+    setSelectedListing(null);
+    setShowSellPage(false);
+    setShowAboutPage(false);
+    setShowContactPage(false);
+    setActiveSection('all');
+    setShowFavoritesOnly(false);
+    setSearchQuery('');
+    setUrlPath('/');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   // Centralized Navigation Handlers with Clean URL Persistence
   const handleSelectListing = (item) => {
     if (item) {
       setSelectedListing(item);
       setShowSellPage(false);
       setShowAboutPage(false);
+      setShowContactPage(false);
       setUrlPath(`/producto/${item.id}`);
       window.scrollTo(0, 0);
     } else {
       setSelectedListing(null);
+      setShowSellPage(false);
+      setShowAboutPage(false);
+      setShowContactPage(false);
       if (window.location.pathname.startsWith('/producto/')) {
         setUrlPath('/');
       }
@@ -105,6 +125,7 @@ export default function App() {
     setShowSellPage(true);
     setSelectedListing(null);
     setShowAboutPage(false);
+    setShowContactPage(false);
     setUrlPath('/vender');
     window.scrollTo(0, 0);
   };
@@ -113,10 +134,23 @@ export default function App() {
     setShowAboutPage(true);
     setSelectedListing(null);
     setShowSellPage(false);
+    setShowContactPage(false);
     setActiveSection('all');
     setShowFavoritesOnly(false);
     setSearchQuery('');
     setUrlPath('/nosotros');
+    window.scrollTo(0, 0);
+  };
+
+  const handleOpenContact = () => {
+    setShowContactPage(true);
+    setSelectedListing(null);
+    setShowSellPage(false);
+    setShowAboutPage(false);
+    setActiveSection('all');
+    setShowFavoritesOnly(false);
+    setSearchQuery('');
+    setUrlPath('/contacto');
     window.scrollTo(0, 0);
   };
 
@@ -151,12 +185,20 @@ export default function App() {
         setShowAboutPage(true);
         setSelectedListing(null);
         setShowSellPage(false);
+        setShowContactPage(false);
+        window.scrollTo(0, 0);
+      } else if (path === '/contacto') {
+        setShowContactPage(true);
+        setSelectedListing(null);
+        setShowSellPage(false);
+        setShowAboutPage(false);
         window.scrollTo(0, 0);
       } else if (path === '/autos') {
         setActiveSection('autos');
         setSelectedListing(null);
         setShowSellPage(false);
         setShowAboutPage(false);
+        setShowContactPage(false);
       } else if (path === '/propiedades') {
         setActiveSection('propiedades');
         setSelectedListing(null);
@@ -332,7 +374,7 @@ export default function App() {
     return (data.listings || []).filter((l) => l.sectionId !== 'autos' && l.sectionId !== 'propiedades');
   }, [data.listings]);
 
-  const isHomepage = activeSection === 'all' && !showFavoritesOnly && searchQuery.trim() === '' && !selectedListing && !showSellPage && !showAboutPage && !showMap;
+  const isHomepage = activeSection === 'all' && !showFavoritesOnly && searchQuery.trim() === '' && !selectedListing && !showSellPage && !showAboutPage && !showContactPage && !showMap;
 
   return (
     <div>
@@ -349,6 +391,7 @@ export default function App() {
           handleSelectListing(null);
           setShowSellPage(false);
           setShowAboutPage(false);
+          setShowContactPage(false);
           setUrlPath(sec === 'all' ? '/' : `/${sec}`);
         }}
         searchQuery={searchQuery}
@@ -356,6 +399,7 @@ export default function App() {
           setSearchQuery(q);
           handleSelectListing(null);
           setShowSellPage(false);
+          setShowContactPage(false);
         }}
         favoritesCount={favorites.length}
         showMap={showMap}
@@ -364,10 +408,12 @@ export default function App() {
           setShowFavoritesOnly(!showFavoritesOnly);
           handleSelectListing(null);
           setShowSellPage(false);
+          setShowContactPage(false);
         }}
         isVisible={showMap || !isHomepage || showScrolledNav}
         onGoToSell={handleOpenSell}
         onGoToAbout={handleOpenAbout}
+        onGoToContact={handleOpenContact}
         onScrollToSection={scrollToSection}
         listings={data.listings || []}
         onSelectListing={handleSelectListing}
@@ -470,15 +516,18 @@ export default function App() {
         )}
 
 
-        {showAboutPage ? (
-          <AboutPage onBack={() => handleSelectListing(null)} />
+        {showContactPage ? (
+          <ContactPage onBack={handleBackToHome} />
+        ) : showAboutPage ? (
+          <AboutPage onBack={handleBackToHome} />
         ) : showSellPage ? (
-          <SellFormPage onBack={() => handleSelectListing(null)} />
+          <SellFormPage onBack={handleBackToHome} />
         ) : selectedListing ? (
           <ProductDetailPage
             item={selectedListing}
-            onBack={() => handleSelectListing(null)}
+            onBack={handleBackToHome}
             onGoToSell={handleOpenSell}
+            onOpenInquiry={(item) => setInquiryItem(item)}
             favorites={favorites}
             toggleFavorite={toggleFavorite}
             onSelectListing={handleSelectListing}
@@ -634,6 +683,14 @@ export default function App() {
         </svg>
         <span className="wtp-label">WhatsApp Directo</span>
       </a>
+
+      {/* Inquiry Modal */}
+      {inquiryItem && (
+        <InquiryModal
+          item={inquiryItem}
+          onClose={() => setInquiryItem(null)}
+        />
+      )}
     </div>
   );
 }

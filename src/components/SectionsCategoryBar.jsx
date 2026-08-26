@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Car, Home, Layers, MapPin, Grid, Search, X } from 'lucide-react';
+import { Car, Home, Layers, MapPin, Grid, Search, X, TrendingUp } from 'lucide-react';
 
 export default function SectionsCategoryBar({
   sections,
@@ -16,11 +16,13 @@ export default function SectionsCategoryBar({
     setLocalSearch(searchQuery);
   }, [searchQuery]);
 
-  const getSectionIcon = (iconName) => {
+  const getSectionIcon = (iconName, secId) => {
+    if (secId === 'inversiones') return <TrendingUp size={20} className="cat-icon-gold" />;
     switch (iconName) {
-      case 'Car': return <Car size={22} />;
-      case 'Home': return <Home size={22} />;
-      default: return <Layers size={22} />;
+      case 'Car': return <Car size={20} className="cat-icon-gold" />;
+      case 'Home': return <Home size={20} className="cat-icon-gold" />;
+      case 'TrendingUp': return <TrendingUp size={20} className="cat-icon-gold" />;
+      default: return <Layers size={20} className="cat-icon-gold" />;
     }
   };
 
@@ -181,23 +183,30 @@ export default function SectionsCategoryBar({
         </div>
 
         {/* Dynamic Custom Sections */}
-        {sections.filter((s) => s.id !== 'autos' && s.id !== 'propiedades').map((sec) => (
-          <div
-            key={sec.id}
-            onClick={() => setActiveSection(sec.id)}
-            className={`cat-banner-card ${activeSection === sec.id ? 'active-card' : ''}`}
-          >
-            <div className="cat-card-top">
-              <span className="cat-badge-pill">SECCIÓN</span>
-              {getSectionIcon(sec.icon)}
-            </div>
+        {sections.filter((s) => s.id !== 'autos' && s.id !== 'propiedades').map((sec, idx) => {
+          const numberStr = String(idx + 3).padStart(2, '0');
+          const desc = sec.id === 'inversiones'
+            ? 'Desarrollos, Pozos & Oportunidades'
+            : (sec.categories?.length > 0 ? sec.categories.join(', ') : 'Selección de activos');
 
-            <div className="cat-card-bottom">
-              <h3 className="cat-card-title">{sec.name.toUpperCase()}</h3>
-              <p className="cat-card-desc">{sec.categories?.join(', ')}</p>
+          return (
+            <div
+              key={sec.id}
+              onClick={() => setActiveSection(sec.id)}
+              className={`cat-banner-card ${activeSection === sec.id ? 'active-card' : ''}`}
+            >
+              <div className="cat-card-top">
+                <span className="cat-badge-pill">{numberStr} / {sec.name.toUpperCase()}</span>
+                {getSectionIcon(sec.icon, sec.id)}
+              </div>
+
+              <div className="cat-card-bottom">
+                <h3 className="cat-card-title">{sec.name.toUpperCase()}</h3>
+                <p className="cat-card-desc">{desc}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

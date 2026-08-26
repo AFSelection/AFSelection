@@ -16,13 +16,14 @@ export default function SectionsCategoryBar({
     setLocalSearch(searchQuery);
   }, [searchQuery]);
 
-  const getSectionIcon = (iconName, secId) => {
-    if (secId === 'inversiones') return <TrendingUp size={20} className="cat-icon-gold" />;
+  const getSectionIcon = (iconName, secId, isLight = false) => {
+    const iconClass = isLight ? 'shortcut-icon-light' : 'cat-icon-gold';
+    if (secId === 'inversiones') return <TrendingUp size={22} className={iconClass} style={isLight ? { color: '#FFFFFF' } : {}} />;
     switch (iconName) {
-      case 'Car': return <Car size={20} className="cat-icon-gold" />;
-      case 'Home': return <Home size={20} className="cat-icon-gold" />;
-      case 'TrendingUp': return <TrendingUp size={20} className="cat-icon-gold" />;
-      default: return <Layers size={20} className="cat-icon-gold" />;
+      case 'Car': return <Car size={22} className={iconClass} />;
+      case 'Home': return <Home size={22} className={iconClass} />;
+      case 'TrendingUp': return <TrendingUp size={22} className={iconClass} style={isLight ? { color: '#FFFFFF' } : {}} />;
+      default: return <Layers size={22} className={iconClass} />;
     }
   };
 
@@ -121,17 +122,6 @@ export default function SectionsCategoryBar({
             <span className="mobile-shortcut-label">PROPIEDADES</span>
           </button>
 
-          {/* Mapa Shortcut */}
-          <button
-            className={`mobile-shortcut-item ${showMap ? 'active' : ''}`}
-            onClick={onToggleMap}
-          >
-            <div className="mobile-shortcut-square map-shortcut">
-              <MapPin size={24} className="shortcut-icon-gold" />
-            </div>
-            <span className="mobile-shortcut-label">MAPA</span>
-          </button>
-
           {/* Dynamic Custom Sections */}
           {sections.filter((s) => s.id !== 'autos' && s.id !== 'propiedades').map((sec) => (
             <button
@@ -139,8 +129,8 @@ export default function SectionsCategoryBar({
               className={`mobile-shortcut-item ${activeSection === sec.id ? 'active' : ''}`}
               onClick={() => setActiveSection(sec.id)}
             >
-              <div className="mobile-shortcut-square">
-                {getSectionIcon(sec.icon)}
+              <div className="mobile-shortcut-square dark-shortcut">
+                {getSectionIcon(sec.icon, sec.id, true)}
               </div>
               <span className="mobile-shortcut-label">{sec.name.toUpperCase()}</span>
             </button>

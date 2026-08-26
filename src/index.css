@@ -2853,6 +2853,13 @@ h1, h2, h3, h4, .font-display {
     color: #FFFFFF !important;
   }
 
+  .mobile-shortcut-square.dark-shortcut {
+    background: #111317 !important;
+    color: #FFFFFF !important;
+    border-color: #111317 !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15) !important;
+  }
+
   .mobile-shortcut-square.map-shortcut {
     background: #111317 !important;
     color: var(--accent-gold) !important;

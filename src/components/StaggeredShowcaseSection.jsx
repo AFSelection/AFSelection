@@ -1,60 +1,58 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowUpRight } from 'lucide-react';
+import { fetchSiteSetting, DEFAULT_STAGGERED_SHOWCASE } from '../services/storage';
 
 export default function StaggeredShowcaseSection({ onOpenCatalog }) {
+  const [content, setContent] = useState(DEFAULT_STAGGERED_SHOWCASE);
+
+  useEffect(() => {
+    fetchSiteSetting('staggered_showcase', DEFAULT_STAGGERED_SHOWCASE).then((res) => {
+      if (res && res.title) {
+        setContent(res);
+      }
+    });
+  }, []);
+
+  const cards = content.cards || DEFAULT_STAGGERED_SHOWCASE.cards;
+  const offsets = ['0px', '36px', '72px'];
+
   return (
     <section className="staggered-section">
       <div className="staggered-grid">
         {/* Left Editorial Content */}
         <div className="staggered-left">
           <h2 className="staggered-title">
-            No Somos un Concesionario Tradicional
+            {content.title || DEFAULT_STAGGERED_SHOWCASE.title}
           </h2>
 
           <p className="staggered-desc">
-            Facilitamos la compra y venta de vehículos y propiedades de forma directa. Revisamos cada publicación para garantizar información transparente y un proceso ágil.
+            {content.description || DEFAULT_STAGGERED_SHOWCASE.description}
           </p>
 
           <button className="btn-pill btn-pill-dark" onClick={onOpenCatalog} style={{ padding: '14px 28px', fontSize: '0.9rem' }}>
-            <span>Explorar Todo el Catálogo</span>
+            <span>{content.buttonText || DEFAULT_STAGGERED_SHOWCASE.buttonText}</span>
             <ArrowUpRight size={16} />
           </button>
         </div>
 
-        {/* Right Staggered Offset Image Cards (Image 2 Style) */}
+        {/* Right Staggered Offset Image Cards */}
         <div className="staggered-images-row">
-          <div className="staggered-card card-tall">
-            <img
-              src="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=800&q=80"
-              alt="Porsche GT3"
-            />
-            <div className="staggered-card-overlay">
-              <h4>Porsche 911 GT3 RS</h4>
-              <p>Edición Limitada 2023</p>
+          {cards.map((card, idx) => (
+            <div
+              key={card.id || idx}
+              className={`staggered-card ${idx === 0 ? 'card-tall' : idx === 1 ? 'card-medium' : 'card-short'}`}
+              style={{ marginTop: offsets[idx % offsets.length] }}
+            >
+              <img
+                src={card.image || DEFAULT_STAGGERED_SHOWCASE.cards[idx]?.image}
+                alt={card.title}
+              />
+              <div className="staggered-card-overlay">
+                <h4>{card.title}</h4>
+                <p>{card.subtitle}</p>
+              </div>
             </div>
-          </div>
-
-          <div className="staggered-card card-medium" style={{ marginTop: '36px' }}>
-            <img
-              src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80"
-              alt="Residencia Nordelta"
-            />
-            <div className="staggered-card-overlay">
-              <h4>Villa Nordelta</h4>
-              <p>Residencia sobre el lago</p>
-            </div>
-          </div>
-
-          <div className="staggered-card card-short" style={{ marginTop: '72px' }}>
-            <img
-              src="https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80"
-              alt="BMW M4"
-            />
-            <div className="staggered-card-overlay">
-              <h4>BMW M4 Competition</h4>
-              <p>510 HP / 0km</p>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>

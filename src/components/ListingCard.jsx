@@ -47,44 +47,30 @@ export default function ListingCard({
 
         {/* Top Badges Row */}
         <div className="wander-top-badges">
-          <div className="price-pill-badge">
-            USD {item.price?.toLocaleString()}
-          </div>
+          <div className="card-top-left-stack">
+            <div className="price-pill-badge">
+              <span>USD</span>
+              <span>{item.price?.toLocaleString()}</span>
+            </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             {isDiscount && (
-              <span
-                style={{
-                  background: '#10B981',
-                  color: '#FFFFFF',
-                  padding: '4px 10px',
-                  borderRadius: '9999px',
-                  fontSize: '0.68rem',
-                  fontWeight: '900',
-                  letterSpacing: '0.06em',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '4px',
-                  boxShadow: '0 4px 12px rgba(16, 185, 129, 0.35)'
-                }}
-                title="Unidad en Descuento / Bajó de Precio"
-              >
+              <span className="discount-pill-badge" title="Unidad en Descuento / Bajó de Precio">
                 <Percent size={11} strokeWidth={3} />
                 <span>DESCUENTO</span>
               </span>
             )}
-
-            <button
-              className={`btn-fav-circle ${isFavorite ? 'active' : ''}`}
-              onClick={(e) => {
-                e.stopPropagation();
-                onToggleFavorite(item.id);
-              }}
-              title={isFavorite ? 'Quitar de favoritos' : 'Guardar en favoritos'}
-            >
-              <Heart size={18} fill={isFavorite ? 'currentColor' : 'none'} />
-            </button>
           </div>
+
+          <button
+            className={`btn-fav-circle ${isFavorite ? 'active' : ''}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleFavorite(item.id);
+            }}
+            title={isFavorite ? 'Quitar de favoritos' : 'Guardar en favoritos'}
+          >
+            <Heart size={18} fill={isFavorite ? 'currentColor' : 'none'} />
+          </button>
         </div>
 
         {/* Gradient Overlay & Information */}

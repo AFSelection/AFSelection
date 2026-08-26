@@ -2012,21 +2012,53 @@ h1, h2, h3, h4, .font-display {
   left: 16px;
   right: 16px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   z-index: 10;
+  pointer-events: none;
+}
+
+.wander-top-badges > * {
+  pointer-events: auto;
+}
+
+.card-top-left-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  max-width: calc(100% - 50px);
 }
 
 .price-pill-badge {
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(12px);
-  color: var(--bg-dark);
+  color: #111317;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   padding: 6px 14px;
   border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  white-space: nowrap !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.discount-pill-badge {
+  background: #10B981;
+  color: #FFFFFF;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+  white-space: nowrap !important;
 }
 
 .btn-fav-circle {

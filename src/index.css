@@ -592,14 +592,14 @@ h1, h2, h3, h4, .font-display {
    SECTIONS CATEGORY BAR (DESKTOP)
    ========================================================================== */
 .sections-bar-container {
-  margin-bottom: 48px;
+  margin-bottom: 28px;
 }
 
 .sections-bar-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
   gap: 16px;
 }
 
@@ -614,44 +614,46 @@ h1, h2, h3, h4, .font-display {
 
 .sections-main-head {
   font-family: var(--font-display);
-  font-size: 1.8rem;
+  font-size: 1.35rem;
+  font-weight: 800;
   color: #111317;
+  letter-spacing: -0.01em;
 }
 
 .sections-cards-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
 }
 
 .cat-banner-card {
   position: relative;
-  height: 160px;
-  border-radius: 20px;
+  height: 88px;
+  border-radius: 14px;
   overflow: hidden;
   cursor: pointer;
   background: #111317;
   border: 1.5px solid rgba(255, 255, 255, 0.1);
-  padding: 24px 28px;
+  padding: 12px 18px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   color: #FFFFFF;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
 }
 
 .cat-banner-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-2px);
   background: #1A1D24;
   border-color: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 .cat-banner-card.active-card {
   background: #111317;
   border: 2px solid #DC2626;
-  box-shadow: 0 12px 32px rgba(220, 38, 38, 0.18);
+  box-shadow: 0 6px 18px rgba(220, 38, 38, 0.18);
 }
 
 .cat-card-top {
@@ -661,15 +663,15 @@ h1, h2, h3, h4, .font-display {
 }
 
 .cat-badge-pill {
-  font-size: 0.72rem;
+  font-size: 0.62rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(8px);
-  padding: 4px 10px;
+  letter-spacing: 0.06em;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2px 8px;
   border-radius: 99px;
-  color: #FFF;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .map-badge {
@@ -683,15 +685,20 @@ h1, h2, h3, h4, .font-display {
 
 .cat-card-title {
   font-family: var(--font-display);
-  font-size: 1.4rem;
+  font-size: 0.98rem;
+  font-weight: 800;
   color: #FFF;
-  margin-bottom: 2px;
+  margin-bottom: 0px;
   line-height: 1.1;
+  letter-spacing: -0.01em;
 }
 
 .cat-card-desc {
-  font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ==========================================================================

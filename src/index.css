@@ -6084,9 +6084,105 @@ h1, h2, h3, h4, .font-display {
   transition: background 0.2s ease, transform 0.2s ease;
 }
 
-.btn-submit-contact-form:hover {
-  background: #DC2626;
-  transform: translateY(-2px);
+.contact-page-container {
+  margin-top: 40px;
+  margin-bottom: 60px;
+}
+
+@media (max-width: 768px) {
+  .contact-page-container {
+    margin-top: 16px !important;
+    margin-bottom: 36px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .contact-page-grid {
+    gap: 20px !important;
+  }
+
+  .contact-info-card,
+  .contact-form-card {
+    padding: 22px 16px !important;
+    border-radius: 18px !important;
+  }
+
+  .contact-main-title {
+    font-size: 1.6rem !important;
+    margin: 8px 0 10px !important;
+  }
+
+  .contact-description {
+    font-size: 0.86rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 22px !important;
+  }
+
+  .contact-details-list {
+    gap: 16px !important;
+    margin-bottom: 22px !important;
+  }
+
+  .contact-detail-item {
+    gap: 12px !important;
+    align-items: flex-start !important;
+  }
+
+  .contact-icon-bubble {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 10px !important;
+    margin-top: 2px !important;
+  }
+
+  .contact-item-value {
+    font-size: 0.86rem !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .contact-wtp-callout {
+    padding: 16px 14px !important;
+    border-radius: 14px !important;
+  }
+
+  .contact-wtp-callout h4 {
+    font-size: 0.94rem !important;
+  }
+
+  .contact-wtp-callout p {
+    font-size: 0.78rem !important;
+    margin-bottom: 12px !important;
+  }
+
+  .btn-wtp-direct-contact {
+    padding: 11px 14px !important;
+    font-size: 0.74rem !important;
+  }
+
+  .form-card-title {
+    font-size: 1.25rem !important;
+  }
+
+  .form-card-subtitle {
+    font-size: 0.84rem !important;
+    margin-bottom: 18px !important;
+  }
+
+  .contact-editorial-form {
+    gap: 14px !important;
+  }
+
+  .input-field {
+    padding: 10px 14px !important;
+    font-size: 0.86rem !important;
+  }
+
+  .btn-submit-contact-form {
+    padding: 14px 18px !important;
+    font-size: 0.78rem !important;
+    width: 100% !important;
+  }
 }
 
 /* Modal Consultar por WhatsApp / Lead Modal */

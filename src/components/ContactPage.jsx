@@ -56,7 +56,7 @@ export default function ContactPage({ onBack }) {
   const directWtpUrl = getWhatsAppUrl('Hola Agustín, quisiera realizar una consulta directa desde la sección de contacto de AF Select.');
 
   return (
-    <div className="product-detail-container" style={{ marginTop: '90px', marginBottom: '80px' }}>
+    <div className="product-detail-container contact-page-container">
       
       {/* Top Back Button */}
       <div className="detail-navigation-bar" style={{ marginBottom: '32px' }}>

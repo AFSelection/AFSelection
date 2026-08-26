@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heart, MapPin } from 'lucide-react';
+import { Heart, MapPin, Percent } from 'lucide-react';
 
 export default function ListingCard({
   item,
@@ -20,6 +20,8 @@ export default function ListingCard({
 
   const [activeImg, setActiveImg] = useState(primaryImage);
   const [isHovered, setIsHovered] = useState(false);
+
+  const isDiscount = item.isOffer || (item.oldPrice && Number(item.oldPrice) > Number(item.price));
 
   return (
     <div
@@ -49,16 +51,40 @@ export default function ListingCard({
             USD {item.price?.toLocaleString()}
           </div>
 
-          <button
-            className={`btn-fav-circle ${isFavorite ? 'active' : ''}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              onToggleFavorite(item.id);
-            }}
-            title={isFavorite ? 'Quitar de favoritos' : 'Guardar en favoritos'}
-          >
-            <Heart size={18} fill={isFavorite ? 'currentColor' : 'none'} />
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {isDiscount && (
+              <span
+                style={{
+                  background: '#10B981',
+                  color: '#FFFFFF',
+                  padding: '4px 10px',
+                  borderRadius: '9999px',
+                  fontSize: '0.68rem',
+                  fontWeight: '900',
+                  letterSpacing: '0.06em',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  boxShadow: '0 4px 12px rgba(16, 185, 129, 0.35)'
+                }}
+                title="Unidad en Descuento / Bajó de Precio"
+              >
+                <Percent size={11} strokeWidth={3} />
+                <span>DESCUENTO</span>
+              </span>
+            )}
+
+            <button
+              className={`btn-fav-circle ${isFavorite ? 'active' : ''}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleFavorite(item.id);
+              }}
+              title={isFavorite ? 'Quitar de favoritos' : 'Guardar en favoritos'}
+            >
+              <Heart size={18} fill={isFavorite ? 'currentColor' : 'none'} />
+            </button>
+          </div>
         </div>
 
         {/* Gradient Overlay & Information */}

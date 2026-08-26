@@ -1,16 +1,12 @@
 export async function sendLeadNotificationEmail(lead) {
-  try {
-    const accessKey = import.meta.env.VITE_WEB3FORMS_KEY || '12cd5bc5-f4d7-4398-98f7-041f06ccbfd1';
-    if (!accessKey) {
-      console.warn('VITE_WEB3FORMS_KEY no configurada. Saltando envío de email.');
-      return;
-    }
+  if (!lead) return;
 
+  try {
     const typeLabels = {
       sell: 'PUBLICACIÓN / VENTA DIRECTA',
-      buy: 'CONSULTA DE COMPRA',
+      buy: 'CONSULTA DE COMPRA DE PRODUCTO',
       contact: 'MENSAJE DIRECTO DE CONTACTO',
-      inquiry: 'CONSULTA VÍA WHATSAPP DE PRODUCTO'
+      inquiry: 'CONSULTA VÍA MODAL / WHATSAPP'
     };
 
     const label = typeLabels[lead.type] || 'NUEVO LEAD DE CLIENTE';
@@ -20,29 +16,66 @@ export async function sendLeadNotificationEmail(lead) {
       timeStyle: 'medium'
     });
 
-    const response = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        access_key: accessKey,
-        subject: `[AF SELECT] ${label} - ${lead.name || 'Cliente'}`,
-        from_name: `${lead.name || 'Cliente'} (AF Select Web)`,
-        reply_to: lead.email || 'agustinfidalgoselect@gmail.com',
-        nombre_cliente: lead.name || 'No especificado',
-        email_cliente: lead.email || 'No especificado',
-        telefono_whatsapp: lead.phone || 'No especificado',
-        tipo_solicitud: label,
-        id_referencia: lead.listingId || lead.id || '-',
-        detalles_observaciones: lead.notes || lead.message || 'Sin observaciones',
-        fecha_registro: timestamp
-      })
-    });
+    const targetEmail = 'agustinfidalgoselect@gmail.com';
+    const accessKey = import.meta.env.VITE_WEB3FORMS_KEY || 'e2583a57-4260-4ae9-aaf3-f59d4c17b9a5';
 
-    const data = await response.json();
-    if (!data.success) {
-      console.warn('Web3Forms returned non-success:', data);
-    }
+    // Provider 1: FormSubmit AJAX Service (Direct email delivery to agustinfidalgoselect@gmail.com)
+    const sendFormSubmit = async () => {
+      try {
+        await fetch(`https://formsubmit.co/ajax/${targetEmail}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            _subject: `[AF SELECT] ${label} - ${lead.name || 'Cliente'}`,
+            _replyto: lead.email || targetEmail,
+            _captcha: 'false',
+            _template: 'table',
+            Nombre_Cliente: lead.name || 'No especificado',
+            Email_Contacto: lead.email || 'No especificado',
+            Telefono_WhatsApp: lead.phone || 'No especificado',
+            Tipo_Solicitud: label,
+            Referencia_Producto: lead.listingId || lead.id || '-',
+            Detalles_y_Mensaje: lead.notes || lead.message || 'Sin observaciones',
+            Fecha_Registro: timestamp
+          })
+        });
+      } catch (err) {
+        console.error('Error enviando email via FormSubmit:', err);
+      }
+    };
+
+    // Provider 2: Web3Forms API Service
+    const sendWeb3Forms = async () => {
+      try {
+        await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            access_key: accessKey,
+            subject: `[AF SELECT] ${label} - ${lead.name || 'Cliente'}`,
+            from_name: `${lead.name || 'Cliente'} (AF Select Web)`,
+            reply_to: lead.email || targetEmail,
+            nombre_cliente: lead.name || 'No especificado',
+            email_cliente: lead.email || 'No especificado',
+            telefono_whatsapp: lead.phone || 'No especificado',
+            tipo_solicitud: label,
+            id_referencia: lead.listingId || lead.id || '-',
+            detalles_observaciones: lead.notes || lead.message || 'Sin observaciones',
+            fecha_registro: timestamp
+          })
+        });
+      } catch (err) {
+        console.error('Error enviando email via Web3Forms:', err);
+      }
+    };
+
+    // Send via both providers concurrently for maximum reliability
+    await Promise.allSettled([sendFormSubmit(), sendWeb3Forms()]);
   } catch (err) {
-    console.error('Error enviando notificación por email con Web3Forms:', err);
+    console.error('Error general en dispatch de notificación por email:', err);
   }
 }
+

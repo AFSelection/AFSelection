@@ -152,9 +152,6 @@ export default function SectionsCategoryBar({
         <div
           onClick={() => setActiveSection('autos')}
           className={`cat-banner-card ${activeSection === 'autos' ? 'active-card' : ''}`}
-          style={{
-            backgroundImage: `linear-gradient(180deg, rgba(17, 19, 23, 0.35) 0%, rgba(17, 19, 23, 0.88) 100%), url("${getSectionBgImage('autos')}")`
-          }}
         >
           <div className="cat-card-top">
             <span className="cat-badge-pill">01 / AUTOS</span>
@@ -171,9 +168,6 @@ export default function SectionsCategoryBar({
         <div
           onClick={() => setActiveSection('propiedades')}
           className={`cat-banner-card ${activeSection === 'propiedades' ? 'active-card' : ''}`}
-          style={{
-            backgroundImage: `linear-gradient(180deg, rgba(17, 19, 23, 0.35) 0%, rgba(17, 19, 23, 0.88) 100%), url("${getSectionBgImage('propiedades')}")`
-          }}
         >
           <div className="cat-card-top">
             <span className="cat-badge-pill">02 / PROPIEDADES</span>
@@ -192,9 +186,6 @@ export default function SectionsCategoryBar({
             key={sec.id}
             onClick={() => setActiveSection(sec.id)}
             className={`cat-banner-card ${activeSection === sec.id ? 'active-card' : ''}`}
-            style={{
-              backgroundImage: `linear-gradient(180deg, rgba(17, 19, 23, 0.35) 0%, rgba(17, 19, 23, 0.88) 100%), url("${getSectionBgImage(sec.id)}")`
-            }}
           >
             <div className="cat-card-top">
               <span className="cat-badge-pill">SECCIÓN</span>
@@ -207,22 +198,6 @@ export default function SectionsCategoryBar({
             </div>
           </div>
         ))}
-
-        {/* Interactive Property Map Card */}
-        <div
-          onClick={onToggleMap}
-          className={`cat-banner-card map-card ${showMap ? 'active-map-card' : ''}`}
-        >
-          <div className="cat-card-top">
-            <span className="cat-badge-pill map-badge">MAPA</span>
-            <MapPin size={22} className="cat-icon-gold" />
-          </div>
-
-          <div className="cat-card-bottom">
-            <h3 className="cat-card-title">MAPA INTERACTIVO</h3>
-            <p className="cat-card-desc">Ver unidades en mapa</p>
-          </div>
-        </div>
       </div>
     </section>
   );

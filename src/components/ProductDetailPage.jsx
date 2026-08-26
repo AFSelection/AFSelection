@@ -357,6 +357,16 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
 
           <div className="detail-price-box">
             <span className="price-label">VALOR DE MERCADO</span>
+            {Boolean(item.isOffer) && item.oldPrice && Number(item.oldPrice) > Number(item.price) && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '4px', marginBottom: '2px' }}>
+                <span style={{ textDecoration: 'line-through', color: 'var(--text-muted)', fontSize: '1.1rem', fontWeight: '700' }}>
+                  {item.currency || 'USD'} {Number(item.oldPrice).toLocaleString()}
+                </span>
+                <span style={{ background: '#10B981', color: '#FFF', padding: '3px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: '800' }}>
+                  -{Math.round(((Number(item.oldPrice) - Number(item.price)) / Number(item.oldPrice)) * 100)}% OFF
+                </span>
+              </div>
+            )}
             <h2 className="price-value">{formatPrice(item.price)}</h2>
           </div>
 

@@ -16,10 +16,10 @@ export default function PriceDropShowcaseSection({ listings = [], onSelectListin
     return () => clearInterval(timer);
   }, []);
 
-  const dbOffers = listings
-    .filter((item) => item.isOffer && item.oldPrice)
+  const dbOffers = (listings || [])
+    .filter((item) => Boolean(item.isOffer) && item.oldPrice && Number(item.oldPrice) > Number(item.price))
     .map((item) => {
-      const discountPct = Math.round(((item.oldPrice - item.price) / item.oldPrice) * 100);
+      const discountPct = Math.round(((Number(item.oldPrice) - Number(item.price)) / Number(item.oldPrice)) * 100);
       return {
         id: item.id,
         title: item.title,
@@ -29,56 +29,17 @@ export default function PriceDropShowcaseSection({ listings = [], onSelectListin
         discount: `-${discountPct}%`,
         image: item.images?.[0] || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80',
         location: item.location,
-        sectionId: item.sectionId
+        sectionId: item.sectionId,
+        rawItem: item
       };
     });
 
-  const priceDropItems = dbOffers.length > 0 ? dbOffers : [
-    {
-      id: 'pd1',
-      title: 'Casa con Pileta en Yerba Buena',
-      category: 'Propiedad',
-      oldPrice: 195000,
-      newPrice: 179000,
-      discount: '-8%',
-      image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80',
-      location: 'Yerba Buena, Tucumán',
-      sectionId: 'propiedades'
-    },
-    {
-      id: 'pd2',
-      title: 'Lote Exclusivo Cevil Redondo',
-      category: 'Terreno',
-      oldPrice: 62000,
-      newPrice: 55000,
-      discount: '-11%',
-      image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80',
-      location: 'Cevil Redondo, Tucumán',
-      sectionId: 'propiedades'
-    },
-    {
-      id: 'pd3',
-      title: 'Ford Ranger Limited 4x4',
-      category: 'Pickup Premium',
-      oldPrice: 41000,
-      newPrice: 38500,
-      discount: '-6%',
-      image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80',
-      location: 'San Miguel, Tucumán',
-      sectionId: 'autos'
-    },
-    {
-      id: 'pd4',
-      title: 'Depto 2 Amb Barrio Sur',
-      category: 'Departamento',
-      oldPrice: 94000,
-      newPrice: 89000,
-      discount: '-5%',
-      image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80',
-      location: 'Barrio Sur, Tucumán',
-      sectionId: 'propiedades'
-    }
-  ];
+  // If no items are on discount, hide the section completely
+  if (dbOffers.length === 0) {
+    return null;
+  }
+
+  const priceDropItems = dbOffers;
 
   return (
     <section className="price-drop-container">

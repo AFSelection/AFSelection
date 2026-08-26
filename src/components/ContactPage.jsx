@@ -56,10 +56,10 @@ export default function ContactPage({ onBack }) {
   const directWtpUrl = getWhatsAppUrl('Hola Agustín, quisiera realizar una consulta directa desde la sección de contacto de AF Select.');
 
   return (
-    <div className="product-detail-container contact-page-container">
+    <div className="product-detail-container contact-clean-wrapper">
       
       {/* Top Back Button */}
-      <div className="detail-navigation-bar" style={{ marginBottom: '32px' }}>
+      <div className="detail-navigation-bar" style={{ marginBottom: '24px' }}>
         <button className="btn-back-text" onClick={onBack}>
           <ArrowLeft size={16} />
           <span>VOLVER AL INICIO</span>
@@ -85,153 +85,156 @@ export default function ContactPage({ onBack }) {
           </div>
         </div>
       ) : (
-        <div className="contact-page-grid">
-          
-          {/* Left Column: Direct Info & Executive Profile */}
-          <div className="contact-info-card">
-            <div className="concierge-tag">AF SELECT • OFICINA & CONCIERGE</div>
-            <h1 className="contact-main-title">Contacto Directo</h1>
-            <p className="contact-description">
+        <div>
+          {/* Main Header Block */}
+          <div className="contact-header-block">
+            <span className="concierge-pill-tag">AF SELECT • OFICINA & CONCIERGE</span>
+            <h1 className="contact-title-main">Contacto Directo</h1>
+            <p className="contact-subtitle-main">
               Atención personalizada para la adquisición, intermediación y gestión de activos de alta gama.
             </p>
+          </div>
 
-            <div className="contact-details-list">
-              <div className="contact-detail-item">
-                <div className="contact-icon-bubble">
-                  <Phone size={20} />
+          {/* Main Content Layout Grid */}
+          <div className="contact-layout-grid">
+            
+            {/* Left Column: Direct Info */}
+            <div className="contact-info-column">
+              <div className="contact-info-list">
+                
+                <div className="contact-info-item">
+                  <div className="contact-icon-box">
+                    <Phone size={18} />
+                  </div>
+                  <div className="contact-item-text">
+                    <span className="contact-item-lbl">LÍNEA DIRECTA & WHATSAPP</span>
+                    <a href="https://wa.me/5493813590196" target="_blank" rel="noopener noreferrer" className="contact-item-val">
+                      +54 9 381 359-0196
+                    </a>
+                  </div>
                 </div>
-                <div>
-                  <span className="contact-item-label">LÍNEA DIRECTA & WHATSAPP</span>
-                  <a href="https://wa.me/5493813590196" target="_blank" rel="noopener noreferrer" className="contact-item-value">
-                    +54 9 381 359-0196
-                  </a>
+
+                <div className="contact-info-item">
+                  <div className="contact-icon-box">
+                    <Mail size={18} />
+                  </div>
+                  <div className="contact-item-text">
+                    <span className="contact-item-lbl">CORREO ELECTRÓNICO</span>
+                    <a href="mailto:agustinfidalgoselect@gmail.com" className="contact-item-val email-val">
+                      agustinfidalgoselect@gmail.com
+                    </a>
+                  </div>
                 </div>
+
+                <div className="contact-info-item">
+                  <div className="contact-icon-box">
+                    <MapPin size={18} />
+                  </div>
+                  <div className="contact-item-text">
+                    <span className="contact-item-lbl">UBICACIÓN</span>
+                    <span className="contact-item-val">Tucumán, Argentina</span>
+                  </div>
+                </div>
+
+                <div className="contact-info-item">
+                  <div className="contact-icon-box">
+                    <Clock size={18} />
+                  </div>
+                  <div className="contact-item-text">
+                    <span className="contact-item-lbl">HORARIOS DE ATENCIÓN</span>
+                    <span className="contact-item-val">Lunes a Sábados 09:00 - 20:00 hs</span>
+                  </div>
+                </div>
+
               </div>
 
-              <div className="contact-detail-item">
-                <div className="contact-icon-bubble">
-                  <Mail size={20} />
-                </div>
-                <div>
-                  <span className="contact-item-label">CORREO ELECTRÓNICO</span>
-                  <a href="mailto:agustinfidalgoselect@gmail.com" className="contact-item-value">
-                    agustinfidalgoselect@gmail.com
-                  </a>
-                </div>
-              </div>
-
-              <div className="contact-detail-item">
-                <div className="contact-icon-bubble">
-                  <MapPin size={20} />
-                </div>
-                <div>
-                  <span className="contact-item-label">UBICACIÓN</span>
-                  <span className="contact-item-value">Tucumán, Argentina</span>
-                </div>
-              </div>
-
-              <div className="contact-detail-item">
-                <div className="contact-icon-bubble">
-                  <Clock size={20} />
-                </div>
-                <div>
-                  <span className="contact-item-label">HORARIOS DE ATENCIÓN</span>
-                  <span className="contact-item-value">Lunes a Sábados 09:00 - 20:00 hs</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Direct WhatsApp Callout Banner */}
-            <div className="contact-wtp-callout">
-              <h4>¿Preferís chatear directamente?</h4>
-              <p>Iniciá una conversación directa con Agustín Fidalgo en un clic.</p>
-              <a href={directWtpUrl} target="_blank" rel="noopener noreferrer" className="btn-wtp-direct-contact">
-                <MessageSquare size={16} />
-                <span>INICIAR CHAT DE WHATSAPP</span>
-                <ArrowRight size={14} />
+              {/* Clean WhatsApp Direct Action Button */}
+              <a href={directWtpUrl} target="_blank" rel="noopener noreferrer" className="btn-clean-whatsapp">
+                <MessageSquare size={18} />
+                <span>CHATEAR POR WHATSAPP</span>
               </a>
             </div>
-          </div>
 
-          {/* Right Column: Contact Form */}
-          <div className="contact-form-card">
-            <h3 className="form-card-title">ENVIAR UN MENSAJE</h3>
-            <p className="form-card-subtitle">
-              Completá el formulario. Tu solicitud se guardará en nuestro CRM y le enviará un aviso inmediato por correo a Agustín.
-            </p>
+            {/* Right Column: Contact Form */}
+            <div className="contact-form-column">
+              <h3 className="form-clean-title">ENVIAR UN MENSAJE</h3>
+              <p className="form-clean-subtitle">
+                Completá el formulario. Tu solicitud se guardará en nuestro CRM y le enviará un aviso inmediato por correo a Agustín.
+              </p>
 
-            <form onSubmit={handleSubmit} className="contact-editorial-form">
-              <div className="form-group">
-                <label className="input-label">Nombre Completo *</label>
-                <input
-                  type="text"
-                  className="input-field"
-                  placeholder="Tu nombre y apellido"
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                />
-              </div>
-
-              <div className="form-grid-2col">
+              <form onSubmit={handleSubmit} className="contact-clean-form">
                 <div className="form-group">
-                  <label className="input-label">Correo Electrónico *</label>
+                  <label className="input-label">Nombre Completo *</label>
                   <input
-                    type="email"
+                    type="text"
                     className="input-field"
-                    placeholder="ejemplo@correo.com"
+                    placeholder="Tu nombre y apellido"
                     required
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   />
                 </div>
 
+                <div className="form-grid-2col">
+                  <div className="form-group">
+                    <label className="input-label">Correo Electrónico *</label>
+                    <input
+                      type="email"
+                      className="input-field"
+                      placeholder="ejemplo@correo.com"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label className="input-label">Teléfono / WhatsApp *</label>
+                    <input
+                      type="tel"
+                      className="input-field"
+                      placeholder="+54 9 381 ..."
+                      required
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    />
+                  </div>
+                </div>
+
                 <div className="form-group">
-                  <label className="input-label">Teléfono / WhatsApp *</label>
-                  <input
-                    type="tel"
+                  <label className="input-label">Tipo de Consulta</label>
+                  <select
+                    className="input-field select-field"
+                    value={formData.subjectType}
+                    onChange={(e) => setFormData({ ...formData, subjectType: e.target.value })}
+                  >
+                    <option value="compra">Asesoramiento para Compra de Vehículo o Propiedad</option>
+                    <option value="venta">Publicación / Venta Directa de mi Activo</option>
+                    <option value="inversiones">Inversiones & Desarrollo</option>
+                    <option value="general">Otra Consulta General</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label className="input-label">Mensaje / Detalle de la Consulta *</label>
+                  <textarea
                     className="input-field"
-                    placeholder="+54 9 381 ..."
+                    rows={4}
+                    placeholder="Escribí aquí los detalles de tu consulta..."
                     required
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   />
                 </div>
-              </div>
 
-              <div className="form-group">
-                <label className="input-label">Tipo de Consulta</label>
-                <select
-                  className="input-field select-field"
-                  value={formData.subjectType}
-                  onChange={(e) => setFormData({ ...formData, subjectType: e.target.value })}
-                >
-                  <option value="compra">Asesoramiento para Compra de Vehículo o Propiedad</option>
-                  <option value="venta">Publicación / Venta Directa de mi Activo</option>
-                  <option value="inversiones">Inversiones & Desarrollo</option>
-                  <option value="general">Otra Consulta General</option>
-                </select>
-              </div>
+                <button type="submit" className="btn-submit-contact-form" disabled={isSubmitting}>
+                  <span>{isSubmitting ? 'ENVIANDO...' : 'ENVIAR CONSULTA AL CRM & MAIL'}</span>
+                  <Send size={16} />
+                </button>
+              </form>
+            </div>
 
-              <div className="form-group">
-                <label className="input-label">Mensaje / Detalle de la Consulta *</label>
-                <textarea
-                  className="input-field"
-                  rows={4}
-                  placeholder="Escribí aquí los detalles de tu consulta..."
-                  required
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                />
-              </div>
-
-              <button type="submit" className="btn-submit-contact-form" disabled={isSubmitting}>
-                <span>{isSubmitting ? 'ENVIANDO...' : 'ENVIAR CONSULTA AL CRM & MAIL'}</span>
-                <Send size={16} />
-              </button>
-            </form>
           </div>
-
         </div>
       )}
     </div>

@@ -16,10 +16,10 @@ export async function sendLeadNotificationEmail(lead) {
       timeStyle: 'medium'
     });
 
-    const targetEmail = 'agustinfidalgoselect@gmail.com';
+    const targetEmail = 'agustinfidalgo200@gmail.com';
     const accessKey = import.meta.env.VITE_WEB3FORMS_KEY || 'e2583a57-4260-4ae9-aaf3-f59d4c17b9a5';
 
-    // Provider 1: FormSubmit AJAX Service (Direct email delivery to agustinfidalgoselect@gmail.com)
+    // Provider 1: FormSubmit AJAX Service (Direct email delivery to agustinfidalgo200@gmail.com)
     const sendFormSubmit = async () => {
       try {
         await fetch(`https://formsubmit.co/ajax/${targetEmail}`, {

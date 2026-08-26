@@ -120,8 +120,8 @@ export default function ContactPage({ onBack }) {
                   </div>
                   <div className="contact-item-text">
                     <span className="contact-item-lbl">CORREO ELECTRÓNICO</span>
-                    <a href="mailto:agustinfidalgoselect@gmail.com" className="contact-item-val email-val">
-                      agustinfidalgoselect@gmail.com
+                    <a href="mailto:agustinfidalgo200@gmail.com" className="contact-item-val email-val">
+                      agustinfidalgo200@gmail.com
                     </a>
                   </div>
                 </div>

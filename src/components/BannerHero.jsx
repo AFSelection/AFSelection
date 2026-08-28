@@ -123,11 +123,11 @@ export default function BannerHero({
             <button
               className="btn-split-secondary"
               onClick={onGoToSell}
-              style={{ fontWeight: 800 }}
             >
-              <span>QUIERO VENDER</span>
+              QUIERO VENDER
             </button>
           </div>
+
         </div>
 
         {/* Footer (Desktop Only) */}

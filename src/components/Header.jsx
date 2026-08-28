@@ -233,8 +233,9 @@ export default function Header({
               onClick={onGoToSell}
               style={{ color: '#DC2626', fontWeight: 800 }}
             >
-              <span>Vender</span>
+              <span>Quiero vender</span>
             </button>
+
           </nav>
 
           {/* MOBILE LEFT: Hamburger Menu Icon */}

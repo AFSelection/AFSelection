@@ -457,15 +457,20 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
                     <td>{item.rooms}</td>
                   </tr>
                 )}
-                {item.garages && (
-                  <tr>
-                    <td>Cocheras</td>
-                    <td>{item.garages}</td>
-                  </tr>
-                )}
+                {item.specs && typeof item.specs === 'object' && Object.keys(item.specs).map((key) => {
+                  const val = item.specs[key];
+                  if (val === null || val === undefined || val === '') return null;
+                  return (
+                    <tr key={key}>
+                      <td style={{ textTransform: 'capitalize' }}>{key.replace(/_/g, ' ')}</td>
+                      <td>{String(val)}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
+
 
         </div>
       </div>

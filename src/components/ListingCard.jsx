@@ -99,10 +99,19 @@ export default function ListingCard({
               return (
                 <span>{item.year || '2024'} • {kmText} • {item.fuel || 'Nafta'}</span>
               );
-            })() : (
+            })() : item.sectionId === 'propiedades' ? (
               <span>{item.features?.sqm ? `${item.features.sqm} m²` : (item.surface ? `${item.surface} m²` : '280 m²')} • {item.features?.rooms ? `${item.features.rooms} Amb` : (item.rooms ? `${item.rooms} Amb` : '4 Amb')} • Cochera</span>
-            )}
+            ) : (() => {
+              const specsObj = item.specs || item.customFields || {};
+              const keys = Object.keys(specsObj);
+              if (keys.length > 0) {
+                const specSummary = keys.slice(0, 3).map(k => `${k}: ${specsObj[k]}`).join(' • ');
+                return <span>{specSummary}</span>;
+              }
+              return <span>{item.condition || 'Excelente'} • {item.category || 'Destacado'}</span>;
+            })()}
           </div>
+
         </div>
       </div>
     </div>

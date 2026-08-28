@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Car, Home, Layers, MapPin, Grid, Search, X, TrendingUp } from 'lucide-react';
+import SectionIcon from './SectionIcon';
 
 export default function SectionsCategoryBar({
-  sections,
+  sections = [],
   activeSection,
   setActiveSection,
   onToggleMap,
@@ -18,14 +19,18 @@ export default function SectionsCategoryBar({
 
   const getSectionIcon = (iconName, secId, isLight = false) => {
     const iconClass = isLight ? 'shortcut-icon-light' : 'cat-icon-gold';
-    if (secId === 'inversiones') return <TrendingUp size={22} className={iconClass} style={isLight ? { color: '#FFFFFF' } : {}} />;
-    switch (iconName) {
-      case 'Car': return <Car size={22} className={iconClass} />;
-      case 'Home': return <Home size={22} className={iconClass} />;
-      case 'TrendingUp': return <TrendingUp size={22} className={iconClass} style={isLight ? { color: '#FFFFFF' } : {}} />;
-      default: return <Layers size={22} className={iconClass} />;
-    }
+    const foundSec = (sections || []).find((s) => s.id === secId);
+    return (
+      <SectionIcon
+        icon={foundSec?.icon || iconName}
+        iconType={foundSec?.iconType}
+        size={22}
+        className={iconClass}
+        style={isLight ? { color: '#FFFFFF' } : {}}
+      />
+    );
   };
+
 
   const getSectionBgImage = (secId) => {
     if (secId === 'autos') {

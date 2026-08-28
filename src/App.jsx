@@ -19,7 +19,7 @@ import MapSplitView from './components/MapSplitView';
 import AboutPage from './components/AboutPage';
 import ContactPage from './components/ContactPage';
 import InquiryModal from './components/InquiryModal';
-import { fetchListings } from './services/storage';
+import { fetchListings, fetchSections } from './services/storage';
 import { getWhatsAppUrl } from './utils/whatsapp';
 import { Heart, X, AlertCircle, Layers } from 'lucide-react';
 import Loader from './components/Loader';
@@ -32,22 +32,20 @@ export default function App() {
     async function loadData() {
       try {
         const listings = await fetchListings();
+        const sections = await fetchSections();
         setData({
-          sections: [
-            { id: 'autos',        name: 'Autos',       icon: 'Car'       },
-            { id: 'propiedades',  name: 'Propiedades', icon: 'Home'      },
-            { id: 'inversiones',  name: 'Inversiones', icon: 'TrendingUp'}
-          ],
+          sections,
           listings
         });
       } catch (err) {
-        console.error('Error loading Supabase listings:', err);
+        console.error('Error loading Supabase data:', err);
       } finally {
         setLoading(false);
       }
     }
     loadData();
   }, []);
+
 
   const [activeSection, setActiveSection] = useState('all');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -382,7 +380,9 @@ export default function App() {
 
       {/* Floating Header */}
       <Header
+        sections={data.sections}
         activeSection={activeSection}
+
         setActiveSection={(sec) => {
           setActiveSection(sec);
           setSelectedCategory('all');

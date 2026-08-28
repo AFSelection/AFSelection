@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Search, Heart, Menu, X, ShieldCheck, ArrowRight } from 'lucide-react';
 
 export default function Header({
+  sections = [],
   activeSection,
   setActiveSection,
   searchQuery,
@@ -100,9 +101,9 @@ export default function Header({
           {/* LEFT: Desktop navigation tabs */}
           <nav className="header-left-nav desktop-nav-only">
             <button
-              className={`nav-tab-btn ${activeSection === 'todos' ? 'active' : ''}`}
+              className={`nav-tab-btn ${activeSection === 'todos' || activeSection === 'all' ? 'active' : ''}`}
               onClick={() => {
-                if (setActiveSection) setActiveSection('todos');
+                if (setActiveSection) setActiveSection('all');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
             >
@@ -128,6 +129,20 @@ export default function Header({
             >
               <span>Propiedades</span>
             </button>
+
+            {sections && sections.filter(s => s.id !== 'autos' && s.id !== 'propiedades').map(sec => (
+              <button
+                key={sec.id}
+                className={`nav-tab-btn ${activeSection === sec.id ? 'active' : ''}`}
+                onClick={() => {
+                  if (setActiveSection) setActiveSection(sec.id);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+              >
+                <span>{sec.name}</span>
+              </button>
+            ))}
+
 
             <button
               className="nav-tab-btn"

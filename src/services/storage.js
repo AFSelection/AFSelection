@@ -70,6 +70,39 @@ export async function fetchSiteSetting(key, defaultValue) {
   }
 }
 
+export const INITIAL_SECTIONS = [
+  {
+    id: 'autos',
+    name: 'Autos',
+    slug: 'autos',
+    icon: 'Car',
+    categories: ['SUV', 'Sedán', 'Hatchback', 'Deportivo', 'Pick-up / Utilitarios']
+  },
+  {
+    id: 'propiedades',
+    name: 'Propiedades',
+    slug: 'propiedades',
+    icon: 'Home',
+    categories: ['Casas', 'Departamentos', 'PH', 'Terrenos / Lotes', 'Oficinas & Locales']
+  },
+  {
+    id: 'inversiones',
+    name: 'Inversiones',
+    slug: 'inversiones',
+    icon: 'TrendingUp',
+    categories: ['Desarrollo', 'Renta', 'Pozo', 'Constructivo', 'Comercial']
+  }
+];
+
+export async function fetchSections() {
+  const sections = await fetchSiteSetting('site_sections', null);
+  if (Array.isArray(sections) && sections.length > 0) {
+    return sections;
+  }
+  return INITIAL_SECTIONS;
+}
+
+
 export const DEFAULT_STAGGERED_SHOWCASE = {
   title: 'No Somos un Concesionario Tradicional',
   description: 'Facilitamos la compra y venta de vehículos y propiedades de forma directa. Revisamos cada publicación para garantizar información transparente y un proceso ágil.',

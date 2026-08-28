@@ -222,8 +222,9 @@ export default function SectionsCategoryBar({
             >
               <div className="cat-card-top">
                 <span className="cat-badge-pill">{numberStr} / {sec.name.toUpperCase()}</span>
-                {getSectionIcon(sec.icon, sec.id)}
+                {getSectionIcon(sec.icon, sec.id, true)}
               </div>
+
 
               <div className="cat-card-bottom">
                 <h3 className="cat-card-title">{sec.name.toUpperCase()}</h3>

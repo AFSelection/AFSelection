@@ -55,6 +55,7 @@ function SortDropdown({ value, onChange, activeSection }) {
 }
 
 export default function CatalogHeaderBanner({
+  sections = [],
   activeSection,
   onBackToHome,
   totalCount,
@@ -88,13 +89,27 @@ export default function CatalogHeaderBanner({
     if (activeSection === 'propiedades') {
       return { title: 'PROPIEDADES', subtitle: 'Casas, departamentos y terrenos en venta.' };
     }
-    if (activeSection === 'todos') {
-      return { title: 'CATÁLOGO COMPLETO', subtitle: 'Todos los activos disponibles: autos, propiedades e inversiones.' };
+    if (activeSection === 'inversiones') {
+      return { title: 'INVERSIONES', subtitle: 'Desarrollos, pozos y oportunidades de inversión.' };
     }
-    return { title: 'CATÁLOGO GENERAL', subtitle: 'Selección de vehículos y propiedades con atención directa.' };
+    if (activeSection === 'todos' || activeSection === 'all') {
+      return { title: 'CATÁLOGO COMPLETO', subtitle: 'Todos los activos disponibles en la plataforma.' };
+    }
+
+    // Dynamic Section Title lookup
+    const foundSec = (sections || []).find((s) => s.id === activeSection || s.slug === activeSection || s.name?.toLowerCase() === String(activeSection).toLowerCase());
+    if (foundSec) {
+      return {
+        title: foundSec.name.toUpperCase(),
+        subtitle: `Selección exclusiva de ${foundSec.name} con atención directa.`
+      };
+    }
+
+    return { title: String(activeSection).toUpperCase(), subtitle: 'Selección de activos con atención directa.' };
   };
 
   const info = getBannerInfo();
+
 
   const activeFilterCount = [
     selectedCategory && selectedCategory !== 'all',

@@ -625,11 +625,13 @@ export default function App() {
           /* DEDICATED CATALOG VIEW */
           <div>
             <CatalogHeaderBanner
+              sections={data.sections || []}
               activeSection={activeSection}
               onBackToHome={() => {
                 setActiveSection('all');
                 handleResetFilters();
               }}
+
               totalCount={filteredListings.length}
               showMap={showMap}
               setShowMap={setShowMap}

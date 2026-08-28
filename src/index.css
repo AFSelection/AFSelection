@@ -275,7 +275,7 @@ h1, h2, h3, h4, .font-display {
 
 .comprar-mega-dropdown {
   position: absolute;
-  top: calc(100% + 10px);
+  top: calc(100% + 4px);
   left: 0;
   width: 290px;
   background: #FFFFFF;
@@ -287,6 +287,18 @@ h1, h2, h3, h4, .font-display {
   transform-origin: top left;
   animation: dropdownIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* Invisible hover bridge connecting button to dropdown */
+.comprar-mega-dropdown::before {
+  content: '';
+  position: absolute;
+  top: -16px;
+  left: 0;
+  right: 0;
+  height: 16px;
+  background: transparent;
+}
+
 
 @keyframes dropdownIn {
   from {

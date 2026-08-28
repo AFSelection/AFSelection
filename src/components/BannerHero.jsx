@@ -116,6 +116,25 @@ export default function BannerHero({
             <button
               className="btn-split-primary"
               onClick={() => onGoToSection ? onGoToSection('autos') : onScrollToSection('autos')}
+              style={{
+                width: '210px',
+                minWidth: '210px',
+                maxWidth: '210px',
+                height: '40px',
+                minHeight: '40px',
+                maxHeight: '40px',
+                padding: '0 8px',
+                fontSize: '0.72rem',
+                fontWeight: 800,
+                letterSpacing: '0.03em',
+                borderRadius: '9999px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                textAlign: 'center',
+                boxSizing: 'border-box',
+                whiteSpace: 'nowrap'
+              }}
             >
               EXPLORAR CATÁLOGO
             </button>
@@ -123,10 +142,30 @@ export default function BannerHero({
             <button
               className="btn-split-secondary"
               onClick={onGoToSell}
+              style={{
+                width: '210px',
+                minWidth: '210px',
+                maxWidth: '210px',
+                height: '40px',
+                minHeight: '40px',
+                maxHeight: '40px',
+                padding: '0 8px',
+                fontSize: '0.72rem',
+                fontWeight: 800,
+                letterSpacing: '0.03em',
+                borderRadius: '9999px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                textAlign: 'center',
+                boxSizing: 'border-box',
+                whiteSpace: 'nowrap'
+              }}
             >
               QUIERO VENDER
             </button>
           </div>
+
 
         </div>
 

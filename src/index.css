@@ -758,7 +758,7 @@ h1, h2, h3, h4, .font-display {
   transform: scale(1.05);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1240px) {
   .split-actions-row {
     flex-direction: column !important;
     align-items: center !important;
@@ -786,6 +786,7 @@ h1, h2, h3, h4, .font-display {
     padding: 0 6px !important;
   }
 }
+
 
 
 

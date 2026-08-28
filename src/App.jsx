@@ -398,7 +398,7 @@ export default function App() {
           setShowSellPage(false);
           setShowAboutPage(false);
           setShowContactPage(false);
-          setUrlPath(sec === 'all' ? '/' : `/${sec}`);
+          setUrlPath(sec === 'home' || sec === 'all' ? '/' : `/${sec}`);
         }}
         searchQuery={searchQuery}
         setSearchQuery={(q) => {
@@ -420,6 +420,7 @@ export default function App() {
         onGoToSell={handleOpenSell}
         onGoToAbout={handleOpenAbout}
         onGoToContact={handleOpenContact}
+        onBackToHome={handleBackToHome}
         onScrollToSection={scrollToSection}
         listings={data.listings || []}
         onSelectListing={handleSelectListing}
@@ -428,7 +429,7 @@ export default function App() {
       {/* Map Split View — OUTSIDE main-wrapper, true full-viewport fixed overlay */}
       {showMap && !selectedListing && !showSellPage && (
         <MapSplitView
-          listings={data.listings}
+          listings={data.listings || []}
           onSelectListing={handleSelectListing}
           favorites={favorites}
           onToggleFavorite={toggleFavorite}
@@ -454,7 +455,8 @@ export default function App() {
         />
       )}
 
-      <main className="main-wrapper" style={{ paddingTop: '0' }}>
+      {/* Main Content Wrapper */}
+      <div className="main-wrapper" style={{ opacity: showMap ? 0 : 1, pointerEvents: showMap ? 'none' : 'auto' }}>
         {/* FUNNEL STAGE 1: Full Viewport Monumental Hero Banner */}
         {isHomepage && (
           <BannerHero
@@ -471,6 +473,7 @@ export default function App() {
             }}
             onGoToAbout={handleOpenAbout}
             onGoToSell={handleOpenSell}
+            onBackToHome={handleBackToHome}
           />
 
         )}
@@ -681,7 +684,9 @@ export default function App() {
             )}
           </div>
         )}
-      </main>
+      </div>
+
+
 
       {/* Footer */}
       <footer className="editorial-footer">

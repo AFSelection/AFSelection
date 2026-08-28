@@ -12,7 +12,8 @@ export default function BannerHero({
   onScrollToSection,
   onGoToSection,
   onGoToAbout,
-  onGoToSell
+  onGoToSell,
+  onBackToHome
 }) {
   const [images, setImages] = useState(DEFAULT_IMAGES);
   const [current, setCurrent] = useState(0);
@@ -61,7 +62,7 @@ export default function BannerHero({
 
       {/* Top Mobile Brand Header */}
       <div className="mobile-top-brand-bar">
-        <a href="#" className="split-brand-logo mobile-logo-pill">
+        <a href="#" className="split-brand-logo mobile-logo-pill" onClick={(e) => { e.preventDefault(); if (onBackToHome) onBackToHome(); }}>
           <span className="logo-text-bold" style={{ color: '#FFF' }}>AF</span>
           <span className="brand-dot-black" style={{ backgroundColor: '#FFF' }} />
           <span className="logo-text-light" style={{ color: '#FFF' }}>SELECT</span>
@@ -72,11 +73,12 @@ export default function BannerHero({
       <div className="split-glass-panel">
         {/* Navigation Bar (Desktop Only) */}
         <div className="split-glass-nav desktop-only-nav">
-          <a href="#" className="split-brand-logo">
+          <a href="#" className="split-brand-logo" onClick={(e) => { e.preventDefault(); if (onBackToHome) onBackToHome(); }}>
             <span className="logo-text-bold">AF</span>
             <span className="brand-dot-black" />
             <span className="logo-text-light">SELECT</span>
           </a>
+
 
           <div className="split-nav-links">
             <button onClick={() => onGoToSection ? onGoToSection('autos') : onScrollToSection('autos')} className="split-nav-link">

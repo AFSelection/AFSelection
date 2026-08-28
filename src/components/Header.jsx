@@ -14,6 +14,7 @@ export default function Header({
   onGoToSell,
   onGoToAbout,
   onGoToContact,
+  onBackToHome,
   onScrollToSection,
   listings = [],
   onSelectListing
@@ -58,16 +59,16 @@ export default function Header({
 
   const handleLogoClick = (e) => {
     e.preventDefault();
-    if (setActiveSection) setActiveSection('home');
+    if (onBackToHome) {
+      onBackToHome();
+    } else if (setActiveSection) {
+      setActiveSection('home');
+    }
     setSearchQuery('');
     setLocalQuery('');
-
-    if (onScrollToSection) {
-      onScrollToSection('hero');
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
 
   // Get matching items for autocomplete dropdown
   const matchingListings = useMemo(() => {

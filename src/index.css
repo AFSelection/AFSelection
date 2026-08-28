@@ -771,22 +771,23 @@ h1, h2, h3, h4, .font-display {
 
   .btn-split-primary,
   .btn-split-secondary {
-    flex: 0 0 220px !important;
-    width: 220px !important;
-    min-width: 220px !important;
-    max-width: 220px !important;
+    flex: 0 0 auto !important;
+    width: fit-content !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
     height: 38px !important;
     min-height: 38px !important;
     max-height: 38px !important;
-    font-size: 0.72rem !important;
-    letter-spacing: 0.03em !important;
+    font-size: 0.74rem !important;
+    letter-spacing: 0.04em !important;
     text-align: center !important;
     justify-content: center !important;
     display: inline-flex !important;
     align-items: center !important;
-    padding: 0 10px !important;
+    padding: 0 20px !important;
   }
 }
+
 
 
 
@@ -1425,19 +1426,15 @@ h1, h2, h3, h4, .font-display {
 
 .btn-split-primary,
 .btn-split-secondary {
-  flex: 0 0 175px !important;
-  width: 175px !important;
-  min-width: 175px !important;
-  max-width: 175px !important;
   height: 40px !important;
   min-height: 40px !important;
   max-height: 40px !important;
-  padding: 0 12px !important;
+  padding: 0 22px !important;
   border-radius: 9999px !important;
   font-family: var(--font-body) !important;
   font-weight: 800 !important;
-  font-size: 0.73rem !important;
-  letter-spacing: 0.03em !important;
+  font-size: 0.76rem !important;
+  letter-spacing: 0.04em !important;
   text-transform: uppercase !important;
   display: inline-flex !important;
   align-items: center !important;
@@ -1472,6 +1469,7 @@ h1, h2, h3, h4, .font-display {
   border-color: #111317 !important;
   color: #FFFFFF !important;
 }
+
 
 
 

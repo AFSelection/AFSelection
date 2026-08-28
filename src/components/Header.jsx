@@ -58,9 +58,10 @@ export default function Header({
 
   const handleLogoClick = (e) => {
     e.preventDefault();
-    setActiveSection('all');
+    if (setActiveSection) setActiveSection('home');
     setSearchQuery('');
     setLocalQuery('');
+
     if (onScrollToSection) {
       onScrollToSection('hero');
     } else {

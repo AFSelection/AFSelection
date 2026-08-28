@@ -50,7 +50,8 @@ export default function App() {
   }, []);
 
 
-  const [activeSection, setActiveSection] = useState('all');
+  const [activeSection, setActiveSection] = useState('home');
+
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('recent');
@@ -94,12 +95,13 @@ export default function App() {
     setShowSellPage(false);
     setShowAboutPage(false);
     setShowContactPage(false);
-    setActiveSection('all');
+    setActiveSection('home');
     setShowFavoritesOnly(false);
     setSearchQuery('');
     setUrlPath('/');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
 
   // Centralized Navigation Handlers with Clean URL Persistence
   const handleSelectListing = (item) => {
@@ -375,7 +377,8 @@ export default function App() {
     return (data.listings || []).filter((l) => l.sectionId !== 'autos' && l.sectionId !== 'propiedades');
   }, [data.listings]);
 
-  const isHomepage = activeSection === 'all' && !showFavoritesOnly && searchQuery.trim() === '' && !selectedListing && !showSellPage && !showAboutPage && !showContactPage && !showMap;
+  const isHomepage = activeSection === 'home' && !showFavoritesOnly && searchQuery.trim() === '' && !selectedListing && !showSellPage && !showAboutPage && !showContactPage && !showMap;
+
 
   return (
     <div>

@@ -2,6 +2,37 @@ import React, { useState, useEffect } from 'react';
 import { Car, Home, Layers, MapPin, Grid, Search, X, TrendingUp } from 'lucide-react';
 import SectionIcon from './SectionIcon';
 
+function SpotlightCard({ children, onClick, isActive, className = '' }) {
+  const cardRef = React.useRef(null);
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    cardRef.current.style.setProperty('--mouse-x', `${x}px`);
+    cardRef.current.style.setProperty('--mouse-y', `${y}px`);
+    cardRef.current.style.setProperty('--spotlight-opacity', '1');
+  };
+
+  const handleMouseLeave = () => {
+    if (!cardRef.current) return;
+    cardRef.current.style.setProperty('--spotlight-opacity', '0');
+  };
+
+  return (
+    <div
+      ref={cardRef}
+      onClick={onClick}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={`cat-banner-card ${isActive ? 'active-card' : ''} ${className}`}
+    >
+      {children}
+    </div>
+  );
+}
+
 export default function SectionsCategoryBar({
   sections = [],
   activeSection,
@@ -30,7 +61,6 @@ export default function SectionsCategoryBar({
       />
     );
   };
-
 
   const getSectionBgImage = (secId) => {
     if (secId === 'autos') {
@@ -146,9 +176,9 @@ export default function SectionsCategoryBar({
       {/* DESKTOP CATEGORY CARDS GRID (Hidden on Mobile) */}
       <div className="sections-cards-row desktop-cards-grid">
         {/* Autos Card */}
-        <div
+        <SpotlightCard
           onClick={() => setActiveSection('autos')}
-          className={`cat-banner-card ${activeSection === 'autos' ? 'active-card' : ''}`}
+          isActive={activeSection === 'autos'}
         >
           <div className="cat-card-top">
             <span className="cat-badge-pill">01 / AUTOS</span>
@@ -159,12 +189,12 @@ export default function SectionsCategoryBar({
             <h3 className="cat-card-title">AUTOS DE LUJO</h3>
             <p className="cat-card-desc">Deportivos, SUVs & Pick-ups</p>
           </div>
-        </div>
+        </SpotlightCard>
 
         {/* Propiedades Card */}
-        <div
+        <SpotlightCard
           onClick={() => setActiveSection('propiedades')}
-          className={`cat-banner-card ${activeSection === 'propiedades' ? 'active-card' : ''}`}
+          isActive={activeSection === 'propiedades'}
         >
           <div className="cat-card-top">
             <span className="cat-badge-pill">02 / PROPIEDADES</span>
@@ -175,7 +205,7 @@ export default function SectionsCategoryBar({
             <h3 className="cat-card-title">PROPIEDADES</h3>
             <p className="cat-card-desc">Casas, Penthouses & Terrenos</p>
           </div>
-        </div>
+        </SpotlightCard>
 
         {/* Dynamic Custom Sections */}
         {sections.filter((s) => s.id !== 'autos' && s.id !== 'propiedades').map((sec, idx) => {
@@ -185,10 +215,10 @@ export default function SectionsCategoryBar({
             : (sec.categories?.length > 0 ? sec.categories.join(', ') : 'Selección de activos');
 
           return (
-            <div
+            <SpotlightCard
               key={sec.id}
               onClick={() => setActiveSection(sec.id)}
-              className={`cat-banner-card ${activeSection === sec.id ? 'active-card' : ''}`}
+              isActive={activeSection === sec.id}
             >
               <div className="cat-card-top">
                 <span className="cat-badge-pill">{numberStr} / {sec.name.toUpperCase()}</span>
@@ -199,10 +229,11 @@ export default function SectionsCategoryBar({
                 <h3 className="cat-card-title">{sec.name.toUpperCase()}</h3>
                 <p className="cat-card-desc">{desc}</p>
               </div>
-            </div>
+            </SpotlightCard>
           );
         })}
       </div>
     </section>
   );
 }
+

@@ -628,33 +628,79 @@ h1, h2, h3, h4, .font-display {
 
 .cat-banner-card {
   position: relative;
-  height: 88px;
-  border-radius: 14px;
+  height: 92px;
+  border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
-  background: #111317;
-  border: 1.5px solid rgba(255, 255, 255, 0.1);
-  padding: 12px 18px;
+  background: linear-gradient(135deg, #1c202a 0%, #0f1117 60%, #151821 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 14px 18px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   color: #FFFFFF;
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2);
+}
+
+/* Cursor Tracking Radial Spotlight Overlay */
+.cat-banner-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    260px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.15),
+    rgba(220, 38, 38, 0.08) 45%,
+    transparent 80%
+  );
+  opacity: var(--spotlight-opacity, 0);
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Glowing Cursor Border Spotlight */
+.cat-banner-card::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: radial-gradient(
+    180px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.7),
+    rgba(220, 38, 38, 0.5) 40%,
+    transparent 75%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: var(--spotlight-opacity, 0);
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 2;
 }
 
 .cat-banner-card:hover {
-  transform: translateY(-2px);
-  background: #1A1D24;
-  border-color: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35), 0 0 20px rgba(255, 255, 255, 0.04);
 }
 
 .cat-banner-card.active-card {
-  background: #111317;
+  background: linear-gradient(135deg, #1f1b24 0%, #121017 60%, #191420 100%);
   border: 2px solid #DC2626;
-  box-shadow: 0 6px 18px rgba(220, 38, 38, 0.18);
+  box-shadow: 0 8px 24px rgba(220, 38, 38, 0.25);
 }
+
+.cat-card-top,
+.cat-card-bottom {
+  position: relative;
+  z-index: 3;
+}
+
 
 .cat-card-top {
   display: flex;

@@ -420,6 +420,7 @@ h1, h2, h3, h4, .font-display {
   justify-content: flex-start !important;
   gap: 12px !important;
   white-space: nowrap !important;
+  min-width: 0 !important;
 }
 
 .header-centered-logo {
@@ -430,6 +431,7 @@ h1, h2, h3, h4, .font-display {
   align-items: center !important;
   justify-content: center !important;
   white-space: nowrap !important;
+  flex-shrink: 0 !important;
 }
 
 .header-right-actions {
@@ -439,6 +441,7 @@ h1, h2, h3, h4, .font-display {
   justify-content: flex-end !important;
   gap: 10px !important;
   white-space: nowrap !important;
+  min-width: 0 !important;
 }
 
 .compact-search {
@@ -451,11 +454,15 @@ h1, h2, h3, h4, .font-display {
    RESPONSIVE HEADER COMPRESSION & MOBILE FORMAT BREAKPOINTS
    ========================================================================== */
 
-/* Laptop / Intermediate Screen Gap Compression (1141px to 1280px) */
-@media (min-width: 1141px) and (max-width: 1280px) {
+/* Laptop / Intermediate Screen Gap Compression (1241px to 1380px) */
+@media (min-width: 1241px) and (max-width: 1380px) {
+  .editorial-header {
+    width: calc(100% - 24px) !important;
+  }
+
   .header-inner {
-    gap: 10px !important;
-    padding: 10px 18px !important;
+    gap: 8px !important;
+    padding: 10px 14px !important;
   }
 
   .header-left-nav {
@@ -467,24 +474,24 @@ h1, h2, h3, h4, .font-display {
   }
 
   .nav-tab-btn {
-    padding: 6px 8px !important;
-    font-size: 0.76rem !important;
+    padding: 4px 6px !important;
+    font-size: 0.75rem !important;
     gap: 4px !important;
   }
 
   .compact-search {
-    max-width: 135px !important;
-    width: 135px !important;
-    padding: 5px 10px !important;
+    max-width: 120px !important;
+    width: 120px !important;
+    padding: 4px 8px !important;
   }
 
   .compact-search input {
-    font-size: 0.78rem !important;
+    font-size: 0.75rem !important;
   }
 }
 
-/* Mobile Format Activation Breakpoint (<= 1140px) */
-@media (max-width: 1140px) {
+/* Mobile Format Activation Breakpoint (<= 1240px) */
+@media (max-width: 1240px) {
   .desktop-nav-only {
     display: none !important;
   }
@@ -495,10 +502,14 @@ h1, h2, h3, h4, .font-display {
     align-items: center !important;
   }
 
+  .editorial-header {
+    width: calc(100% - 24px) !important;
+  }
+
   .header-inner {
     display: flex !important;
     justify-content: space-between !important;
-    padding: 10px 20px !important;
+    padding: 10px 16px !important;
   }
 
   .header-centered-logo {
@@ -507,6 +518,7 @@ h1, h2, h3, h4, .font-display {
     transform: translateX(-50%) !important;
   }
 }
+
 
 
 

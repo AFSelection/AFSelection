@@ -9,8 +9,10 @@ import StaggeredShowcaseSection from './components/StaggeredShowcaseSection';
 import PropiedadesShowcase from './components/PropiedadesShowcase';
 import InvestmentsShowcaseSection from './components/InvestmentsShowcaseSection';
 import TestimonialsSection from './components/TestimonialsSection';
+import BlogAndConciergeSection from './components/BlogAndConciergeSection';
 import DynamicSectionShowcase from './components/DynamicSectionShowcase';
 import CatalogHeaderBanner from './components/CatalogHeaderBanner';
+
 
 import ListingCard from './components/ListingCard';
 import ProductDetailPage from './components/ProductDetailPage';

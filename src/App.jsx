@@ -9,8 +9,9 @@ import StaggeredShowcaseSection from './components/StaggeredShowcaseSection';
 import PropiedadesShowcase from './components/PropiedadesShowcase';
 import InvestmentsShowcaseSection from './components/InvestmentsShowcaseSection';
 import TestimonialsSection from './components/TestimonialsSection';
-import BlogAndConciergeSection from './components/BlogAndConciergeSection';
+import DynamicSectionShowcase from './components/DynamicSectionShowcase';
 import CatalogHeaderBanner from './components/CatalogHeaderBanner';
+
 import ListingCard from './components/ListingCard';
 import ProductDetailPage from './components/ProductDetailPage';
 import SellFormPage from './components/SellFormPage';
@@ -541,49 +542,71 @@ export default function App() {
               onSelectListing={handleSelectListing}
             />
 
-            {/* FUNNEL STAGE 4: Garaje de Autos de Luxe */}
-            <div ref={autosRef}>
-              <AutosCarouselShowcase
-                listings={allAutosListings}
-                favorites={favorites}
-                toggleFavorite={toggleFavorite}
-                onSelectListing={handleSelectListing}
-                onViewAll={() => setActiveSection('autos')}
-              />
-            </div>
+            {/* FUNNEL STAGE 4: Garaje de Autos de Luxe (if showOnHome) */}
+            {(data.sections || []).find((s) => s.id === 'autos')?.showOnHome !== false && (
+              <div ref={autosRef}>
+                <AutosCarouselShowcase
+                  listings={allAutosListings}
+                  favorites={favorites}
+                  toggleFavorite={toggleFavorite}
+                  onSelectListing={handleSelectListing}
+                  onViewAll={() => setActiveSection('autos')}
+                />
+              </div>
+            )}
 
             {/* FUNNEL STAGE 5: Retención Visual & Filosofía */}
             <StaggeredShowcaseSection
               onOpenCatalog={() => setActiveSection('autos')}
             />
 
-            {/* FUNNEL STAGE 6: Residencias de Autor & Penthouses */}
-            <div ref={propiedadesRef}>
-              <PropiedadesShowcase
-                listings={allPropiedadesListings}
-                favorites={favorites}
-                toggleFavorite={toggleFavorite}
-                onSelectListing={handleSelectListing}
-                onViewAll={() => setActiveSection('propiedades')}
-                onToggleMap={() => setShowMap(!showMap)}
-              />
-            </div>
+            {/* FUNNEL STAGE 6: Residencias de Autor & Penthouses (if showOnHome) */}
+            {(data.sections || []).find((s) => s.id === 'propiedades')?.showOnHome !== false && (
+              <div ref={propiedadesRef}>
+                <PropiedadesShowcase
+                  listings={allPropiedadesListings}
+                  favorites={favorites}
+                  toggleFavorite={toggleFavorite}
+                  onSelectListing={handleSelectListing}
+                  onViewAll={() => setActiveSection('propiedades')}
+                  onToggleMap={() => setShowMap(!showMap)}
+                />
+              </div>
+            )}
 
-            {/* FUNNEL STAGE 7: Inversiones & Desarrollo */}
-            <InvestmentsShowcaseSection
-              listings={allInversionesListings}
-              onOpenContact={() => {
-                const dummyItem = {
-                  id: 'inv_contact',
-                  title: 'Inversiones & Desarrollo',
-                  location: 'Tucumán, Salta y Buenos Aires',
-                  price: 180000,
-                  images: ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80'],
-                  sectionId: 'inversiones'
-                };
-                setSelectedListing(dummyItem);
-              }}
-            />
+            {/* FUNNEL STAGE 7: Inversiones & Desarrollo (if showOnHome) */}
+            {(data.sections || []).find((s) => s.id === 'inversiones')?.showOnHome !== false && (
+              <InvestmentsShowcaseSection
+                listings={allInversionesListings}
+                onOpenContact={() => {
+                  const dummyItem = {
+                    id: 'inv_contact',
+                    title: 'Inversiones & Desarrollo',
+                    location: 'Tucumán, Salta y Buenos Aires',
+                    price: 180000,
+                    images: ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80'],
+                    sectionId: 'inversiones'
+                  };
+                  setSelectedListing(dummyItem);
+                }}
+              />
+            )}
+
+            {/* FUNNEL STAGE 7.5: Dynamic Showcase for Custom Sections */}
+            {(data.sections || [])
+              .filter((s) => s.id !== 'autos' && s.id !== 'propiedades' && s.id !== 'inversiones' && s.showOnHome !== false)
+              .map((sec) => (
+                <DynamicSectionShowcase
+                  key={sec.id}
+                  section={sec}
+                  listings={data.listings || []}
+                  favorites={favorites}
+                  toggleFavorite={toggleFavorite}
+                  onSelectListing={handleSelectListing}
+                  onViewAll={() => setActiveSection(sec.id)}
+                />
+              ))}
+
 
             {/* FUNNEL STAGE 8: Prueba Social (Reseñas Reales) */}
             <TestimonialsSection />

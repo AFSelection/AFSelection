@@ -771,19 +771,21 @@ h1, h2, h3, h4, .font-display {
 
   .btn-split-primary,
   .btn-split-secondary {
-    width: 210px !important;
-    min-width: 210px !important;
-    max-width: 210px !important;
-    height: 38px !important;
-    min-height: 38px !important;
-    max-height: 38px !important;
-    font-size: 0.70rem !important;
-    letter-spacing: 0.02em !important;
+    width: 100% !important;
+    max-width: 280px !important;
+    min-width: 0 !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+    font-size: 0.72rem !important;
+    letter-spacing: 0.03em !important;
     text-align: center !important;
     justify-content: center !important;
     display: inline-flex !important;
     align-items: center !important;
-    padding: 0 6px !important;
+    padding: 0 12px !important;
+    border-radius: 9999px !important;
+    box-sizing: border-box !important;
   }
 }
 
@@ -3183,27 +3185,48 @@ h1, h2, h3, h4, .font-display {
   .split-actions-row {
     width: 100% !important;
     display: flex !important;
+    flex-direction: column !important;
     justify-content: center !important;
     align-items: center !important;
+    gap: 8px !important;
     margin-bottom: 0 !important;
   }
 
-  .btn-split-primary {
+  .btn-split-primary,
+  .btn-split-secondary {
     width: 100% !important;
-    max-width: 320px !important;
+    max-width: 280px !important;
+    min-width: 0 !important;
     margin-left: auto !important;
     margin-right: auto !important;
     justify-content: center !important;
     text-align: center !important;
-    padding: 14px 24px !important;
-    font-size: 0.82rem !important;
+    padding: 0 16px !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+    font-size: 0.75rem !important;
     font-weight: 800 !important;
-    letter-spacing: 0.06em !important;
+    letter-spacing: 0.04em !important;
     border-radius: 9999px !important;
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    white-space: nowrap !important;
+  }
+
+  .btn-split-primary {
     background: #FFFFFF !important;
     color: #111317 !important;
     border: 1px solid rgba(255, 255, 255, 1) !important;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  .btn-split-secondary {
+    background: rgba(255, 255, 255, 0.88) !important;
+    color: #111317 !important;
+    border: 1px solid rgba(17, 19, 23, 0.22) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
   }
 
   .hero-dots {

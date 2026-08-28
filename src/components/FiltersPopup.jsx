@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import { X } from 'lucide-react';
+
 
 const ROOMS_OPTIONS = [
   { value: 'all', label: 'Todos' },
@@ -78,7 +80,7 @@ export default function FiltersPopup({
     <p className={`fpop-label${dark ? ' dark' : ''}`}>{children}</p>
   );
 
-  return (
+  return ReactDOM.createPortal(
     <>
       <div className="fpop-overlay" onClick={onClose} />
 
@@ -242,6 +244,8 @@ export default function FiltersPopup({
           </button>
         </div>
       </div>
-    </>
+    </>,
+    document.body
   );
 }
+

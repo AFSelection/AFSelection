@@ -761,23 +761,31 @@ h1, h2, h3, h4, .font-display {
 @media (max-width: 768px) {
   .split-actions-row {
     flex-direction: column !important;
-    gap: 10px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
     width: 100% !important;
     max-width: 100% !important;
+    margin: 0 auto !important;
   }
 
   .btn-split-primary,
   .btn-split-secondary {
-    width: 100% !important;
-    height: 48px !important;
-    min-height: 48px !important;
-    font-size: 0.78rem !important;
+    width: 82% !important;
+    max-width: 270px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    max-height: 38px !important;
+    font-size: 0.72rem !important;
+    letter-spacing: 0.04em !important;
     text-align: center !important;
     justify-content: center !important;
     display: inline-flex !important;
     align-items: center !important;
+    padding: 0 14px !important;
   }
 }
+
 
 
 .open-catalog-bottom-controls-row {

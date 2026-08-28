@@ -628,34 +628,34 @@ h1, h2, h3, h4, .font-display {
 
 .cat-banner-card {
   position: relative;
-  height: 92px;
+  height: 94px;
   border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
-  background: linear-gradient(135deg, #1c202a 0%, #0f1117 60%, #151821 100%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, #2b303d 0%, #161822 50%, #0d0f15 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   padding: 14px 18px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   color: #FFFFFF;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
-/* Cursor Tracking Radial Spotlight Overlay */
+/* Cursor Tracking Radial Spotlight Overlay (Ambient base glow + hover highlight) */
 .cat-banner-card::before {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
   background: radial-gradient(
-    260px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(255, 255, 255, 0.15),
-    rgba(220, 38, 38, 0.08) 45%,
-    transparent 80%
+    280px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.22),
+    rgba(220, 38, 38, 0.12) 45%,
+    transparent 85%
   );
-  opacity: var(--spotlight-opacity, 0);
+  opacity: var(--spotlight-opacity, 0.45);
   transition: opacity 0.3s ease;
   pointer-events: none;
   z-index: 1;
@@ -669,15 +669,15 @@ h1, h2, h3, h4, .font-display {
   border-radius: inherit;
   padding: 1.5px;
   background: radial-gradient(
-    180px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(255, 255, 255, 0.7),
-    rgba(220, 38, 38, 0.5) 40%,
+    200px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.8),
+    rgba(220, 38, 38, 0.6) 40%,
     transparent 75%
   );
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  opacity: var(--spotlight-opacity, 0);
+  opacity: var(--spotlight-opacity, 0.25);
   transition: opacity 0.3s ease;
   pointer-events: none;
   z-index: 2;
@@ -685,15 +685,16 @@ h1, h2, h3, h4, .font-display {
 
 .cat-banner-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35), 0 0 20px rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 255, 255, 0.06);
 }
 
 .cat-banner-card.active-card {
-  background: linear-gradient(135deg, #1f1b24 0%, #121017 60%, #191420 100%);
+  background: linear-gradient(135deg, #2e1d26 0%, #151017 50%, #1b121f 100%);
   border: 2px solid #DC2626;
-  box-shadow: 0 8px 24px rgba(220, 38, 38, 0.25);
+  box-shadow: 0 8px 24px rgba(220, 38, 38, 0.3);
 }
+
 
 .cat-card-top,
 .cat-card-bottom {

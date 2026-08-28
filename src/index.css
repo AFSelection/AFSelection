@@ -447,6 +447,68 @@ h1, h2, h3, h4, .font-display {
   padding: 6px 14px !important;
 }
 
+/* ==========================================================================
+   RESPONSIVE HEADER COMPRESSION & MOBILE FORMAT BREAKPOINTS
+   ========================================================================== */
+
+/* Laptop / Intermediate Screen Gap Compression (1141px to 1280px) */
+@media (min-width: 1141px) and (max-width: 1280px) {
+  .header-inner {
+    gap: 10px !important;
+    padding: 10px 18px !important;
+  }
+
+  .header-left-nav {
+    gap: 4px !important;
+  }
+
+  .header-right-actions {
+    gap: 4px !important;
+  }
+
+  .nav-tab-btn {
+    padding: 6px 8px !important;
+    font-size: 0.76rem !important;
+    gap: 4px !important;
+  }
+
+  .compact-search {
+    max-width: 135px !important;
+    width: 135px !important;
+    padding: 5px 10px !important;
+  }
+
+  .compact-search input {
+    font-size: 0.78rem !important;
+  }
+}
+
+/* Mobile Format Activation Breakpoint (<= 1140px) */
+@media (max-width: 1140px) {
+  .desktop-nav-only {
+    display: none !important;
+  }
+
+  .mobile-only-action-left,
+  .mobile-only-action-right {
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .header-inner {
+    display: flex !important;
+    justify-content: space-between !important;
+    padding: 10px 20px !important;
+  }
+
+  .header-centered-logo {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+}
+
+
 
 
 /* Button Pill Helpers */

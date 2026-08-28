@@ -771,22 +771,22 @@ h1, h2, h3, h4, .font-display {
 
   .btn-split-primary,
   .btn-split-secondary {
-    flex: 0 0 auto !important;
-    width: fit-content !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
+    width: 210px !important;
+    min-width: 210px !important;
+    max-width: 210px !important;
     height: 38px !important;
     min-height: 38px !important;
     max-height: 38px !important;
-    font-size: 0.74rem !important;
-    letter-spacing: 0.04em !important;
+    font-size: 0.70rem !important;
+    letter-spacing: 0.02em !important;
     text-align: center !important;
     justify-content: center !important;
     display: inline-flex !important;
     align-items: center !important;
-    padding: 0 20px !important;
+    padding: 0 6px !important;
   }
 }
+
 
 
 
@@ -1426,15 +1426,18 @@ h1, h2, h3, h4, .font-display {
 
 .btn-split-primary,
 .btn-split-secondary {
+  width: 210px !important;
+  min-width: 210px !important;
+  max-width: 210px !important;
   height: 40px !important;
   min-height: 40px !important;
   max-height: 40px !important;
-  padding: 0 22px !important;
+  padding: 0 8px !important;
   border-radius: 9999px !important;
   font-family: var(--font-body) !important;
   font-weight: 800 !important;
-  font-size: 0.76rem !important;
-  letter-spacing: 0.04em !important;
+  font-size: 0.71rem !important;
+  letter-spacing: 0.02em !important;
   text-transform: uppercase !important;
   display: inline-flex !important;
   align-items: center !important;
@@ -1445,6 +1448,7 @@ h1, h2, h3, h4, .font-display {
   cursor: pointer !important;
   transition: all 0.25s ease !important;
 }
+
 
 .btn-split-primary {
   background: #111317 !important;

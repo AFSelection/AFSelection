@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Search, Heart, Menu, X, ShieldCheck, ArrowRight } from 'lucide-react';
+import { Search, Heart, Menu, X, ShieldCheck, ArrowRight, ChevronDown, Layers, Car, Home, TrendingUp } from 'lucide-react';
+import SectionIcon from './SectionIcon';
 
 export default function Header({
   sections = [],
@@ -20,9 +21,11 @@ export default function Header({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [localQuery, setLocalQuery] = useState(searchQuery);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [comprarDropdownOpen, setComprarDropdownOpen] = useState(false);
 
   const desktopSearchRef = useRef(null);
   const mobileSearchRef = useRef(null);
+  const comprarRef = useRef(null);
 
   // Keep local search sync with parent when it is reset
   useEffect(() => {
@@ -34,9 +37,13 @@ export default function Header({
     const handleClickOutside = (event) => {
       const isOutsideDesktop = desktopSearchRef.current && !desktopSearchRef.current.contains(event.target);
       const isOutsideMobile = mobileSearchRef.current && !mobileSearchRef.current.contains(event.target);
-      
+      const isOutsideComprar = comprarRef.current && !comprarRef.current.contains(event.target);
+
       if (isOutsideDesktop && isOutsideMobile) {
         setShowDropdown(false);
+      }
+      if (isOutsideComprar) {
+        setComprarDropdownOpen(false);
       }
     };
 
@@ -99,52 +106,121 @@ export default function Header({
         <div className="header-inner header-redesign-grid">
           
           {/* LEFT: Desktop navigation tabs */}
-          <nav className="header-left-nav desktop-nav-only">
-            <button
-              className={`nav-tab-btn ${activeSection === 'todos' || activeSection === 'all' ? 'active' : ''}`}
-              onClick={() => {
-                if (setActiveSection) setActiveSection('all');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
+          <nav className="header-left-nav desktop-nav-only flex items-center gap-1">
+            
+            {/* ¿QUÉ PUEDO COMPRAR? Dropdown Overlay Tab */}
+            <div
+              ref={comprarRef}
+              className="comprar-dropdown-wrapper"
+              onMouseEnter={() => setComprarDropdownOpen(true)}
+              onMouseLeave={() => setComprarDropdownOpen(false)}
             >
-              <span>Todos</span>
-            </button>
-
-            <button
-              className={`nav-tab-btn ${activeSection === 'autos' ? 'active' : ''}`}
-              onClick={() => {
-                if (setActiveSection) setActiveSection('autos');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-            >
-              <span>Autos</span>
-            </button>
-
-            <button
-              className={`nav-tab-btn ${activeSection === 'propiedades' ? 'active' : ''}`}
-              onClick={() => {
-                if (setActiveSection) setActiveSection('propiedades');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-            >
-              <span>Propiedades</span>
-            </button>
-
-            {sections && sections.filter(s => s.id !== 'autos' && s.id !== 'propiedades').map(sec => (
               <button
-                key={sec.id}
-                className={`nav-tab-btn ${activeSection === sec.id ? 'active' : ''}`}
-                onClick={() => {
-                  if (setActiveSection) setActiveSection(sec.id);
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
+                type="button"
+                className={`nav-tab-btn nav-tab-comprar ${comprarDropdownOpen ? 'active' : ''}`}
+                onClick={() => setComprarDropdownOpen(!comprarDropdownOpen)}
               >
-                <span>{sec.name}</span>
+                <span>¿Qué puedo comprar?</span>
+                <ChevronDown size={14} className={`dropdown-chevron ${comprarDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
-            ))}
 
+              {/* Dropdown Panel ("Lengüeta") */}
+              {comprarDropdownOpen && (
+                <div className="comprar-mega-dropdown">
+                  <div className="dropdown-panel-inner">
+                    <div className="dropdown-header-title">
+                      Catálogo de Activos
+                    </div>
+
+                    {/* Ver Todos */}
+                    <button
+                      type="button"
+                      className={`comprar-dropdown-item ${activeSection === 'all' || activeSection === 'todos' ? 'active-item' : ''}`}
+                      onClick={() => {
+                        if (setActiveSection) setActiveSection('all');
+                        setComprarDropdownOpen(false);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                    >
+                      <div className="item-icon-box">
+                        <Layers size={16} />
+                      </div>
+                      <div className="item-info">
+                        <span className="item-title">Ver Todos los Productos</span>
+                        <span className="item-desc">Explorar catálogo completo</span>
+                      </div>
+                    </button>
+
+                    <div className="dropdown-divider" />
+
+                    {/* Autos */}
+                    <button
+                      type="button"
+                      className={`comprar-dropdown-item ${activeSection === 'autos' ? 'active-item' : ''}`}
+                      onClick={() => {
+                        if (setActiveSection) setActiveSection('autos');
+                        setComprarDropdownOpen(false);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                    >
+                      <div className="item-icon-box">
+                        <Car size={16} />
+                      </div>
+                      <div className="item-info">
+                        <span className="item-title">Autos de Lujo</span>
+                        <span className="item-desc">Deportivos, SUVs & Pick-ups</span>
+                      </div>
+                    </button>
+
+                    {/* Propiedades */}
+                    <button
+                      type="button"
+                      className={`comprar-dropdown-item ${activeSection === 'propiedades' ? 'active-item' : ''}`}
+                      onClick={() => {
+                        if (setActiveSection) setActiveSection('propiedades');
+                        setComprarDropdownOpen(false);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                    >
+                      <div className="item-icon-box">
+                        <Home size={16} />
+                      </div>
+                      <div className="item-info">
+                        <span className="item-title">Propiedades</span>
+                        <span className="item-desc">Casas, Penthouses & Terrenos</span>
+                      </div>
+                    </button>
+
+                    {/* Dynamic Custom Sections */}
+                    {sections && sections.filter(s => s.id !== 'autos' && s.id !== 'propiedades').map(sec => (
+                      <button
+                        key={sec.id}
+                        type="button"
+                        className={`comprar-dropdown-item ${activeSection === sec.id ? 'active-item' : ''}`}
+                        onClick={() => {
+                          if (setActiveSection) setActiveSection(sec.id);
+                          setComprarDropdownOpen(false);
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
+                      >
+                        <div className="item-icon-box">
+                          <SectionIcon icon={sec.icon} iconType={sec.iconType} size={16} />
+                        </div>
+                        <div className="item-info">
+                          <span className="item-title">{sec.name}</span>
+                          <span className="item-desc">
+                            {sec.categories?.length > 0 ? sec.categories.join(', ') : 'Selección de activos'}
+                          </span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
 
             <button
+              type="button"
               className="nav-tab-btn"
               onClick={() => onGoToAbout && onGoToAbout()}
             >
@@ -152,6 +228,7 @@ export default function Header({
             </button>
 
             <button
+              type="button"
               className="nav-tab-btn nav-tab-sell"
               onClick={onGoToSell}
               style={{ color: '#DC2626', fontWeight: 800 }}
@@ -171,7 +248,7 @@ export default function Header({
             </button>
           </div>
 
-          {/* CENTER: Centered Logo */}
+          {/* CENTER: Always Centered Logo */}
           <div className="header-centered-logo">
             <a href="#" className="brand-logo" onClick={handleLogoClick}>
               <span className="logo-text-bold">AF</span>
@@ -181,7 +258,7 @@ export default function Header({
           </div>
 
           {/* RIGHT: Search input with dropdown + Favorites count */}
-          <div className="header-right-actions desktop-nav-only" ref={desktopSearchRef} style={{ position: 'relative' }}>
+          <div className="header-right-actions desktop-nav-only" ref={desktopSearchRef} style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
             <div className="search-wrapper" style={{ position: 'relative' }}>
               <div className="search-pill compact-search">
                 <Search className="search-icon" size={15} />
@@ -235,15 +312,24 @@ export default function Header({
               )}
             </div>
             
-            <button className="nav-tab-btn nav-tab-fav" onClick={onOpenFavorites} style={{ marginLeft: '8px' }}>
-              <Heart size={14} className={favoritesCount > 0 ? 'fill-current text-red-500' : ''} />
-              <span>Favoritos ({favoritesCount})</span>
+            <button
+              className="nav-tab-btn nav-tab-fav"
+              onClick={onOpenFavorites}
+              style={{ marginLeft: '8px', whiteSpace: 'nowrap', flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+            >
+              <Heart size={14} className={favoritesCount > 0 ? 'fill-current text-red-500' : ''} style={{ flexShrink: 0 }} />
+              <span style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>Favoritos ({favoritesCount})</span>
             </button>
 
-            <button className="nav-tab-btn nav-tab-contact" onClick={onGoToContact} style={{ marginLeft: '8px', fontWeight: 700 }}>
+            <button
+              className="nav-tab-btn nav-tab-contact"
+              onClick={onGoToContact}
+              style={{ marginLeft: '8px', fontWeight: 700, whiteSpace: 'nowrap', flexShrink: 0 }}
+            >
               <span>Contacto</span>
             </button>
           </div>
+
 
           {/* MOBILE RIGHT: Favorites Button */}
           <div className="mobile-only-action-right">

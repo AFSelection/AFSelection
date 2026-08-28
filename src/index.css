@@ -255,7 +255,167 @@ h1, h2, h3, h4, .font-display {
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 8px;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  word-break: keep-all !important;
 }
+
+.nav-tab-fav span {
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  word-break: keep-all !important;
+}
+
+/* ¿Qué puedo comprar? Dropdown Lengüeta Overlay */
+.comprar-dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.comprar-mega-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  width: 290px;
+  background: #FFFFFF;
+  border: 1px solid rgba(17, 19, 23, 0.12);
+  border-radius: 20px;
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.12), 0 4px 14px rgba(0, 0, 0, 0.06);
+  padding: 10px;
+  z-index: 1050;
+  transform-origin: top left;
+  animation: dropdownIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes dropdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.dropdown-panel-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dropdown-header-title {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  padding: 6px 12px 4px 12px;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: rgba(17, 19, 23, 0.08);
+  margin: 4px 0;
+}
+
+.comprar-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.comprar-dropdown-item:hover {
+  background: #F4F3EF;
+  transform: translateX(3px);
+}
+
+.comprar-dropdown-item.active-item {
+  background: #111317;
+  color: #FFFFFF !important;
+}
+
+.comprar-dropdown-item.active-item .item-title {
+  color: #FFFFFF !important;
+}
+
+.comprar-dropdown-item.active-item .item-desc {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.comprar-dropdown-item.active-item .item-icon-box {
+  background: rgba(255, 255, 255, 0.18);
+  color: #FFFFFF;
+}
+
+.item-icon-box {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: rgba(17, 19, 23, 0.06);
+  color: #111317;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.item-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.item-title {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #111317;
+  line-height: 1.2;
+}
+
+.item-desc {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 190px;
+}
+
+.dropdown-chevron {
+  transition: transform 0.2s ease;
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
+}
+
+/* Always Centered Logo */
+.header-inner {
+  position: relative !important;
+}
+
+.header-centered-logo {
+  position: absolute !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  z-index: 10 !important;
+  pointer-events: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
 
 /* Button Pill Helpers */
 .btn-pill {

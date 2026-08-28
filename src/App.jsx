@@ -470,13 +470,9 @@ export default function App() {
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             onGoToAbout={handleOpenAbout}
-            onToggleMap={() => {
-              setActiveSection('propiedades');
-              setShowMap(true);
-            }}
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
+            onGoToSell={handleOpenSell}
           />
+
         )}
 
         {/* FUNNEL STAGE 2: Category Options Bar */}

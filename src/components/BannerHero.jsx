@@ -12,11 +12,8 @@ export default function BannerHero({
   onScrollToSection,
   onGoToSection,
   onGoToAbout,
-  onToggleMap,
-  searchQuery,
-  setSearchQuery
+  onGoToSell
 }) {
-  const [localSearch, setLocalSearch] = useState('');
   const [images, setImages] = useState(DEFAULT_IMAGES);
   const [current, setCurrent] = useState(0);
   const [prev, setPrev] = useState(null);
@@ -42,11 +39,6 @@ export default function BannerHero({
     }, SLIDE_DURATION);
     return () => clearTimeout(timer);
   }, [current, images.length, goTo]);
-
-  const handleSearchSubmit = () => {
-    setSearchQuery(localSearch);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
 
   return (
     <section className="split-hero-section">
@@ -117,22 +109,7 @@ export default function BannerHero({
             Selección y gestión de vehículos y propiedades en Tucumán, Salta y Buenos Aires.
           </p>
 
-          {/* Search Bar (Desktop Only) */}
-          <div className="split-search-box desktop-only-search">
-            <Search size={16} className="search-icon-muted" />
-            <input
-              type="text"
-              placeholder="Buscar Toyota, Hilux, Yerba Buena..."
-              value={localSearch}
-              onChange={(e) => setLocalSearch(e.target.value)}
-              onKeyDown={(e) => { if (e.key === 'Enter') handleSearchSubmit(); }}
-            />
-            <button className="split-search-btn" onClick={handleSearchSubmit} title="Buscar">
-              <ArrowRight size={14} />
-            </button>
-          </div>
-
-          {/* CTAs */}
+          {/* CTAs (Explorar Catálogo + Quiero Vender) */}
           <div className="split-actions-row">
             <button
               className="btn-split-primary"
@@ -140,9 +117,13 @@ export default function BannerHero({
             >
               EXPLORAR CATÁLOGO
             </button>
-            <button className="btn-split-secondary desktop-only-btn" onClick={onToggleMap}>
-              <MapPin size={14} />
-              <span>VER MAPA</span>
+
+            <button
+              className="btn-split-secondary"
+              onClick={onGoToSell}
+              style={{ fontWeight: 800 }}
+            >
+              <span>QUIERO VENDER</span>
             </button>
           </div>
         </div>
@@ -156,3 +137,4 @@ export default function BannerHero({
     </section>
   );
 }
+

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Car, Home, Layers, MapPin, Grid, Search, X, TrendingUp } from 'lucide-react';
+import { Car, Home, Layers, MapPin, Grid, Search, X, TrendingUp, ArrowRight } from 'lucide-react';
 import SectionIcon from './SectionIcon';
+
 
 function SpotlightCard({ children, onClick, isActive, className = '' }) {
   const cardRef = React.useRef(null);
@@ -234,7 +235,34 @@ export default function SectionsCategoryBar({
           );
         })}
       </div>
+
+      {/* Search Bar placed right BELOW the section cards */}
+      <div className="category-bar-search-container">
+        <div className="category-bar-search-box">
+          <Search size={18} className="search-icon-muted" />
+          <input
+            type="text"
+            placeholder="Buscar por marca, modelo, ubicación o categoría (ej: Toyota, Hilux, Yerba Buena...)"
+            value={localSearch}
+            onChange={(e) => setLocalSearch(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && setSearchQuery) {
+                setSearchQuery(localSearch);
+              }
+            }}
+          />
+          <button
+            type="button"
+            className="category-bar-search-btn"
+            onClick={() => setSearchQuery && setSearchQuery(localSearch)}
+            title="Buscar"
+          >
+            <ArrowRight size={16} />
+          </button>
+        </div>
+      </div>
     </section>
   );
 }
+
 

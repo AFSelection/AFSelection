@@ -187,7 +187,7 @@ export default function SectionsCategoryBar({
           </div>
 
           <div className="cat-card-bottom">
-            <h3 className="cat-card-title">AUTOS DE LUJO</h3>
+            <h3 className="cat-card-title">AUTOS</h3>
             <p className="cat-card-desc">Deportivos, SUVs & Pick-ups</p>
           </div>
         </SpotlightCard>

@@ -17,11 +17,7 @@ export default function InquiryModal({ item, onClose }) {
 
   const formatPrice = (val) => {
     if (!val) return '';
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: item.currency || 'USD',
-      maximumFractionDigits: 0
-    }).format(val);
+    return `${item.currency || 'USD'} ${Number(val).toLocaleString('es-AR')}`;
   };
 
   const handleSubmit = async (e) => {

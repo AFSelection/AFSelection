@@ -49,8 +49,8 @@ export default function ListingCard({
         <div className="wander-top-badges">
           <div className="card-top-left-stack">
             <div className="price-pill-badge">
-              <span>USD</span>
-              <span>{item.price?.toLocaleString()}</span>
+              <span>{item.currency || 'USD'}</span>
+              <span>{item.price?.toLocaleString('es-AR')}</span>
             </div>
 
             {isDiscount && (

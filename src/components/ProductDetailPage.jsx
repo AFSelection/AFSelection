@@ -50,11 +50,8 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
   ];
 
   const formatPrice = (val) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: item.currency || 'USD',
-      maximumFractionDigits: 0
-    }).format(val);
+    if (val === undefined || val === null) return '';
+    return `${item.currency || 'USD'} ${Number(val).toLocaleString('es-AR')}`;
   };
 
   const handleLeadSubmit = async (e) => {
@@ -360,7 +357,7 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
             {Boolean(item.isOffer) && item.oldPrice && Number(item.oldPrice) > Number(item.price) && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '4px', marginBottom: '2px' }}>
                 <span style={{ textDecoration: 'line-through', color: 'var(--text-muted)', fontSize: '1.1rem', fontWeight: '700' }}>
-                  {item.currency || 'USD'} {Number(item.oldPrice).toLocaleString()}
+                  {item.currency || 'USD'} {Number(item.oldPrice).toLocaleString('es-AR')}
                 </span>
                 <span style={{ background: '#10B981', color: '#FFF', padding: '3px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: '800' }}>
                   -{Math.round(((Number(item.oldPrice) - Number(item.price)) / Number(item.oldPrice)) * 100)}% OFF

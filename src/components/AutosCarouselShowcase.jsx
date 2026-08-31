@@ -51,7 +51,7 @@ export default function AutosCarouselShowcase({
           </div>
           <div>
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.9rem', color: '#FFF', lineHeight: '1.05' }}>
-              GARAJE DE AUTOS
+              AUTOS
             </h2>
           </div>
         </div>

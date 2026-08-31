@@ -15,11 +15,8 @@ export default function ListingDetailsModal({ item, onClose, onOpenInquiry }) {
   ];
 
   const formatPrice = (val) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: item.currency || 'USD',
-      maximumFractionDigits: 0
-    }).format(val);
+    if (val === undefined || val === null) return '';
+    return `${item.currency || 'USD'} ${Number(val).toLocaleString('es-AR')}`;
   };
 
   const handleLeadSubmit = (e) => {

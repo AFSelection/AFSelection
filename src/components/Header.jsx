@@ -169,7 +169,7 @@ export default function Header({
                         <Car size={16} />
                       </div>
                       <div className="item-info">
-                        <span className="item-title">Autos de Lujo</span>
+                        <span className="item-title">Autos</span>
                         <span className="item-desc">Deportivos, SUVs & Pick-ups</span>
                       </div>
                     </button>

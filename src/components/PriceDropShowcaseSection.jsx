@@ -26,6 +26,7 @@ export default function PriceDropShowcaseSection({ listings = [], onSelectListin
         category: item.category,
         oldPrice: item.oldPrice,
         newPrice: item.price,
+        currency: item.currency || 'USD',
         discount: `-${discountPct}%`,
         image: item.images?.[0] || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80',
         location: item.location,
@@ -75,7 +76,7 @@ export default function PriceDropShowcaseSection({ listings = [], onSelectListin
             key={item.id}
             className="price-drop-card"
             onClick={() => onSelectListing({
-              ...item,
+              ...item.rawItem,
               price: item.newPrice,
               subtitle: `Oportunidad con ${item.discount} de rebaja directa.`
             })}
@@ -90,8 +91,8 @@ export default function PriceDropShowcaseSection({ listings = [], onSelectListin
               <h3 className="pd-title-text">{item.title}</h3>
 
               <div className="pd-price-row">
-                <span className="pd-old-price">USD {item.oldPrice.toLocaleString()}</span>
-                <div className="pd-new-price">USD {item.newPrice.toLocaleString()}</div>
+                <span className="pd-old-price">{item.currency} {Number(item.oldPrice).toLocaleString('es-AR')}</span>
+                <div className="pd-new-price">{item.currency} {Number(item.newPrice).toLocaleString('es-AR')}</div>
               </div>
             </div>
           </div>

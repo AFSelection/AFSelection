@@ -84,7 +84,7 @@ export default function CatalogHeaderBanner({
       };
     }
     if (activeSection === 'autos') {
-      return { title: 'GARAJE DE AUTOS', subtitle: 'Vehículos inspeccionados y listos para transferir.' };
+      return { title: 'AUTOS', subtitle: 'Vehículos inspeccionados y listos para transferir.' };
     }
     if (activeSection === 'propiedades') {
       return { title: 'PROPIEDADES', subtitle: 'Casas, departamentos y terrenos en venta.' };

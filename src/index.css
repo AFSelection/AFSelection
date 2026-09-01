@@ -979,9 +979,15 @@ h1, h2, h3, h4, .font-display {
 }
 
 .sections-cards-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 14px;
+  width: 100%;
+}
+
+.sections-cards-row > * {
+  flex: 1 1 240px;
+  min-width: 220px;
 }
 
 .cat-banner-card {

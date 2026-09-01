@@ -73,6 +73,49 @@ export default function SectionsCategoryBar({
     return 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&q=80';
   };
 
+  // Build unified array of all section cards
+  const allSectionCards = [
+    {
+      id: 'autos',
+      name: 'AUTOS',
+      badge: '01 / AUTOS',
+      icon: <Car size={22} className="cat-icon-gold" />,
+      desc: 'Deportivos, SUVs & Pick-ups'
+    },
+    {
+      id: 'propiedades',
+      name: 'PROPIEDADES',
+      badge: '02 / PROPIEDADES',
+      icon: <Home size={22} className="cat-icon-gold" />,
+      desc: 'Casas, Penthouses & Terrenos'
+    },
+    ...sections
+      .filter((s) => s.id !== 'autos' && s.id !== 'propiedades')
+      .map((sec, idx) => ({
+        id: sec.id,
+        name: sec.name.toUpperCase(),
+        badge: `${String(idx + 3).padStart(2, '0')} / ${sec.name.toUpperCase()}`,
+        icon: getSectionIcon(sec.icon, sec.id, true),
+        desc: sec.id === 'inversiones'
+          ? 'Desarrollos, Pozos & Oportunidades'
+          : (sec.categories?.length > 0 ? sec.categories.join(', ') : 'Selección de activos')
+      }))
+  ];
+
+  const totalCount = allSectionCards.length;
+  let topRowItems = [];
+  let bottomRowItems = [];
+
+  if (totalCount <= 4) {
+    topRowItems = allSectionCards;
+    bottomRowItems = [];
+  } else {
+    const isEven = totalCount % 2 === 0;
+    const topCount = isEven ? totalCount / 2 : Math.ceil(totalCount / 2);
+    topRowItems = allSectionCards.slice(0, topCount);
+    bottomRowItems = allSectionCards.slice(topCount);
+  }
+
   return (
     <section className="sections-bar-container">
       {/* Header Row (Desktop Only) */}
@@ -176,64 +219,47 @@ export default function SectionsCategoryBar({
 
       {/* DESKTOP CATEGORY CARDS GRID (Hidden on Mobile) */}
       <div className="sections-cards-row desktop-cards-grid">
-        {/* Autos Card */}
-        <SpotlightCard
-          onClick={() => setActiveSection('autos')}
-          isActive={activeSection === 'autos'}
-        >
-          <div className="cat-card-top">
-            <span className="cat-badge-pill">01 / AUTOS</span>
-            <Car size={22} className="cat-icon-gold" />
+        {topRowItems.length > 0 && (
+          <div className="sections-row-grid" style={{ display: 'grid', gridTemplateColumns: `repeat(${topRowItems.length}, 1fr)`, gap: '14px', width: '100%' }}>
+            {topRowItems.map((card) => (
+              <SpotlightCard
+                key={card.id}
+                onClick={() => setActiveSection(card.id)}
+                isActive={activeSection === card.id}
+              >
+                <div className="cat-card-top">
+                  <span className="cat-badge-pill">{card.badge}</span>
+                  {card.icon}
+                </div>
+                <div className="cat-card-bottom">
+                  <h3 className="cat-card-title">{card.name}</h3>
+                  <p className="cat-card-desc">{card.desc}</p>
+                </div>
+              </SpotlightCard>
+            ))}
           </div>
+        )}
 
-          <div className="cat-card-bottom">
-            <h3 className="cat-card-title">AUTOS</h3>
-            <p className="cat-card-desc">Deportivos, SUVs & Pick-ups</p>
+        {bottomRowItems.length > 0 && (
+          <div className="sections-row-grid" style={{ display: 'grid', gridTemplateColumns: `repeat(${bottomRowItems.length}, 1fr)`, gap: '14px', width: '100%' }}>
+            {bottomRowItems.map((card) => (
+              <SpotlightCard
+                key={card.id}
+                onClick={() => setActiveSection(card.id)}
+                isActive={activeSection === card.id}
+              >
+                <div className="cat-card-top">
+                  <span className="cat-badge-pill">{card.badge}</span>
+                  {card.icon}
+                </div>
+                <div className="cat-card-bottom">
+                  <h3 className="cat-card-title">{card.name}</h3>
+                  <p className="cat-card-desc">{card.desc}</p>
+                </div>
+              </SpotlightCard>
+            ))}
           </div>
-        </SpotlightCard>
-
-        {/* Propiedades Card */}
-        <SpotlightCard
-          onClick={() => setActiveSection('propiedades')}
-          isActive={activeSection === 'propiedades'}
-        >
-          <div className="cat-card-top">
-            <span className="cat-badge-pill">02 / PROPIEDADES</span>
-            <Home size={22} className="cat-icon-gold" />
-          </div>
-
-          <div className="cat-card-bottom">
-            <h3 className="cat-card-title">PROPIEDADES</h3>
-            <p className="cat-card-desc">Casas, Penthouses & Terrenos</p>
-          </div>
-        </SpotlightCard>
-
-        {/* Dynamic Custom Sections */}
-        {sections.filter((s) => s.id !== 'autos' && s.id !== 'propiedades').map((sec, idx) => {
-          const numberStr = String(idx + 3).padStart(2, '0');
-          const desc = sec.id === 'inversiones'
-            ? 'Desarrollos, Pozos & Oportunidades'
-            : (sec.categories?.length > 0 ? sec.categories.join(', ') : 'Selección de activos');
-
-          return (
-            <SpotlightCard
-              key={sec.id}
-              onClick={() => setActiveSection(sec.id)}
-              isActive={activeSection === sec.id}
-            >
-              <div className="cat-card-top">
-                <span className="cat-badge-pill">{numberStr} / {sec.name.toUpperCase()}</span>
-                {getSectionIcon(sec.icon, sec.id, true)}
-              </div>
-
-
-              <div className="cat-card-bottom">
-                <h3 className="cat-card-title">{sec.name.toUpperCase()}</h3>
-                <p className="cat-card-desc">{desc}</p>
-              </div>
-            </SpotlightCard>
-          );
-        })}
+        )}
       </div>
 
       {/* Search Bar placed right BELOW the section cards */}

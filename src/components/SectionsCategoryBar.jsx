@@ -132,35 +132,6 @@ export default function SectionsCategoryBar({
         </button>
       </div>
 
-      {/* MOBILE INTEGRATED SEARCH BAR (Visible ONLY on Mobile) */}
-      <div className="mobile-search-bar-wrap">
-        <div className="mobile-integrated-search-box">
-          <Search size={16} style={{ color: 'var(--text-muted)', flexShrink: 0 }} />
-          <input
-            type="text"
-            placeholder="Buscar por Toyota, Hilux, Yerba Buena..."
-            value={localSearch}
-            onChange={(e) => {
-              setLocalSearch(e.target.value);
-              if (setSearchQuery) setSearchQuery(e.target.value);
-            }}
-          />
-          {localSearch && (
-            <button
-              type="button"
-              className="clear-search-btn"
-              onClick={() => {
-                setLocalSearch('');
-                if (setSearchQuery) setSearchQuery('');
-              }}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center', color: 'var(--text-muted)' }}
-            >
-              <X size={15} />
-            </button>
-          )}
-        </div>
-      </div>
-
       {/* CATEGORY CARDS GRID */}
       <div className="sections-cards-row">
         {/* Desktop Layout (> 768px): Controlled by CSS .cards-desktop-only */}
@@ -210,21 +181,17 @@ export default function SectionsCategoryBar({
 
         {/* Mobile Layout (< 768px): Controlled by CSS .cards-mobile-only */}
         <div className="cards-mobile-only">
-          {allSectionCards.map((card, idx) => {
-            const isLastOdd = (allSectionCards.length % 2 !== 0) && (idx === allSectionCards.length - 1);
+          {allSectionCards.filter((card) => card.id !== 'all').map((card, idx, filteredArr) => {
+            const isLastOdd = (filteredArr.length % 2 !== 0) && (idx === filteredArr.length - 1);
             return (
               <div key={card.id} style={{ gridColumn: isLastOdd ? 'span 2 / span 2' : 'auto' }}>
                 <SpotlightCard
                   onClick={() => setActiveSection(card.id)}
                   isActive={activeSection === card.id}
                 >
-                  <div className="cat-card-top">
-                    <span className="cat-badge-pill">{card.badge}</span>
-                    {card.icon}
-                  </div>
-                  <div className="cat-card-bottom">
-                    <h3 className="cat-card-title">{card.name}</h3>
-                    <p className="cat-card-desc">{card.desc}</p>
+                  <div className="cat-card-mobile-single-line">
+                    <div className="cat-card-mobile-icon">{card.icon}</div>
+                    <span className="cat-card-mobile-title">{card.name}</span>
                   </div>
                 </SpotlightCard>
               </div>

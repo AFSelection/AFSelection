@@ -985,6 +985,17 @@ h1, h2, h3, h4, .font-display {
   width: 100%;
 }
 
+.cards-desktop-only {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+.cards-mobile-only {
+  display: none !important;
+}
+
 .cat-banner-card {
   position: relative;
   height: 94px;
@@ -3243,17 +3254,7 @@ h1, h2, h3, h4, .font-display {
     margin-bottom: 28px !important;
   }
 
-/* Section Cards Desktop vs Mobile Layout Controller */
-.cards-desktop-only {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  width: 100%;
-}
 
-.cards-mobile-only {
-  display: none !important;
-}
 
 @media (max-width: 767px) {
   .sections-bar-container {

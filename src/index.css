@@ -3263,17 +3263,40 @@ h1, h2, h3, h4, .font-display {
     box-sizing: border-box !important;
     width: 100% !important;
     max-width: 100% !important;
+    margin-bottom: 24px !important;
+  }
+
+  .sections-bar-header {
+    order: 1 !important;
+    margin-bottom: 12px !important;
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+  }
+
+  .sections-main-head {
+    font-size: 1.12rem !important;
+    font-weight: 900 !important;
+    white-space: nowrap !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+    letter-spacing: 0.02em !important;
+  }
+
+  .all-sections-btn {
+    display: none !important;
   }
 
   .category-bar-search-container {
-    order: 1 !important;
-    margin-bottom: 12px !important;
+    order: 2 !important;
+    margin-bottom: 14px !important;
     width: 100% !important;
     padding: 0 !important;
   }
 
   .sections-cards-row {
-    order: 2 !important;
+    order: 3 !important;
     width: 100% !important;
   }
 
@@ -3289,40 +3312,44 @@ h1, h2, h3, h4, .font-display {
   }
 
   .cat-banner-card {
-    height: 52px !important;
-    padding: 0 14px !important;
-    border-radius: 14px !important;
+    height: 94px !important;
+    padding: 12px 14px !important;
+    border-radius: 16px !important;
     display: flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
   }
 
-  .cat-card-mobile-single-line {
+  .cat-card-top {
     display: flex !important;
+    justify-content: space-between !important;
     align-items: center !important;
-    gap: 10px !important;
-    width: 100% !important;
-    overflow: hidden !important;
+    margin-bottom: 4px !important;
   }
 
-  .cat-card-mobile-icon {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    flex-shrink: 0 !important;
-    color: var(--accent-gold, #D4AF37) !important;
-  }
-
-  .cat-card-mobile-title {
-    font-family: 'Outfit', sans-serif !important;
-    font-size: 0.9rem !important;
-    font-weight: 800 !important;
-    color: #FFFFFF !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.03em !important;
+  .cat-card-title {
+    font-size: 0.98rem !important;
+    font-weight: 900 !important;
+    line-height: 1.1 !important;
+    margin: 0 !important;
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
+  }
+
+  .cat-card-desc {
+    font-size: 0.66rem !important;
+    line-height: 1.15 !important;
+    opacity: 0.75 !important;
+    margin-top: 2px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .cat-badge-pill {
+    font-size: 0.6rem !important;
+    padding: 2px 7px !important;
   }
 }
 

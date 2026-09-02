@@ -118,14 +118,14 @@ export default function SectionsCategoryBar({
 
   return (
     <section className="sections-bar-container">
-      {/* Header Row (Desktop Only) */}
-      <div className="sections-bar-header desktop-only-header">
+      {/* Header Row */}
+      <div className="sections-bar-header">
         <div className="sections-title-group">
           <h2 className="sections-main-head">SECCIONES DE PRODUCTOS</h2>
         </div>
 
         <button
-          className={`btn-square-sm ${activeSection === 'all' ? 'active' : ''}`}
+          className={`btn-square-sm all-sections-btn ${activeSection === 'all' ? 'active' : ''}`}
           onClick={() => setActiveSection('all')}
         >
           <span>TODAS LAS SECCIONES</span>
@@ -189,9 +189,13 @@ export default function SectionsCategoryBar({
                   onClick={() => setActiveSection(card.id)}
                   isActive={activeSection === card.id}
                 >
-                  <div className="cat-card-mobile-single-line">
-                    <div className="cat-card-mobile-icon">{card.icon}</div>
-                    <span className="cat-card-mobile-title">{card.name}</span>
+                  <div className="cat-card-top">
+                    <span className="cat-badge-pill">{card.badge}</span>
+                    {card.icon}
+                  </div>
+                  <div className="cat-card-bottom">
+                    <h3 className="cat-card-title">{card.name}</h3>
+                    <p className="cat-card-desc">{card.desc}</p>
                   </div>
                 </SpotlightCard>
               </div>

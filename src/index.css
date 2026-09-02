@@ -3267,18 +3267,25 @@ h1, h2, h3, h4, .font-display {
     margin-bottom: 24px !important;
   }
 
-  /* 1. Search Bar on top on mobile */
+  /* 1. Search Bar on top on mobile - 100% width matching cards grid + generous spacing */
   .category-bar-search-container {
     order: 1 !important;
-    margin-bottom: 16px !important;
     width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 28px 0 !important;
     padding: 0 !important;
+  }
+
+  .category-bar-search-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   /* 2. Section Title Header BELOW the search bar on mobile */
   .sections-bar-header {
     order: 2 !important;
-    margin-bottom: 14px !important;
+    margin-bottom: 16px !important;
     width: 100% !important;
     display: flex !important;
     align-items: center !important;

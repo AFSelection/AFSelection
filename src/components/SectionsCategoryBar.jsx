@@ -179,28 +179,22 @@ export default function SectionsCategoryBar({
           )}
         </div>
 
-        {/* Mobile Layout (< 768px): Controlled by CSS .cards-mobile-only */}
+        {/* Mobile Layout (< 768px): Horizontal Carousel of Square Section Shortcuts */}
         <div className="cards-mobile-only">
-          {allSectionCards.filter((card) => card.id !== 'all').map((card, idx, filteredArr) => {
-            const isLastOdd = (filteredArr.length % 2 !== 0) && (idx === filteredArr.length - 1);
-            return (
-              <div key={card.id} style={{ gridColumn: isLastOdd ? 'span 2 / span 2' : 'auto' }}>
-                <SpotlightCard
-                  onClick={() => setActiveSection(card.id)}
-                  isActive={activeSection === card.id}
-                >
-                  <div className="cat-card-top">
-                    <span className="cat-badge-pill">{card.badge}</span>
-                    {card.icon}
-                  </div>
-                  <div className="cat-card-bottom">
-                    <h3 className="cat-card-title">{card.name}</h3>
-                    <p className="cat-card-desc">{card.desc}</p>
-                  </div>
-                </SpotlightCard>
-              </div>
-            );
-          })}
+          <div className="mobile-carousel-track">
+            {allSectionCards.filter((card) => card.id !== 'all').map((card) => (
+              <button
+                key={card.id}
+                className={`mobile-carousel-item ${activeSection === card.id ? 'active' : ''}`}
+                onClick={() => setActiveSection(card.id)}
+              >
+                <div className="mobile-square-box">
+                  {card.icon}
+                </div>
+                <span className="mobile-square-label">{card.name}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 

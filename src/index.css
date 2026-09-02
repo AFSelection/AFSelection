@@ -3324,17 +3324,18 @@ h1, h2, h3, h4, .font-display {
   .mobile-carousel-track {
     display: flex !important;
     align-items: flex-start !important;
-    gap: 14px !important;
+    gap: 16px !important;
     overflow-x: auto !important;
     overflow-y: visible !important;
     width: calc(100% + 32px) !important;
     margin-left: -16px !important;
     margin-right: -16px !important;
-    padding: 8px 16px 16px 16px !important;
+    padding: 8px 24px 16px 16px !important;
     box-sizing: border-box !important;
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;
     -webkit-overflow-scrolling: touch !important;
+    scroll-snap-type: x mandatory !important;
   }
 
   .mobile-carousel-track::-webkit-scrollbar {
@@ -3345,14 +3346,16 @@ h1, h2, h3, h4, .font-display {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
-    gap: 8px !important;
+    gap: 6px !important;
     background: transparent !important;
     border: none !important;
     padding: 0 !important;
     cursor: pointer !important;
     flex-shrink: 0 !important;
-    width: 76px !important;
+    width: auto !important;
+    min-width: 66px !important;
     outline: none !important;
+    scroll-snap-align: start !important;
   }
 
   .mobile-square-box {
@@ -3379,17 +3382,15 @@ h1, h2, h3, h4, .font-display {
 
   .mobile-square-label {
     font-family: 'Outfit', sans-serif !important;
-    font-size: 0.68rem !important;
+    font-size: 0.65rem !important;
     font-weight: 800 !important;
     color: #111317 !important;
     text-transform: uppercase !important;
     letter-spacing: 0.02em !important;
     text-align: center !important;
-    max-width: 76px !important;
-    width: 100% !important;
-    line-height: 1.15 !important;
-    white-space: normal !important;
-    word-break: break-word !important;
+    white-space: nowrap !important;
+    width: auto !important;
+    max-width: 100% !important;
   }
 }
 

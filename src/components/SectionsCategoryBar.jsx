@@ -161,10 +161,10 @@ export default function SectionsCategoryBar({
         </div>
       </div>
 
-      {/* CATEGORY CARDS GRID (Mobile & Desktop Luxury Dark Spotlight Cards) */}
+      {/* CATEGORY CARDS GRID */}
       <div className="sections-cards-row">
-        {/* Desktop Layout (> 768px): Computed Balanced Row Grids */}
-        <div className="hidden md:flex md:flex-col md:gap-3.5 w-full">
+        {/* Desktop Layout (> 768px): Controlled by CSS .cards-desktop-only */}
+        <div className="cards-desktop-only">
           {topRowItems.length > 0 && (
             <div className="sections-row-grid" style={{ display: 'grid', gridTemplateColumns: `repeat(${topRowItems.length}, 1fr)`, gap: '14px', width: '100%' }}>
               {topRowItems.map((card) => (
@@ -208,12 +208,12 @@ export default function SectionsCategoryBar({
           )}
         </div>
 
-        {/* Mobile Layout (< 768px): 2-Column Luxury Cards Grid with full width for odd last item */}
-        <div className="grid md:hidden grid-cols-2 gap-2.5 w-full">
+        {/* Mobile Layout (< 768px): Controlled by CSS .cards-mobile-only */}
+        <div className="cards-mobile-only">
           {allSectionCards.map((card, idx) => {
             const isLastOdd = (allSectionCards.length % 2 !== 0) && (idx === allSectionCards.length - 1);
             return (
-              <div key={card.id} className={isLastOdd ? 'col-span-2' : 'col-span-1'}>
+              <div key={card.id} style={{ gridColumn: isLastOdd ? 'span 2 / span 2' : 'auto' }}>
                 <SpotlightCard
                   onClick={() => setActiveSection(card.id)}
                   isActive={activeSection === card.id}

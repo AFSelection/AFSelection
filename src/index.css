@@ -3244,17 +3244,15 @@ h1, h2, h3, h4, .font-display {
   }
 
 /* Section Cards Desktop vs Mobile Layout Controller */
-@media (min-width: 768px) {
-  .cards-desktop-only {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 14px !important;
-    width: 100% !important;
-  }
+.cards-desktop-only {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
 
-  .cards-mobile-only {
-    display: none !important;
-  }
+.cards-mobile-only {
+  display: none !important;
 }
 
 @media (max-width: 767px) {

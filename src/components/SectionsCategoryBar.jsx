@@ -161,105 +161,76 @@ export default function SectionsCategoryBar({
         </div>
       </div>
 
-      {/* MOBILE MERCADO LIBRE STYLE SQUARE SHORTCUTS (Visible ONLY on Mobile) */}
-      <div className="mobile-meli-shortcuts-wrapper">
-        <div className="mobile-meli-shortcuts-row">
-          {/* Todas Shortcut */}
-          <button
-            className={`mobile-shortcut-item ${activeSection === 'all' ? 'active' : ''}`}
-            onClick={() => setActiveSection('all')}
-          >
-            <div className="mobile-shortcut-square">
-              <Grid size={24} className="shortcut-icon" />
+      {/* CATEGORY CARDS GRID (Mobile & Desktop Luxury Dark Spotlight Cards) */}
+      <div className="sections-cards-row">
+        {/* Desktop Layout (> 768px): Computed Balanced Row Grids */}
+        <div className="hidden md:flex md:flex-col md:gap-3.5 w-full">
+          {topRowItems.length > 0 && (
+            <div className="sections-row-grid" style={{ display: 'grid', gridTemplateColumns: `repeat(${topRowItems.length}, 1fr)`, gap: '14px', width: '100%' }}>
+              {topRowItems.map((card) => (
+                <SpotlightCard
+                  key={card.id}
+                  onClick={() => setActiveSection(card.id)}
+                  isActive={activeSection === card.id}
+                >
+                  <div className="cat-card-top">
+                    <span className="cat-badge-pill">{card.badge}</span>
+                    {card.icon}
+                  </div>
+                  <div className="cat-card-bottom">
+                    <h3 className="cat-card-title">{card.name}</h3>
+                    <p className="cat-card-desc">{card.desc}</p>
+                  </div>
+                </SpotlightCard>
+              ))}
             </div>
-            <span className="mobile-shortcut-label">TODAS</span>
-          </button>
+          )}
 
-          {/* Autos Shortcut */}
-          <button
-            className={`mobile-shortcut-item ${activeSection === 'autos' ? 'active' : ''}`}
-            onClick={() => setActiveSection('autos')}
-          >
-            <div className="mobile-shortcut-square img-shortcut" style={{ backgroundImage: `url("${getSectionBgImage('autos')}")` }}>
-              <div className="shortcut-img-overlay">
-                <Car size={22} className="shortcut-icon-light" />
-              </div>
+          {bottomRowItems.length > 0 && (
+            <div className="sections-row-grid" style={{ display: 'grid', gridTemplateColumns: `repeat(${bottomRowItems.length}, 1fr)`, gap: '14px', width: '100%' }}>
+              {bottomRowItems.map((card) => (
+                <SpotlightCard
+                  key={card.id}
+                  onClick={() => setActiveSection(card.id)}
+                  isActive={activeSection === card.id}
+                >
+                  <div className="cat-card-top">
+                    <span className="cat-badge-pill">{card.badge}</span>
+                    {card.icon}
+                  </div>
+                  <div className="cat-card-bottom">
+                    <h3 className="cat-card-title">{card.name}</h3>
+                    <p className="cat-card-desc">{card.desc}</p>
+                  </div>
+                </SpotlightCard>
+              ))}
             </div>
-            <span className="mobile-shortcut-label">AUTOS</span>
-          </button>
-
-          {/* Propiedades Shortcut */}
-          <button
-            className={`mobile-shortcut-item ${activeSection === 'propiedades' ? 'active' : ''}`}
-            onClick={() => setActiveSection('propiedades')}
-          >
-            <div className="mobile-shortcut-square img-shortcut" style={{ backgroundImage: `url("${getSectionBgImage('propiedades')}")` }}>
-              <div className="shortcut-img-overlay">
-                <Home size={22} className="shortcut-icon-light" />
-              </div>
-            </div>
-            <span className="mobile-shortcut-label">PROPIEDADES</span>
-          </button>
-
-          {/* Dynamic Custom Sections */}
-          {sections.filter((s) => s.id !== 'autos' && s.id !== 'propiedades').map((sec) => (
-            <button
-              key={sec.id}
-              className={`mobile-shortcut-item ${activeSection === sec.id ? 'active' : ''}`}
-              onClick={() => setActiveSection(sec.id)}
-            >
-              <div className="mobile-shortcut-square dark-shortcut">
-                {getSectionIcon(sec.icon, sec.id, true)}
-              </div>
-              <span className="mobile-shortcut-label">{sec.name.toUpperCase()}</span>
-            </button>
-          ))}
+          )}
         </div>
-      </div>
 
-      {/* DESKTOP CATEGORY CARDS GRID (Hidden on Mobile) */}
-      <div className="sections-cards-row desktop-cards-grid">
-        {topRowItems.length > 0 && (
-          <div className="sections-row-grid" style={{ display: 'grid', gridTemplateColumns: `repeat(${topRowItems.length}, 1fr)`, gap: '14px', width: '100%' }}>
-            {topRowItems.map((card) => (
-              <SpotlightCard
-                key={card.id}
-                onClick={() => setActiveSection(card.id)}
-                isActive={activeSection === card.id}
-              >
-                <div className="cat-card-top">
-                  <span className="cat-badge-pill">{card.badge}</span>
-                  {card.icon}
-                </div>
-                <div className="cat-card-bottom">
-                  <h3 className="cat-card-title">{card.name}</h3>
-                  <p className="cat-card-desc">{card.desc}</p>
-                </div>
-              </SpotlightCard>
-            ))}
-          </div>
-        )}
-
-        {bottomRowItems.length > 0 && (
-          <div className="sections-row-grid" style={{ display: 'grid', gridTemplateColumns: `repeat(${bottomRowItems.length}, 1fr)`, gap: '14px', width: '100%' }}>
-            {bottomRowItems.map((card) => (
-              <SpotlightCard
-                key={card.id}
-                onClick={() => setActiveSection(card.id)}
-                isActive={activeSection === card.id}
-              >
-                <div className="cat-card-top">
-                  <span className="cat-badge-pill">{card.badge}</span>
-                  {card.icon}
-                </div>
-                <div className="cat-card-bottom">
-                  <h3 className="cat-card-title">{card.name}</h3>
-                  <p className="cat-card-desc">{card.desc}</p>
-                </div>
-              </SpotlightCard>
-            ))}
-          </div>
-        )}
+        {/* Mobile Layout (< 768px): 2-Column Luxury Cards Grid with full width for odd last item */}
+        <div className="grid md:hidden grid-cols-2 gap-2.5 w-full">
+          {allSectionCards.map((card, idx) => {
+            const isLastOdd = (allSectionCards.length % 2 !== 0) && (idx === allSectionCards.length - 1);
+            return (
+              <div key={card.id} className={isLastOdd ? 'col-span-2' : 'col-span-1'}>
+                <SpotlightCard
+                  onClick={() => setActiveSection(card.id)}
+                  isActive={activeSection === card.id}
+                >
+                  <div className="cat-card-top">
+                    <span className="cat-badge-pill">{card.badge}</span>
+                    {card.icon}
+                  </div>
+                  <div className="cat-card-bottom">
+                    <h3 className="cat-card-title">{card.name}</h3>
+                    <p className="cat-card-desc">{card.desc}</p>
+                  </div>
+                </SpotlightCard>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       {/* Search Bar placed right BELOW the section cards */}

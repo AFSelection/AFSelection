@@ -3243,120 +3243,27 @@ h1, h2, h3, h4, .font-display {
     margin-bottom: 28px !important;
   }
 
-  .desktop-only-header {
-    display: none !important;
-  }
-
-  .desktop-cards-grid {
-    display: none !important;
-  }
-
-  .mobile-meli-shortcuts-wrapper {
-    display: block !important;
-    width: 100% !important;
-  }
-
-  .mobile-meli-shortcuts-row {
-    display: flex !important;
-    align-items: flex-start !important;
-    justify-content: space-around !important;
-    gap: 8px !important;
-    overflow-x: auto !important;
+  /* Mobile Category Cards Styling (Matching Desktop Luxury Dark Theme) */
+  .cat-banner-card {
+    height: 86px !important;
     padding: 12px 14px !important;
-    background: #FFFFFF !important;
-    border: 1px solid var(--border-light) !important;
-    border-radius: 18px !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
-    scrollbar-width: none !important;
-    -ms-overflow-style: none !important;
-  }
-
-  .mobile-meli-shortcuts-row::-webkit-scrollbar {
-    display: none !important;
-  }
-
-  .mobile-shortcut-item {
-    background: transparent !important;
-    border: none !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    gap: 6px !important;
-    cursor: pointer !important;
-    flex: 1 !important;
-    min-width: 64px !important;
-    outline: none !important;
-    padding: 0 !important;
-  }
-
-  .mobile-shortcut-square {
-    width: 54px !important;
-    height: 54px !important;
     border-radius: 16px !important;
-    background: var(--bg-canvas) !important;
-    border: 1px solid var(--border-light) !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    color: #111317 !important;
-    overflow: hidden !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
-    transition: all 0.2s ease !important;
   }
 
-  .mobile-shortcut-square.img-shortcut {
-    background-size: cover !important;
-    background-position: center !important;
-    position: relative !important;
-  }
-
-  .shortcut-img-overlay {
-    position: absolute !important;
-    inset: 0 !important;
-    background: rgba(17, 19, 23, 0.52) !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    color: #FFFFFF !important;
-  }
-
-  .shortcut-icon-light {
-    color: #FFFFFF !important;
-  }
-
-  .mobile-shortcut-square.dark-shortcut {
-    background: #111317 !important;
-    color: #FFFFFF !important;
-    border-color: #111317 !important;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15) !important;
-  }
-
-  .mobile-shortcut-square.map-shortcut {
-    background: #111317 !important;
-    color: var(--accent-gold) !important;
-    border-color: #111317 !important;
-  }
-
-  .shortcut-icon-gold {
-    color: var(--accent-gold) !important;
-  }
-
-  .mobile-shortcut-item.active .mobile-shortcut-square {
-    border: 2px solid #111317 !important;
-    transform: scale(1.06) !important;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18) !important;
-  }
-
-  .mobile-shortcut-label {
-    font-family: 'Outfit', sans-serif !important;
-    font-size: 0.65rem !important;
-    font-weight: 800 !important;
-    letter-spacing: 0.02em !important;
-    color: #111317 !important;
-    text-transform: uppercase !important;
-    text-align: center !important;
+  .cat-card-title {
+    font-size: 1.02rem !important;
     line-height: 1.1 !important;
-    white-space: nowrap !important;
+  }
+
+  .cat-card-desc {
+    font-size: 0.68rem !important;
+    line-height: 1.2 !important;
+    opacity: 0.75 !important;
+  }
+
+  .cat-badge-pill {
+    font-size: 0.62rem !important;
+    padding: 2px 7px !important;
   }
 
   /* BAJARON DE PRECIO (PRICE DROP SECTION) MOBILE ADAPTATION */

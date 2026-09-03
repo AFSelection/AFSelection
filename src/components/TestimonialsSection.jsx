@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, ExternalLink, Star, Heart, CheckCircle2, ArrowUpRight } from 'lucide-react';
+import { MapPin, Star, Heart, CheckCircle2, ArrowUpRight } from 'lucide-react';
 import { fetchSiteSetting, DEFAULT_TESTIMONIALS_SECTION } from '../services/storage';
+
+const FALLBACK_TESTIMONIAL_IMAGES = [
+  'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80'
+];
 
 export default function TestimonialsSection() {
   const [content, setContent] = useState(DEFAULT_TESTIMONIALS_SECTION);
@@ -61,53 +67,56 @@ export default function TestimonialsSection() {
 
         {/* Right Column: Floating Staggered Cards */}
         <div className="light-staggered-cards-row">
-          {reviews.map((rev, idx) => (
-            <div key={rev.id || idx} className={`light-testimonial-card ${rev.offsetClass || offsets[idx % offsets.length]}`}>
-              {/* Photo Header */}
-              <div className="testimonial-img-wrapper">
-                <img src={rev.image || DEFAULT_TESTIMONIALS_SECTION.reviews[idx]?.image} alt={rev.author} className="testimonial-img" />
-                <div className="testimonial-img-overlay" />
-                <span className="testimonial-tag-pill">{rev.tag}</span>
-                <div className="testimonial-verified-badge">
-                  <CheckCircle2 size={13} fill="#10B981" color="#FFF" />
-                  <span>{rev.date}</span>
+          {reviews.map((rev, idx) => {
+            const fallbackImg = FALLBACK_TESTIMONIAL_IMAGES[idx % FALLBACK_TESTIMONIAL_IMAGES.length];
+            const imgSrc = (rev.image && rev.image.trim()) ? rev.image.trim() : fallbackImg;
+
+            return (
+              <div key={rev.id || idx} className={`light-testimonial-card ${rev.offsetClass || offsets[idx % offsets.length]}`}>
+                {/* Photo Header */}
+                <div className="testimonial-img-wrapper">
+                  <img
+                    src={imgSrc}
+                    alt={rev.author || 'Cliente AF Select'}
+                    className="testimonial-img"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = fallbackImg;
+                    }}
+                  />
+                  <div className="testimonial-img-overlay" />
+                  <span className="testimonial-tag-pill">{rev.tag}</span>
+                  <div className="testimonial-verified-badge">
+                    <CheckCircle2 size={13} fill="#10B981" color="#FFF" />
+                    <span>{rev.date}</span>
+                  </div>
+                </div>
+
+                {/* Card Body */}
+                <div className="testimonial-card-body">
+                  <div className="card-rating-line">
+                    <div className="mini-stars">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} size={12} fill="#F59E0B" color="#F59E0B" />
+                      ))}
+                    </div>
+                    <span className="mini-score">{rev.rating || '5.0'} / 5.0</span>
+                  </div>
+
+                  <p className="card-quote-text">
+                    "{rev.quote}"
+                  </p>
+
+                  <div className="card-author-row">
+                    <div>
+                      <h4 className="card-author-name">{rev.author}</h4>
+                      <span className="card-author-loc">{rev.location}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-
-              {/* Card Body */}
-              <div className="testimonial-card-body">
-                <div className="card-rating-line">
-                  <div className="mini-stars">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={12} fill="#F59E0B" color="#F59E0B" />
-                    ))}
-                  </div>
-                  <span className="mini-score">{rev.rating || '5.0'} / 5.0</span>
-                </div>
-
-                <p className="card-quote-text">
-                  "{rev.quote}"
-                </p>
-
-                <div className="card-author-row">
-                  <div>
-                    <h4 className="card-author-name">{rev.author}</h4>
-                    <span className="card-author-loc">{rev.location}</span>
-                  </div>
-
-                  <a
-                    href={googleMapsSearchUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="card-ext-link"
-                    title="Ver en Google Maps"
-                  >
-                    <ExternalLink size={13} />
-                  </a>
-                </div>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

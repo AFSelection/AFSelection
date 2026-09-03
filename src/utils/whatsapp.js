@@ -21,3 +21,17 @@ export function getWhatsAppUrl(text = '') {
   }
   return `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
 }
+
+export function getItemWhatsAppMessage(item) {
+  if (!item) return 'Hola Agustín! Quisiera consultar sobre una publicación.';
+
+  const productUrl = typeof window !== 'undefined'
+    ? `${window.location.origin}/producto/${item.id}`
+    : `https://afselect.com.ar/producto/${item.id}`;
+
+  const currency = item.currency || 'USD';
+  const priceFormatted = item.price ? `${currency} ${Number(item.price).toLocaleString('es-AR')}` : '';
+  const priceText = priceFormatted ? ` (${priceFormatted})` : '';
+
+  return `Hola Agustín! Me interesa esta publicación:\n\n*${item.title}*${priceText}\nLink: ${productUrl}\n\n¿Me podrías brindar más información?`;
+}

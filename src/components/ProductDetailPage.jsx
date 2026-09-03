@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, MessageCircle, Send, CheckCircle, ChevronLeft, ChevronRight, Play, Eye, FileText } from 'lucide-react';
 import { submitLead } from '../services/storage';
-import { getWhatsAppUrl } from '../utils/whatsapp';
+import { getWhatsAppUrl, getItemWhatsAppMessage } from '../utils/whatsapp';
 import { isInstagramUrl, parseInstagramUrl, getListingVideos } from '../utils/instagram';
 import { ExternalLink } from 'lucide-react';
 import ListingCard from './ListingCard';
@@ -78,7 +78,7 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
     }
   };
 
-  const whatsappMessage = `Hola AF Select, me interesa el activo: ${item.title} (${formatPrice(item.price)}). ¿Me podrían brindar más información?`;
+  const whatsappMessage = getItemWhatsAppMessage(item);
   const whatsappUrl = getWhatsAppUrl(whatsappMessage);
 
   // Find related products (same section, excluding current)

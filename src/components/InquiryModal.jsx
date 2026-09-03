@@ -51,13 +51,17 @@ export default function InquiryModal({ item, onClose }) {
     }
 
     // 2. Build personalized WhatsApp message
-    let whatsappText = `Hola Agustín, mi nombre es *${formData.name.trim()}* (Tel: ${formData.phone.trim()}).\n`;
+    const productUrl = typeof window !== 'undefined'
+      ? `${window.location.origin}/producto/${item.id}`
+      : `https://afselect.com.ar/producto/${item.id}`;
+
+    let whatsappText = `Hola Agustín! Mi nombre es *${formData.name.trim()}* (Tel: ${formData.phone.trim()}).\n`;
     if (formData.email.trim()) {
       whatsappText += `Email: ${formData.email.trim()}\n`;
     }
-    whatsappText += `Me interesa consultar sobre la unidad: *${item.title}*${priceText}.`;
+    whatsappText += `\nMe interesa esta publicación:\n*${item.title}*${priceText}\nLink: ${productUrl}`;
     if (formData.message.trim()) {
-      whatsappText += `\nComentario: "${formData.message.trim()}"`;
+      whatsappText += `\n\nComentario: "${formData.message.trim()}"`;
     }
 
     const whatsappUrl = getWhatsAppUrl(whatsappText);

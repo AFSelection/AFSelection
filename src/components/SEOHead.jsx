@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 const SITE_NAME = 'AF SELECT';
-const SITE_URL = typeof window !== 'undefined' ? window.location.origin : 'https://afselect.com';
+const SITE_URL = typeof window !== 'undefined' ? window.location.origin : 'https://fidalgoselect.com';
 const DEFAULT_IMAGE = `${SITE_URL}/favicon.svg`;
 
 export default function SEOHead({ activeSection, selectedListing, showSellPage, showAboutPage, showContactPage }) {

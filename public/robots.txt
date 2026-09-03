@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://afselect.com/sitemap.xml
+Sitemap: https://fidalgoselect.com/sitemap.xml

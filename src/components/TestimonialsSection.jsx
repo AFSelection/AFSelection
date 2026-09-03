@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, Star, Heart, CheckCircle2, ArrowUpRight } from 'lucide-react';
+import { Star, Heart, CheckCircle2 } from 'lucide-react';
 import { fetchSiteSetting, DEFAULT_TESTIMONIALS_SECTION } from '../services/storage';
 
 const FALLBACK_TESTIMONIAL_IMAGES = [
@@ -19,14 +19,13 @@ export default function TestimonialsSection() {
     });
   }, []);
 
-  const googleMapsSearchUrl = content.googleMapsUrl || 'https://www.google.com/maps/search/?api=1&query=AF+Select+Tucuman';
   const reviews = content.reviews || DEFAULT_TESTIMONIALS_SECTION.reviews;
   const offsets = ['card-pos-1', 'card-pos-2', 'card-pos-3'];
 
   return (
     <section className="light-testimonials-staggered-section">
       <div className="light-staggered-grid">
-        {/* Left Column: Editorial Headline & Google Reviews CTA */}
+        {/* Left Column: Editorial Headline & Google Reviews Rating */}
         <div className="light-staggered-left">
           <div className="light-badge-pill">
             <Heart size={14} fill="#EF4444" color="#EF4444" />
@@ -52,17 +51,6 @@ export default function TestimonialsSection() {
               <span className="source-label">Google Reviews</span>
             </div>
           </div>
-
-          <a
-            href={googleMapsSearchUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-pill btn-pill-dark btn-google-reviews"
-          >
-            <MapPin size={16} color="#EA4335" />
-            <span>Ver Reseñas en Google Maps</span>
-            <ArrowUpRight size={16} />
-          </a>
         </div>
 
         {/* Right Column: Floating Staggered Cards */}

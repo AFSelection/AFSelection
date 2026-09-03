@@ -3329,6 +3329,8 @@ h1, h2, h3, h4, .font-display {
     display: block !important;
     width: 100% !important;
     overflow: visible !important;
+    -webkit-mask-image: linear-gradient(to right, #000 0%, #000 78%, transparent 97%) !important;
+    mask-image: linear-gradient(to right, #000 0%, #000 78%, transparent 97%) !important;
   }
 
   .mobile-carousel-track {

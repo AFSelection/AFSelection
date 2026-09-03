@@ -188,8 +188,8 @@ export default function SectionsCategoryBar({
         </div>
 
         {/* Mobile Layout (< 768px): Horizontal Carousel of Square Section Shortcuts */}
-        <div className="cards-mobile-only">
-          <div className="mobile-carousel-track">
+        <div className={`cards-mobile-only ${canScrollLeft ? 'scrolled-left' : ''}`}>
+          <div className="mobile-carousel-track" ref={trackRef} onScroll={handleCarouselScroll}>
             {allSectionCards.filter((card) => card.id !== 'all').map((card) => (
               <button
                 key={card.id}

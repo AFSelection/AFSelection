@@ -3328,9 +3328,15 @@ h1, h2, h3, h4, .font-display {
   .cards-mobile-only {
     display: block !important;
     width: 100% !important;
-    overflow: hidden !important;
+    overflow: visible !important;
     -webkit-mask-image: linear-gradient(to right, #000 0%, #000 calc(100% - 36px), transparent 100%) !important;
     mask-image: linear-gradient(to right, #000 0%, #000 calc(100% - 36px), transparent 100%) !important;
+    transition: -webkit-mask-image 0.25s ease, mask-image 0.25s ease !important;
+  }
+
+  .cards-mobile-only.scrolled-left {
+    -webkit-mask-image: linear-gradient(to right, transparent 0px, #000 28px, #000 calc(100% - 36px), transparent 100%) !important;
+    mask-image: linear-gradient(to right, transparent 0px, #000 28px, #000 calc(100% - 36px), transparent 100%) !important;
   }
 
   .mobile-carousel-track {
@@ -3339,9 +3345,10 @@ h1, h2, h3, h4, .font-display {
     gap: 16px !important;
     overflow-x: auto !important;
     overflow-y: visible !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 6px 36px 14px 0 !important;
+    width: calc(100% + 32px) !important;
+    margin-left: -16px !important;
+    margin-right: -16px !important;
+    padding: 10px 36px 16px 16px !important;
     box-sizing: border-box !important;
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;

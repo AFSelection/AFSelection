@@ -81,11 +81,11 @@ export default function DynamicSectionShowcase({
           )}
 
           <button
-            className="btn-square-sm active-btn-dark"
+            className="catalog-pill-btn"
             onClick={onViewAll}
           >
             <span>VER SECCIÓN ({sectionListings.length})</span>
-            <ArrowUpRight size={14} />
+            <ArrowUpRight size={13} />
           </button>
         </div>
       </div>

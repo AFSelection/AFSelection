@@ -629,22 +629,32 @@ h1, h2, h3, h4, .font-display {
   border-color: #111317;
 }
 
-.btn-square-sm.active-btn-dark {
-  background: #111317 !important;
-  color: #FFFFFF !important;
-  border-color: #111317 !important;
-}
-
-.dark-section-block .btn-square-sm.active-btn-dark {
+.catalog-pill-btn {
   background: #FFFFFF !important;
   color: #111317 !important;
-  border-color: #FFFFFF !important;
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 0.7rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  padding: 6px 14px !important;
+  border-radius: 9999px !important;
+  border: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;
 }
 
-.dark-section-block .btn-square-sm.active-btn-dark:hover {
-  background: var(--accent-gold) !important;
-  color: #111317 !important;
-  border-color: var(--accent-gold) !important;
+.catalog-pill-btn:hover {
+  background: #DC2626 !important;
+  color: #FFFFFF !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 18px rgba(220, 38, 38, 0.4) !important;
 }
 
 /* ==========================================================================
@@ -3669,21 +3679,18 @@ h1, h2, h3, h4, .font-display {
   }
 
   .showcase-actions-group {
-    width: 100% !important;
-    justify-content: space-between !important;
+    width: auto !important;
     gap: 8px !important;
-    flex-wrap: wrap !important;
+    flex-wrap: nowrap !important;
   }
 
   .carousel-nav-arrows {
     display: none !important;
   }
 
-  .btn-square-sm {
-    flex: 1 !important;
-    justify-content: center !important;
-    padding: 7px 12px !important;
-    font-size: 0.72rem !important;
+  .catalog-pill-btn {
+    padding: 5px 12px !important;
+    font-size: 0.65rem !important;
   }
 
   /* FOOTER */

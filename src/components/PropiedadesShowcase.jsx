@@ -78,11 +78,11 @@ export default function PropiedadesShowcase({
           </button>
 
           <button
-            className="btn-square-sm active-btn-dark"
+            className="catalog-pill-btn"
             onClick={onViewAll}
           >
             <span>VER CATÁLOGO ({listings.length})</span>
-            <ArrowUpRight size={14} />
+            <ArrowUpRight size={13} />
           </button>
         </div>
       </div>

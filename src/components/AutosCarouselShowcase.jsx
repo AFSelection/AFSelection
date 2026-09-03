@@ -26,20 +26,19 @@ export default function AutosCarouselShowcase({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginBottom: '28px',
-        paddingBottom: '18px',
+        marginBottom: '24px',
+        paddingBottom: '16px',
         borderBottom: '1px solid var(--border-dark)',
-        flexWrap: 'wrap',
-        gap: '16px'
+        gap: '12px'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
           <div style={{
             background: '#FFFFFF',
             color: '#111317',
-            width: '44px',
-            height: '44px',
-            minWidth: '44px',
-            minHeight: '44px',
+            width: '38px',
+            height: '38px',
+            minWidth: '38px',
+            minHeight: '38px',
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
@@ -47,10 +46,10 @@ export default function AutosCarouselShowcase({
             flexShrink: 0,
             lineHeight: 0
           }}>
-            <Car size={20} style={{ display: 'block' }} />
+            <Car size={18} style={{ display: 'block' }} />
           </div>
           <div>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.9rem', color: '#FFF', lineHeight: '1.05' }}>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.6rem', color: '#FFF', lineHeight: '1', margin: 0 }}>
               AUTOS
             </h2>
           </div>
@@ -68,11 +67,11 @@ export default function AutosCarouselShowcase({
           </div>
 
           <button
-            className="btn-square-sm active-btn-dark"
+            className="catalog-pill-btn"
             onClick={onViewAll}
           >
             <span>VER CATÁLOGO ({listings.length})</span>
-            <ArrowUpRight size={14} />
+            <ArrowUpRight size={13} />
           </button>
         </div>
       </div>

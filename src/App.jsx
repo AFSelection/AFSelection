@@ -26,6 +26,7 @@ import { fetchListings, fetchSections } from './services/storage';
 import { getWhatsAppUrl } from './utils/whatsapp';
 import { Heart, X, AlertCircle, Layers } from 'lucide-react';
 import Loader from './components/Loader';
+import SEOHead from './components/SEOHead';
 
 export default function App() {
   const [data, setData] = useState({ sections: [], listings: [] });
@@ -382,6 +383,13 @@ export default function App() {
 
   return (
     <div>
+      <SEOHead 
+        activeSection={activeSection} 
+        selectedListing={selectedListing} 
+        showSellPage={showSellPage} 
+        showAboutPage={showAboutPage} 
+        showContactPage={showContactPage} 
+      />
       <Loader visible={loading} />
 
       {/* Floating Header */}

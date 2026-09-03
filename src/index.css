@@ -3329,8 +3329,8 @@ h1, h2, h3, h4, .font-display {
     display: block !important;
     width: 100% !important;
     overflow: visible !important;
-    -webkit-mask-image: linear-gradient(to right, #000 0%, #000 78%, transparent 97%) !important;
-    mask-image: linear-gradient(to right, #000 0%, #000 78%, transparent 97%) !important;
+    -webkit-mask-image: linear-gradient(to right, transparent 0px, #000 16px, #000 calc(100% - 32px), transparent 100%) !important;
+    mask-image: linear-gradient(to right, transparent 0px, #000 16px, #000 calc(100% - 32px), transparent 100%) !important;
   }
 
   .mobile-carousel-track {
@@ -3358,29 +3358,29 @@ h1, h2, h3, h4, .font-display {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
-    gap: 6px !important;
+    gap: 8px !important;
     background: transparent !important;
     border: none !important;
     padding: 0 !important;
     cursor: pointer !important;
     flex-shrink: 0 !important;
     width: auto !important;
-    min-width: 66px !important;
+    min-width: 72px !important;
     outline: none !important;
     scroll-snap-align: start !important;
   }
 
   .mobile-square-box {
-    width: 60px !important;
-    height: 60px !important;
-    border-radius: 18px !important;
+    width: 70px !important;
+    height: 70px !important;
+    border-radius: 20px !important;
     background: linear-gradient(135deg, #2b303d 0%, #161822 50%, #0d0f15 100%) !important;
     border: 1px solid rgba(255, 255, 255, 0.16) !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     color: #FFFFFF !important;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14) !important;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.16) !important;
     transition: all 0.2s ease !important;
   }
 

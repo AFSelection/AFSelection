@@ -44,6 +44,14 @@ export default function SectionsCategoryBar({
   setSearchQuery
 }) {
   const [localSearch, setLocalSearch] = useState(searchQuery);
+  const trackRef = React.useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+
+  const handleCarouselScroll = () => {
+    if (trackRef.current) {
+      setCanScrollLeft(trackRef.current.scrollLeft > 5);
+    }
+  };
 
   useEffect(() => {
     setLocalSearch(searchQuery);
@@ -180,8 +188,8 @@ export default function SectionsCategoryBar({
         </div>
 
         {/* Mobile Layout (< 768px): Horizontal Carousel of Square Section Shortcuts */}
-        <div className="cards-mobile-only">
-          <div className="mobile-carousel-track">
+        <div className={`cards-mobile-only ${canScrollLeft ? 'scrolled-left' : ''}`}>
+          <div className="mobile-carousel-track" ref={trackRef} onScroll={handleCarouselScroll}>
             {allSectionCards.filter((card) => card.id !== 'all').map((card) => (
               <button
                 key={card.id}

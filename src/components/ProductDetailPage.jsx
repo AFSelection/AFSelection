@@ -13,6 +13,21 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  // Gather media (images + videos) safely before hooks evaluate dependencies
+  const images = item?.images && item.images.length > 0 ? item.images : [
+    'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80'
+  ];
+
+  const videos = item ? getListingVideos(item) : [];
+
+  const mediaItems = item ? [
+    ...images.map(img => ({ type: 'image', url: img })),
+    ...videos.map(vid => {
+      const isEmbed = isInstagramUrl(vid) || vid.includes('youtube.com') || vid.includes('youtu.be') || vid.includes('vimeo.com');
+      return { type: 'video', url: vid, isEmbed };
+    })
+  ] : [];
+
   useEffect(() => {
     // Scroll to top when loading a new product detail page
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -34,7 +49,7 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isLightboxOpen, mediaItems?.length]);
+  }, [isLightboxOpen, mediaItems.length]);
 
   useEffect(() => {
     // Load Instagram official Embed SDK to process embeds seamlessly
@@ -49,23 +64,6 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
   }, [activeMediaIndex, item]);
 
   if (!item) return null;
-
-  // Gather media (images + videos)
-  const images = item.images && item.images.length > 0 ? item.images : [
-    'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80'
-  ];
-
-  // We support videos (Instagram Reels, YouTube, Vimeo, MP4) with default fallback
-  const videos = getListingVideos(item);
-
-  // Combine media into a single array for the carousel
-  const mediaItems = [
-    ...images.map(img => ({ type: 'image', url: img })),
-    ...videos.map(vid => {
-      const isEmbed = isInstagramUrl(vid) || vid.includes('youtube.com') || vid.includes('youtu.be') || vid.includes('vimeo.com');
-      return { type: 'video', url: vid, isEmbed };
-    })
-  ];
 
   const formatPrice = (val) => {
     if (val === undefined || val === null) return '';

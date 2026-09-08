@@ -10,6 +10,10 @@ export default function ListingDetailsModal({ item, onClose, onOpenInquiry }) {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  const images = item?.images && item.images.length > 0 ? item.images : [
+    'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80'
+  ];
+
   useEffect(() => {
     if (!isLightboxOpen) return;
     const handleKeyDown = (e) => {
@@ -23,13 +27,9 @@ export default function ListingDetailsModal({ item, onClose, onOpenInquiry }) {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isLightboxOpen, item?.images?.length]);
+  }, [isLightboxOpen, images.length]);
 
   if (!item) return null;
-
-  const images = item.images && item.images.length > 0 ? item.images : [
-    'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80'
-  ];
 
   const formatPrice = (val) => {
     if (val === undefined || val === null) return '';

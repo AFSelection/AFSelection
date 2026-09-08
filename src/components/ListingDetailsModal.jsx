@@ -1,12 +1,29 @@
-import React, { useState } from 'react';
-import { X, Send, MessageCircle, CheckCircle, ArrowUpRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { X, Send, MessageCircle, CheckCircle, ArrowUpRight, Maximize2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getInitialData, saveStorageData } from '../services/storage';
 import { getWhatsAppUrl } from '../utils/whatsapp';
 
 export default function ListingDetailsModal({ item, onClose, onOpenInquiry }) {
   const [activeImgIndex, setActiveImgIndex] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (!isLightboxOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setIsLightboxOpen(false);
+      } else if (e.key === 'ArrowLeft') {
+        setLightboxIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+      } else if (e.key === 'ArrowRight') {
+        setLightboxIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isLightboxOpen, item?.images?.length]);
 
   if (!item) return null;
 
@@ -54,8 +71,27 @@ export default function ListingDetailsModal({ item, onClose, onOpenInquiry }) {
         <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 420px', gap: '0' }}>
           {/* Left Gallery Section */}
           <div style={{ padding: '36px', background: 'var(--bg-canvas)', borderRight: '1px solid var(--border-light)' }}>
-            <div style={{ width: '100%', height: '400px', borderRadius: '12px', overflow: 'hidden', marginBottom: '16px' }}>
+            <div 
+              style={{ width: '100%', height: '400px', borderRadius: '12px', overflow: 'hidden', marginBottom: '16px', position: 'relative', cursor: 'zoom-in' }}
+              onClick={() => {
+                setLightboxIndex(activeImgIndex);
+                setIsLightboxOpen(true);
+              }}
+            >
               <img src={images[activeImgIndex]} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <button
+                type="button"
+                className="gallery-expand-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setLightboxIndex(activeImgIndex);
+                  setIsLightboxOpen(true);
+                }}
+                title="Expandir imagen"
+              >
+                <Maximize2 size={15} />
+                <span>Ampliar</span>
+              </button>
             </div>
 
             {images.length > 1 && (
@@ -217,10 +253,76 @@ export default function ListingDetailsModal({ item, onClose, onOpenInquiry }) {
                 <MessageCircle size={14} />
                 <span>Contactar por WhatsApp</span>
               </a>
+      {/* Lightbox Fullscreen Modal */}
+      {isLightboxOpen && (
+        <div className="lightbox-overlay" onClick={() => setIsLightboxOpen(false)}>
+          <div className="lightbox-container" onClick={(e) => e.stopPropagation()}>
+            <div className="lightbox-header">
+              <div className="lightbox-title-info">
+                <span className="lightbox-item-title">{item.title}</span>
+                <span className="lightbox-counter">
+                  {lightboxIndex + 1} / {images.length}
+                </span>
+              </div>
+              <button
+                type="button"
+                className="lightbox-close-btn"
+                onClick={() => setIsLightboxOpen(false)}
+                aria-label="Cerrar visor"
+              >
+                <X size={24} />
+              </button>
             </div>
+
+            <div className="lightbox-main-stage">
+              {images.length > 1 && (
+                <button
+                  type="button"
+                  className="lightbox-nav-btn prev"
+                  onClick={() => setLightboxIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))}
+                  aria-label="Imagen anterior"
+                >
+                  <ChevronLeft size={32} />
+                </button>
+              )}
+
+              <div className="lightbox-media-wrapper">
+                <img
+                  src={images[lightboxIndex]}
+                  alt={`${item.title} - ${lightboxIndex + 1}`}
+                  className="lightbox-image"
+                />
+              </div>
+
+              {images.length > 1 && (
+                <button
+                  type="button"
+                  className="lightbox-nav-btn next"
+                  onClick={() => setLightboxIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))}
+                  aria-label="Imagen siguiente"
+                >
+                  <ChevronRight size={32} />
+                </button>
+              )}
+            </div>
+
+            {images.length > 1 && (
+              <div className="lightbox-thumbnails-wrapper">
+                {images.map((img, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setLightboxIndex(idx)}
+                    className={`lightbox-thumb ${idx === lightboxIndex ? 'active' : ''}`}
+                  >
+                    <img src={img} alt="" />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

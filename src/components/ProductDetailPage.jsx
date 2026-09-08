@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, MessageCircle, Send, CheckCircle, ChevronLeft, ChevronRight, Play, Eye, FileText } from 'lucide-react';
+import { ArrowLeft, MessageCircle, Send, CheckCircle, ChevronLeft, ChevronRight, Play, Eye, FileText, X, Maximize2 } from 'lucide-react';
 import { submitLead } from '../services/storage';
 import { getWhatsAppUrl, getItemWhatsAppMessage } from '../utils/whatsapp';
 import { isInstagramUrl, parseInstagramUrl, getListingVideos } from '../utils/instagram';
@@ -8,6 +8,8 @@ import ListingCard from './ListingCard';
 
 export default function ProductDetailPage({ item, onBack, onGoToSell, favorites, toggleFavorite, onSelectListing, listings = [], onOpenInquiry }) {
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -16,7 +18,23 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setActiveMediaIndex(0);
     setIsSubmitted(false);
+    setIsLightboxOpen(false);
   }, [item]);
+
+  useEffect(() => {
+    if (!isLightboxOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setIsLightboxOpen(false);
+      } else if (e.key === 'ArrowLeft') {
+        setLightboxIndex((prev) => (prev === 0 ? mediaItems.length - 1 : prev - 1));
+      } else if (e.key === 'ArrowRight') {
+        setLightboxIndex((prev) => (prev === mediaItems.length - 1 ? 0 : prev + 1));
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isLightboxOpen, mediaItems?.length]);
 
   useEffect(() => {
     // Load Instagram official Embed SDK to process embeds seamlessly
@@ -289,13 +307,35 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
         <div className="detail-gallery-column">
           <div className="gallery-viewport">
             {activeMedia.type === 'image' ? (
-              <img
-                src={activeMedia.url}
-                alt={item.title}
-                className="gallery-main-media"
-                loading="eager"
-                decoding="async"
-              />
+              <div 
+                className="gallery-image-interactive-wrapper"
+                onClick={() => {
+                  setLightboxIndex(activeMediaIndex);
+                  setIsLightboxOpen(true);
+                }}
+                style={{ width: '100%', height: '100%', cursor: 'zoom-in', position: 'relative' }}
+              >
+                <img
+                  src={activeMedia.url}
+                  alt={item.title}
+                  className="gallery-main-media"
+                  loading="eager"
+                  decoding="async"
+                />
+                <button
+                  type="button"
+                  className="gallery-expand-btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLightboxIndex(activeMediaIndex);
+                    setIsLightboxOpen(true);
+                  }}
+                  title="Expandir imagen"
+                >
+                  <Maximize2 size={15} />
+                  <span>Ampliar</span>
+                </button>
+              </div>
             ) : (
               <div className="video-player-container">
                 {renderVideoEmbed(activeMedia.url)}
@@ -585,6 +625,94 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
           )}
         </div>
       </div>
+
+      {/* Lightbox Fullscreen Image Viewer Modal */}
+      {isLightboxOpen && (
+        <div className="lightbox-overlay" onClick={() => setIsLightboxOpen(false)}>
+          <div className="lightbox-container" onClick={(e) => e.stopPropagation()}>
+            {/* Top Bar */}
+            <div className="lightbox-header">
+              <div className="lightbox-title-info">
+                <span className="lightbox-item-title">{item.title}</span>
+                <span className="lightbox-counter">
+                  {lightboxIndex + 1} / {mediaItems.length}
+                </span>
+              </div>
+              <button
+                type="button"
+                className="lightbox-close-btn"
+                onClick={() => setIsLightboxOpen(false)}
+                aria-label="Cerrar visor"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            {/* Main Image Stage */}
+            <div className="lightbox-main-stage">
+              {mediaItems.length > 1 && (
+                <button
+                  type="button"
+                  className="lightbox-nav-btn prev"
+                  onClick={() => setLightboxIndex((prev) => (prev === 0 ? mediaItems.length - 1 : prev - 1))}
+                  aria-label="Imagen anterior"
+                >
+                  <ChevronLeft size={32} />
+                </button>
+              )}
+
+              <div className="lightbox-media-wrapper">
+                {mediaItems[lightboxIndex]?.type === 'image' ? (
+                  <img
+                    src={mediaItems[lightboxIndex].url}
+                    alt={`${item.title} - ${lightboxIndex + 1}`}
+                    className="lightbox-image"
+                  />
+                ) : (
+                  <div className="lightbox-video-container">
+                    {renderVideoEmbed(mediaItems[lightboxIndex].url)}
+                  </div>
+                )}
+              </div>
+
+              {mediaItems.length > 1 && (
+                <button
+                  type="button"
+                  className="lightbox-nav-btn next"
+                  onClick={() => setLightboxIndex((prev) => (prev === mediaItems.length - 1 ? 0 : prev + 1))}
+                  aria-label="Imagen siguiente"
+                >
+                  <ChevronRight size={32} />
+                </button>
+              )}
+            </div>
+
+            {/* Bottom Thumbnail Strip */}
+            {mediaItems.length > 1 && (
+              <div className="lightbox-thumbnails-wrapper">
+                {mediaItems.map((media, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setLightboxIndex(idx)}
+                    className={`lightbox-thumb ${idx === lightboxIndex ? 'active' : ''}`}
+                  >
+                    <img
+                      src={media.type === 'image' ? media.url : 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=120&q=80'}
+                      alt=""
+                    />
+                    {media.type === 'video' && (
+                      <div className="play-thumb-overlay">
+                        <Play size={12} fill="#FFF" />
+                      </div>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
     </div>
   );

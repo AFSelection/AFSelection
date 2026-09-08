@@ -496,9 +496,15 @@ h1, h2, h3, h4, .font-display {
     display: none !important;
   }
 
-  .mobile-only-action-left,
+  .mobile-only-action-left {
+    display: flex !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+  }
+
   .mobile-only-action-right {
     display: flex !important;
+    justify-content: flex-end !important;
     align-items: center !important;
   }
 
@@ -506,16 +512,27 @@ h1, h2, h3, h4, .font-display {
     width: calc(100% - 24px) !important;
   }
 
-  .header-inner {
-    display: flex !important;
+  .header-inner,
+  .header-redesign-grid {
+    display: grid !important;
+    grid-template-columns: 48px 1fr 48px !important;
+    align-items: center !important;
     justify-content: space-between !important;
     padding: 10px 16px !important;
+    position: relative !important;
   }
 
   .header-centered-logo {
-    position: absolute !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
+    position: static !important;
+    transform: none !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+  }
+
+  .header-centered-logo .brand-logo {
+    margin: 0 auto !important;
   }
 }
 
@@ -4760,14 +4777,13 @@ h1, h2, h3, h4, .font-display {
     margin: 0 !important;
   }
 
-  .header-inner {
-    padding: 12px 20px !important;
-    border-radius: 0 !important;
-  }
-
+  .header-inner,
   .header-redesign-grid {
-    grid-template-columns: 1fr auto 1fr !important;
-    padding: 0;
+    display: grid !important;
+    grid-template-columns: 48px 1fr 48px !important;
+    align-items: center !important;
+    padding: 10px 16px !important;
+    border-radius: 0 !important;
   }
 
   .desktop-nav-only {
@@ -4775,15 +4791,28 @@ h1, h2, h3, h4, .font-display {
   }
 
   .mobile-only-action-left {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    display: flex !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+  }
+
+  .header-centered-logo {
+    position: static !important;
+    transform: none !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+  }
+
+  .header-centered-logo .brand-logo {
+    margin: 0 auto !important;
   }
 
   .mobile-only-action-right {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
   }
 
   /* Product Detail Mobile Adaptations */

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, MessageCircle, Send, CheckCircle, ChevronLeft, ChevronRight, Play, Eye, FileText, X, Maximize2 } from 'lucide-react';
+import { ArrowLeft, MessageCircle, Send, CheckCircle, ChevronLeft, ChevronRight, Play, Eye, FileText, X, Maximize2, MapPin } from 'lucide-react';
 import { submitLead } from '../services/storage';
 import { getWhatsAppUrl, getItemWhatsAppMessage } from '../utils/whatsapp';
 import { isInstagramUrl, parseInstagramUrl, getListingVideos } from '../utils/instagram';
@@ -388,6 +388,12 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
           </div>
 
           <h1 className="detail-title">{item.title}</h1>
+          {item.location && (
+            <div className="detail-location-row" style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-muted)', fontSize: '0.92rem', fontWeight: '600', marginTop: '6px', marginBottom: '10px' }}>
+              <MapPin size={16} style={{ color: '#DC2626', flexShrink: 0 }} />
+              <span>{item.location}</span>
+            </div>
+          )}
           <p className="detail-subtitle">{item.subtitle}</p>
 
           <div className="detail-price-box">

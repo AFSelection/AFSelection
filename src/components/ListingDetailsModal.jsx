@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Send, MessageCircle, CheckCircle, ArrowUpRight, Maximize2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, Send, MessageCircle, CheckCircle, ArrowUpRight, Maximize2, ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
 import { getInitialData, saveStorageData } from '../services/storage';
 import { getWhatsAppUrl } from '../utils/whatsapp';
 
@@ -130,9 +130,16 @@ export default function ListingDetailsModal({ item, onClose, onOpenInquiry }) {
               {item.category || item.sectionId} — REF #{item.id}
             </span>
 
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', lineHeight: '1.1', marginBottom: '12px' }}>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', lineHeight: '1.1', marginBottom: item.location ? '6px' : '12px' }}>
               {item.title}
             </h2>
+
+            {item.location && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-muted)', fontSize: '0.88rem', fontWeight: 600, marginBottom: '12px' }}>
+                <MapPin size={15} style={{ color: '#DC2626', flexShrink: 0 }} />
+                <span>{item.location}</span>
+              </div>
+            )}
 
             <div style={{ fontFamily: 'var(--font-display)', fontSize: '2.2rem', fontWeight: '800', color: 'var(--text-main)', marginBottom: '20px' }}>
               {formatPrice(item.price)}

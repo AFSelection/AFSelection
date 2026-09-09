@@ -1,6 +1,7 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useMemo } from 'react';
 import { MapContainer, TileLayer, Marker, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
+import { getItemCoordinates } from '../utils/geo';
 
 const formatPinPrice = (price, currency = 'USD') => {
   if (!price) return '';
@@ -32,9 +33,6 @@ const createPinIcon = (price, currency = 'USD', isActive = false, isHovered = fa
     fontWeight = '700';
   }
 
-  // Use a transparent wrapper div (180x40) anchored at bottom-center.
-  // The visible pill is absolutely positioned inside it, centered horizontally at the bottom.
-  // This gives a proper hitbox regardless of text length.
   return L.divIcon({
     className: 'price-pin-outer',
     html: `<div style="
@@ -66,13 +64,13 @@ function MapFlyController({ selectedId, items }) {
   useEffect(() => {
     if (!selectedId) return;
     const item = items.find((i) => i.id === selectedId);
-    if (item?.coordinates?.lat && item?.coordinates?.lng) {
-      map.flyTo([item.coordinates.lat, item.coordinates.lng], Math.max(map.getZoom(), 14), {
+    if (item?.resolvedCoordinates) {
+      map.flyTo([item.resolvedCoordinates.lat, item.resolvedCoordinates.lng], Math.max(map.getZoom(), 14), {
         duration: 0.55,
         easeLinearity: 0.35,
       });
     }
-  }, [selectedId]);
+  }, [selectedId, items]);
 
   return null;
 }
@@ -83,10 +81,16 @@ function MapClickHandler({ onMapClick }) {
 }
 
 export default function PropertyMapView({ listings = [], hoveredId, selectedId, onPinClick, onMapClick }) {
-  const mapItems = listings.filter((i) => i.coordinates?.lat && i.coordinates?.lng);
+  const mapItems = useMemo(() => {
+    return (listings || []).map((i) => {
+      const coords = getItemCoordinates(i);
+      if (!coords) return null;
+      return { ...i, resolvedCoordinates: coords };
+    }).filter(Boolean);
+  }, [listings]);
 
   const defaultCenter = mapItems.length > 0
-    ? [mapItems[0].coordinates.lat, mapItems[0].coordinates.lng]
+    ? [mapItems[0].resolvedCoordinates.lat, mapItems[0].resolvedCoordinates.lng]
     : [-26.8241, -65.2226];
 
   const handleMapClick = useCallback(() => {
@@ -114,7 +118,7 @@ export default function PropertyMapView({ listings = [], hoveredId, selectedId, 
         return (
           <Marker
             key={item.id}
-            position={[item.coordinates.lat, item.coordinates.lng]}
+            position={[item.resolvedCoordinates.lat, item.resolvedCoordinates.lng]}
             icon={createPinIcon(item.price, item.currency, isActive, isHovered)}
             zIndexOffset={isActive ? 1000 : isHovered ? 500 : 0}
             eventHandlers={{

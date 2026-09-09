@@ -96,6 +96,7 @@ export default function App() {
     setShowSellPage(false);
     setShowAboutPage(false);
     setShowContactPage(false);
+    setShowMap(false);
     setActiveSection('home');
     setShowFavoritesOnly(false);
     setSearchQuery('');

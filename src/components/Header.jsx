@@ -357,12 +357,8 @@ export default function Header({
               href="#"
               className="brand-logo mobile-drawer-logo"
               onClick={(e) => {
-                e.preventDefault();
-                handleMobileNavClick(() => {
-                  setActiveSection('all');
-                  setSearchQuery('');
-                  setLocalQuery('');
-                });
+                handleLogoClick(e);
+                setMobileMenuOpen(false);
               }}
             >
               <span className="logo-text-bold">AF</span>

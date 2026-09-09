@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Send, MessageCircle, CheckCircle, ArrowUpRight, Maximize2, ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
+import { formatSpecLabel } from '../utils/specs';
 import { getInitialData, saveStorageData } from '../services/storage';
 import { getWhatsAppUrl } from '../utils/whatsapp';
 
@@ -207,9 +208,10 @@ export default function ListingDetailsModal({ item, onClose, onOpenInquiry }) {
                 {item.specs && typeof item.specs === 'object' && Object.keys(item.specs).map((key) => {
                   const val = item.specs[key];
                   if (val === null || val === undefined || val === '') return null;
+                  if (key.toLowerCase() === 'location') return null;
                   return (
                     <tr key={key}>
-                      <td style={{ textTransform: 'capitalize' }}>{key.replace(/_/g, ' ')}</td>
+                      <td>{formatSpecLabel(key)}</td>
                       <td>{String(val)}</td>
                     </tr>
                   );

@@ -6,6 +6,7 @@ import { isInstagramUrl, parseInstagramUrl, getListingVideos } from '../utils/in
 import { ExternalLink } from 'lucide-react';
 import ListingCard from './ListingCard';
 import OptimizedImage from './OptimizedImage';
+import { formatSpecLabel } from '../utils/specs';
 
 export default function ProductDetailPage({ item, onBack, onGoToSell, favorites, toggleFavorite, onSelectListing, listings = [], onOpenInquiry }) {
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
@@ -506,9 +507,10 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
                 {item.specs && typeof item.specs === 'object' && Object.keys(item.specs).map((key) => {
                   const val = item.specs[key];
                   if (val === null || val === undefined || val === '') return null;
+                  if (key.toLowerCase() === 'location') return null; // Already displayed as first row
                   return (
                     <tr key={key}>
-                      <td style={{ textTransform: 'capitalize' }}>{key.replace(/_/g, ' ')}</td>
+                      <td>{formatSpecLabel(key)}</td>
                       <td>{String(val)}</td>
                     </tr>
                   );

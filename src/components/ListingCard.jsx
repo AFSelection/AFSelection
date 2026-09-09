@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Heart, MapPin, Percent } from 'lucide-react';
 import OptimizedImage from './OptimizedImage';
+import { formatSpecSummary } from '../utils/specs';
 
 export default function ListingCard({
   item,
@@ -109,11 +110,9 @@ export default function ListingCard({
                 ].filter(Boolean).join(' • ') || 'Propiedad'}
               </span>
             ) : (() => {
-              const specsObj = item.specs || item.customFields || {};
-              const keys = Object.keys(specsObj);
-              if (keys.length > 0) {
-                const specSummary = keys.slice(0, 3).map(k => `${k}: ${specsObj[k]}`).join(' • ');
-                return <span>{specSummary}</span>;
+              const summary = formatSpecSummary(item.specs || item.customFields);
+              if (summary) {
+                return <span>{summary}</span>;
               }
               return <span>{item.condition || 'Excelente'} • {item.category || 'Destacado'}</span>;
             })()}

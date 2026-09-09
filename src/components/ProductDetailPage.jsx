@@ -5,6 +5,7 @@ import { getWhatsAppUrl, getItemWhatsAppMessage } from '../utils/whatsapp';
 import { isInstagramUrl, parseInstagramUrl, getListingVideos } from '../utils/instagram';
 import { ExternalLink } from 'lucide-react';
 import ListingCard from './ListingCard';
+import OptimizedImage from './OptimizedImage';
 
 export default function ProductDetailPage({ item, onBack, onGoToSell, favorites, toggleFavorite, onSelectListing, listings = [], onOpenInquiry }) {
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
@@ -313,12 +314,12 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
                 }}
                 style={{ width: '100%', height: '100%', cursor: 'zoom-in', position: 'relative' }}
               >
-                <img
+                <OptimizedImage
                   src={activeMedia.url}
                   alt={item.title}
                   className="gallery-main-media"
-                  loading="eager"
-                  decoding="async"
+                  priority={true}
+                  targetWidth={1400}
                 />
                 <button
                   type="button"
@@ -368,7 +369,11 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
                   onClick={() => setActiveMediaIndex(idx)}
                   className={`gallery-thumb ${idx === activeMediaIndex ? 'active' : ''}`}
                 >
-                  <img src={media.type === 'image' ? media.url : 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=120&q=80'} alt="" />
+                  <OptimizedImage
+                    src={media.type === 'image' ? media.url : 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=120&q=80'}
+                    alt=""
+                    targetWidth={200}
+                  />
                   {media.type === 'video' && (
                     <div className="play-thumb-overlay">
                       <Play size={16} fill="#FFF" />

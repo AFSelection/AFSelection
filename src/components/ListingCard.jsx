@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Heart, MapPin, Percent } from 'lucide-react';
+import OptimizedImage from './OptimizedImage';
 
 export default function ListingCard({
   item,
@@ -38,11 +39,11 @@ export default function ListingCard({
       style={layout === 'list' ? { height: '260px' } : {}}
     >
       <div className="wander-image-container">
-        <img
+        <OptimizedImage
           src={activeImg}
           alt={item.title}
           className={`card-interactive-img ${isHovered ? 'hover-active' : ''}`}
-          loading="lazy"
+          targetWidth={800}
         />
 
         {/* Top Badges Row */}

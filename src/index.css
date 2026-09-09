@@ -7140,6 +7140,53 @@ h1, h2, h3, h4, .font-display {
   }
 }
 
+/* ==========================================================================
+   SMOOTH FADE-IN & SKELETON LOADING (NO CURTAIN EFFECT)
+   ========================================================================== */
+.img-smooth-load {
+  opacity: 0 !important;
+  transition: opacity 0.35s ease-in-out, transform 0.4s ease-out !important;
+  will-change: opacity;
+}
+
+.img-smooth-load.loaded {
+  opacity: 1 !important;
+}
+
+.img-skeleton-box {
+  background: #191c22;
+  position: relative;
+  overflow: hidden;
+}
+
+.img-skeleton-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.06) 50%,
+    transparent 100%
+  );
+  animation: img-skeleton-shimmer 1.6s infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.img-skeleton-box.is-loaded::before {
+  display: none;
+}
+
+@keyframes img-skeleton-shimmer {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(200%); }
+}
+
+
 
 
 

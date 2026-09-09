@@ -456,13 +456,13 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
                   <td>Ubicación</td>
                   <td>{item.location}</td>
                 </tr>
-                {item.year && (
+                {(!item.sectionId || item.sectionId === 'autos') && item.year && (
                   <tr>
                     <td>Año</td>
                     <td>{item.year}</td>
                   </tr>
                 )}
-                {item.kilometers != null && (
+                {(!item.sectionId || item.sectionId === 'autos') && item.kilometers != null && (
                   <tr>
                     <td>Kilometraje</td>
                     <td>
@@ -474,25 +474,25 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
                     </td>
                   </tr>
                 )}
-                {item.fuel && (
+                {(!item.sectionId || item.sectionId === 'autos') && item.fuel && (
                   <tr>
                     <td>Combustible</td>
                     <td>{item.fuel}</td>
                   </tr>
                 )}
-                {item.transmission && (
+                {(!item.sectionId || item.sectionId === 'autos') && item.transmission && (
                   <tr>
                     <td>Transmisión</td>
                     <td>{item.transmission}</td>
                   </tr>
                 )}
-                {item.surface && (
+                {(!item.sectionId || item.sectionId === 'propiedades') && item.surface && (
                   <tr>
                     <td>Superficie Total</td>
                     <td>{item.surface} m²</td>
                   </tr>
                 )}
-                {item.rooms && (
+                {(!item.sectionId || item.sectionId === 'propiedades') && item.rooms && (
                   <tr>
                     <td>Ambientes</td>
                     <td>{item.rooms}</td>

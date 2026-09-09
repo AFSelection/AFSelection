@@ -156,13 +156,13 @@ export default function ListingDetailsModal({ item, onClose, onOpenInquiry }) {
                   <td>Ubicación</td>
                   <td>{item.location}</td>
                 </tr>
-                {item.year && (
+                {(!item.sectionId || item.sectionId === 'autos') && item.year && (
                   <tr>
                     <td>Año de Fabricación</td>
                     <td>{item.year}</td>
                   </tr>
                 )}
-                {item.kilometers !== undefined && item.kilometers !== null && (
+                {(!item.sectionId || item.sectionId === 'autos') && item.kilometers !== undefined && item.kilometers !== null && (
                   <tr>
                     <td>Kilometraje</td>
                     <td>
@@ -174,36 +174,46 @@ export default function ListingDetailsModal({ item, onClose, onOpenInquiry }) {
                     </td>
                   </tr>
                 )}
-                {item.fuel && (
+                {(!item.sectionId || item.sectionId === 'autos') && item.fuel && (
                   <tr>
                     <td>Combustible</td>
                     <td>{item.fuel}</td>
                   </tr>
                 )}
-                {item.transmission && (
+                {(!item.sectionId || item.sectionId === 'autos') && item.transmission && (
                   <tr>
                     <td>Transmisión</td>
                     <td>{item.transmission}</td>
                   </tr>
                 )}
-                {item.surface && (
+                {(!item.sectionId || item.sectionId === 'propiedades') && item.surface && (
                   <tr>
                     <td>Superficie Total</td>
                     <td>{item.surface} m²</td>
                   </tr>
                 )}
-                {item.rooms && (
+                {(!item.sectionId || item.sectionId === 'propiedades') && item.rooms && (
                   <tr>
                     <td>Ambientes</td>
                     <td>{item.rooms}</td>
                   </tr>
                 )}
-                {item.garages && (
+                {(!item.sectionId || item.sectionId === 'propiedades') && item.garages && (
                   <tr>
                     <td>Cocheras Privadas</td>
                     <td>{item.garages}</td>
                   </tr>
                 )}
+                {item.specs && typeof item.specs === 'object' && Object.keys(item.specs).map((key) => {
+                  const val = item.specs[key];
+                  if (val === null || val === undefined || val === '') return null;
+                  return (
+                    <tr key={key}>
+                      <td style={{ textTransform: 'capitalize' }}>{key.replace(/_/g, ' ')}</td>
+                      <td>{String(val)}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
 

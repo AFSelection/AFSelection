@@ -77,7 +77,7 @@ export default function ListingCard({
         <div className="wander-image-overlay">
           <div className="overlay-tag-row">
             <span className="category-pill-tag">
-              {item.category || (isAuto ? 'Auto' : 'Propiedad')}
+              {item.category || (isAuto ? 'Auto' : item.sectionId === 'propiedades' ? 'Propiedad' : (item.sectionId ? item.sectionId.toUpperCase() : 'Destacado'))}
             </span>
           </div>
 
@@ -100,7 +100,13 @@ export default function ListingCard({
                 <span>{item.year || '2024'} • {kmText} • {item.fuel || 'Nafta'}</span>
               );
             })() : item.sectionId === 'propiedades' ? (
-              <span>{item.features?.sqm ? `${item.features.sqm} m²` : (item.surface ? `${item.surface} m²` : '280 m²')} • {item.features?.rooms ? `${item.features.rooms} Amb` : (item.rooms ? `${item.rooms} Amb` : '4 Amb')} • Cochera</span>
+              <span>
+                {[
+                  (item.features?.sqm ? `${item.features.sqm} m²` : (item.surface ? `${item.surface} m²` : null)),
+                  (item.features?.rooms ? `${item.features.rooms} Amb` : (item.rooms ? `${item.rooms} Amb` : null)),
+                  (item.garages ? `${item.garages} Cochera` : null)
+                ].filter(Boolean).join(' • ') || 'Propiedad'}
+              </span>
             ) : (() => {
               const specsObj = item.specs || item.customFields || {};
               const keys = Object.keys(specsObj);

@@ -569,6 +569,7 @@ export default function App() {
 
             {/* FUNNEL STAGE 5: Retención Visual & Filosofía */}
             <StaggeredShowcaseSection
+              listings={data.listings || []}
               onOpenCatalog={() => setActiveSection('autos')}
             />
 

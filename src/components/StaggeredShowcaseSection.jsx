@@ -1,19 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { fetchSiteSetting, DEFAULT_STAGGERED_SHOWCASE } from '../services/storage';
 
-export default function StaggeredShowcaseSection({ onOpenCatalog }) {
+export default function StaggeredShowcaseSection({ listings = [], onOpenCatalog }) {
   const [content, setContent] = useState(DEFAULT_STAGGERED_SHOWCASE);
 
   useEffect(() => {
-    fetchSiteSetting('staggered_showcase', DEFAULT_STAGGERED_SHOWCASE).then((res) => {
+    fetchSiteSetting('staggered_showcase', null).then((res) => {
       if (res && res.title) {
         setContent(res);
       }
     });
   }, []);
 
-  const cards = content.cards || DEFAULT_STAGGERED_SHOWCASE.cards;
+  // Compute cards dynamically from active DB listings if custom setting cards aren't defined
+  const cards = useMemo(() => {
+    if (content.cards && content.cards.length > 0) return content.cards;
+    const featured = listings.filter((l) => l.featured) || [];
+    const pool = featured.length >= 3 ? featured : listings;
+    if (pool.length === 0) return DEFAULT_STAGGERED_SHOWCASE.cards;
+    return pool.slice(0, 3).map((item) => ({
+      id: item.id,
+      title: item.title,
+      subtitle: item.subtitle || `${item.year ? item.year + ' • ' : ''}${item.location || ''}`,
+      image: item.images?.[0] || 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=800&q=80'
+    }));
+  }, [content.cards, listings]);
+
   const offsets = ['0px', '36px', '72px'];
 
   return (
@@ -44,7 +57,7 @@ export default function StaggeredShowcaseSection({ onOpenCatalog }) {
               style={{ marginTop: offsets[idx % offsets.length] }}
             >
               <img
-                src={card.image || DEFAULT_STAGGERED_SHOWCASE.cards[idx]?.image}
+                src={card.image || 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=800&q=80'}
                 alt={card.title}
               />
               <div className="staggered-card-overlay">

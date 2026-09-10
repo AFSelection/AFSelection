@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Search, Heart, Menu, X, ShieldCheck, ArrowRight, ChevronDown, Layers, Car, Home, TrendingUp } from 'lucide-react';
 import SectionIcon from './SectionIcon';
+import { resolveImageUrl } from '../utils/imageUrl';
 
 export default function Header({
   sections = [],
@@ -290,7 +291,7 @@ export default function Header({
                             onClick={() => handleSelectItem(item)}
                           >
                             <img
-                              src={item.images && item.images[0] ? item.images[0] : 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=80&q=80'}
+                              src={resolveImageUrl(item.images?.[0] || 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e', { width: 200, quality: 65 })}
                               alt=""
                               className="result-thumb"
                             />
@@ -402,7 +403,7 @@ export default function Header({
                             onClick={() => handleSelectItem(item)}
                           >
                             <img
-                              src={item.images && item.images[0] ? item.images[0] : 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=80&q=80'}
+                              src={resolveImageUrl(item.images?.[0] || 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e', { width: 200, quality: 65 })}
                               alt=""
                               className="result-thumb"
                             />

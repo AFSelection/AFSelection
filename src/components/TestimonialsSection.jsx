@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Star, Heart, CheckCircle2 } from 'lucide-react';
 import { fetchSiteSetting, DEFAULT_TESTIMONIALS_SECTION } from '../services/storage';
+import { resolveImageUrl } from '../utils/imageUrl';
 
 const FALLBACK_TESTIMONIAL_IMAGES = [
   'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80',
@@ -64,9 +65,12 @@ export default function TestimonialsSection() {
                 {/* Photo Header */}
                 <div className="testimonial-img-wrapper">
                   <img
-                    src={imgSrc}
+                    src={resolveImageUrl(imgSrc, { width: 480 })}
                     alt={rev.author || 'Cliente AF Select'}
                     className="testimonial-img"
+                    loading="lazy"
+                    decoding="async"
+                    draggable={false}
                     onError={(e) => {
                       e.target.onerror = null;
                       e.target.src = fallbackImg;

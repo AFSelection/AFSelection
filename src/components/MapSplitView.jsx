@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Heart, MapPin, ArrowRight, X, List, Map, SlidersHorizontal } from 'lucide-react';
 import PropertyMapView from './PropertyMapView';
 import FiltersPopup from './FiltersPopup';
+import { resolveImageUrl } from '../utils/imageUrl';
 
 // ─── Compact list card ────────────────────────────────────────────────────────
 function MapListCard({ item, isHovered, isSelected, isFavorite, onHover, onLeave, onSelect, onToggleFavorite }) {
@@ -16,7 +17,7 @@ function MapListCard({ item, isHovered, isSelected, isFavorite, onHover, onLeave
       onClick={onSelect}
     >
       <div className="msl-card-img-wrap">
-        <img src={img} alt={item.title} className="msl-card-img" loading="lazy" />
+        <img src={resolveImageUrl(img, { width: 400 })} alt={item.title} className="msl-card-img" loading="lazy" decoding="async" draggable={false} />
         {item.category && <span className="msl-card-cat">{item.category}</span>}
       </div>
       <div className="msl-card-body">
@@ -55,7 +56,7 @@ function FloatingMapCard({ item, isFavorite, onToggleFavorite, onSelect, onClose
     <div className="mfc-root">
       <div className="mfc-inner">
         <div className="mfc-img-wrap">
-          <img src={img} alt={item.title} className="mfc-img" />
+          <img src={resolveImageUrl(img, { width: 640 })} alt={item.title} className="mfc-img" decoding="async" draggable={false} />
           <button
             className={`mfc-fav-btn${isFavorite ? ' mfc-fav-btn--active' : ''}`}
             onClick={(e) => { e.stopPropagation(); onToggleFavorite(); }}

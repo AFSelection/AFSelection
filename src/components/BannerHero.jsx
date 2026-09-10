@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Search, ArrowRight, ShieldCheck, MapPin } from 'lucide-react';
 import { fetchHeroImages } from '../services/storage';
+import { resolveImageUrl, preloadInBackground } from '../utils/imageUrl';
 
 const DEFAULT_IMAGES = [
   'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1400&q=80'
@@ -8,23 +9,49 @@ const DEFAULT_IMAGES = [
 
 const SLIDE_DURATION = 7000; // ms per slide
 
+/** Ancho de render del hero. Ocupa el viewport completo. */
+const HERO_WIDTH = 1600;
+
 export default function BannerHero({
+  images: providedImages,
   onScrollToSection,
   onGoToSection,
   onGoToAbout,
   onGoToSell,
   onBackToHome
 }) {
-  const [images, setImages] = useState(DEFAULT_IMAGES);
+  const [images, setImages] = useState(providedImages?.length ? providedImages : DEFAULT_IMAGES);
   const [current, setCurrent] = useState(0);
   const [prev, setPrev] = useState(null);
 
-  // Load hero images from Supabase on mount
+  // App ya las trae y las precarga antes de sacar el Loader, así que en el
+  // home entran resueltas por prop. El fetch propio queda sólo como respaldo
+  // para cuando el hero se monta sin que App las haya provisto.
   useEffect(() => {
+    if (providedImages?.length) {
+      setImages(providedImages);
+      return;
+    }
+    let alive = true;
     fetchHeroImages().then((imgs) => {
-      if (imgs && imgs.length > 0) setImages(imgs);
+      if (alive && imgs && imgs.length > 0) setImages(imgs);
     });
-  }, []);
+    return () => { alive = false; };
+  }, [providedImages]);
+
+  // URLs finales, al ancho real del hero. Sin esto el slide pedía el original
+  // de varios MB en vez de la versión de ~120 KB.
+  const slideUrls = useMemo(
+    () => images.map((u) => resolveImageUrl(u, { width: HERO_WIDTH, quality: 76 })),
+    [images]
+  );
+
+  // Los slides que no son el primero se traen en segundo plano, para que el
+  // auto-avance a los 7s no encuentre la foto sin descargar.
+  useEffect(() => {
+    if (slideUrls.length <= 1) return;
+    return preloadInBackground(slideUrls.slice(1));
+  }, [slideUrls]);
 
   const goTo = useCallback((idx, total) => {
     const next = (idx + total) % total;
@@ -45,7 +72,7 @@ export default function BannerHero({
     <section className="split-hero-section">
       {/* ── Full Bleed Slideshow ── */}
       <div className="split-hero-media">
-        {images.map((src, i) => {
+        {slideUrls.map((src, i) => {
           const isActive = i === current;
           const isPrev   = i === prev;
           return (
@@ -54,6 +81,11 @@ export default function BannerHero({
               src={src}
               alt={`AF • Select Showroom ${i + 1}`}
               className={`hero-slide ${isActive ? 'hero-slide--active' : ''} ${isPrev ? 'hero-slide--exit' : ''}`.trim()}
+              // El primer slide es el LCP de la página: nunca debe diferirse.
+              loading={i === 0 ? 'eager' : 'lazy'}
+              fetchpriority={i === 0 ? 'high' : 'low'}
+              decoding="async"
+              draggable={false}
             />
           );
         })}

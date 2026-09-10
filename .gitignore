@@ -26,3 +26,10 @@ lerna-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Backfill de imagenes: credenciales locales y manifiesto de reversion
+.env.local
+scripts/.recompress-manifest*.json
+
+# Configuracion local de herramientas
+.claude/

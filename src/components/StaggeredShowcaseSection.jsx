@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { fetchSiteSetting, DEFAULT_STAGGERED_SHOWCASE } from '../services/storage';
+import { resolveImageUrl } from '../utils/imageUrl';
 
 export default function StaggeredShowcaseSection({ listings = [], onOpenCatalog }) {
   const [content, setContent] = useState(DEFAULT_STAGGERED_SHOWCASE);
@@ -57,8 +58,11 @@ export default function StaggeredShowcaseSection({ listings = [], onOpenCatalog 
               style={{ marginTop: offsets[idx % offsets.length] }}
             >
               <img
-                src={card.image || 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=800&q=80'}
+                src={resolveImageUrl(card.image || 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e', { width: 800 })}
                 alt={card.title}
+                loading="lazy"
+                decoding="async"
+                draggable={false}
               />
               <div className="staggered-card-overlay">
                 <h4>{card.title}</h4>

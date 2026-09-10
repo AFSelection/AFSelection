@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { ArrowLeft, MessageCircle, Send, CheckCircle, ChevronLeft, ChevronRight, Play, Eye, FileText, X, Maximize2, MapPin } from 'lucide-react';
 import { submitLead } from '../services/storage';
 import { getWhatsAppUrl, getItemWhatsAppMessage } from '../utils/whatsapp';
@@ -6,7 +6,13 @@ import { isInstagramUrl, parseInstagramUrl, getListingVideos } from '../utils/in
 import { ExternalLink } from 'lucide-react';
 import ListingCard from './ListingCard';
 import OptimizedImage from './OptimizedImage';
+import { resolveImageUrl, preloadMany, preloadInBackground } from '../utils/imageUrl';
 import { formatSpecLabel } from '../utils/specs';
+
+/** Anchos de render de la ficha. */
+const DETAIL_WIDTH = 1200;  // foto principal
+const THUMB_WIDTH = 200;    // miniaturas
+const LIGHTBOX_WIDTH = 1600; // pantalla completa
 
 export default function ProductDetailPage({ item, onBack, onGoToSell, favorites, toggleFavorite, onSelectListing, listings = [], onOpenInquiry }) {
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
@@ -15,20 +21,24 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // Gather media (images + videos) safely before hooks evaluate dependencies
-  const images = item?.images && item.images.length > 0 ? item.images : [
-    'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80'
-  ];
+  // Gather media (images + videos) safely before hooks evaluate dependencies.
+  // Memoizado a propósito: estos arrays son dependencia de los efectos de
+  // precarga, y si se recrearan en cada render los relanzarían sin parar.
+  const images = useMemo(() => (
+    item?.images && item.images.length > 0 ? item.images : [
+      'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80'
+    ]
+  ), [item]);
 
-  const videos = item ? getListingVideos(item) : [];
+  const videos = useMemo(() => (item ? getListingVideos(item) : []), [item]);
 
-  const mediaItems = item ? [
+  const mediaItems = useMemo(() => (item ? [
     ...images.map(img => ({ type: 'image', url: img })),
     ...videos.map(vid => {
       const isEmbed = isInstagramUrl(vid) || vid.includes('youtube.com') || vid.includes('youtu.be') || vid.includes('vimeo.com');
       return { type: 'video', url: vid, isEmbed };
     })
-  ] : [];
+  ] : []), [item, images, videos]);
 
   useEffect(() => {
     // Scroll to top when loading a new product detail page
@@ -37,6 +47,38 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
     setIsSubmitted(false);
     setIsLightboxOpen(false);
   }, [item]);
+
+  // Toda la galería se descarga apenas se abre la ficha, no al tocar cada
+  // miniatura. Es lo que hace que pasar de foto en foto sea instantáneo en vez
+  // de dejar el recuadro en negro esperando la descarga.
+  useEffect(() => {
+    if (!item) return;
+    const urls = images.map((u) => u).filter(Boolean);
+    if (urls.length === 0) return;
+
+    // Primero las miniaturas (livianas, se ven todas juntas) y la foto grande
+    // que ya está en pantalla; después el resto de las grandes.
+    const immediate = [
+      ...urls.map((u) => resolveImageUrl(u, { width: THUMB_WIDTH, quality: 65 })),
+      resolveImageUrl(urls[0], { width: DETAIL_WIDTH, quality: 74 })
+    ];
+    preloadMany(immediate, { concurrency: 8 });
+
+    return preloadInBackground(
+      urls.slice(1).map((u) => resolveImageUrl(u, { width: DETAIL_WIDTH, quality: 74 }))
+    );
+  }, [item, images]);
+
+  // El lightbox pide una resolución mayor. Preparamos la foto activa y sus dos
+  // vecinas para que las flechas no muestren un hueco.
+  useEffect(() => {
+    if (!isLightboxOpen) return;
+    const neighbours = [lightboxIndex, lightboxIndex + 1, lightboxIndex - 1]
+      .map((i) => mediaItems[(i + mediaItems.length) % mediaItems.length])
+      .filter((m) => m && m.type === 'image')
+      .map((m) => resolveImageUrl(m.url, { width: LIGHTBOX_WIDTH, quality: 80 }));
+    preloadMany(neighbours, { concurrency: 3 });
+  }, [isLightboxOpen, lightboxIndex, mediaItems]);
 
   useEffect(() => {
     if (!isLightboxOpen) return;
@@ -320,7 +362,7 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
                   alt={item.title}
                   className="gallery-main-media"
                   priority={true}
-                  targetWidth={1400}
+                  targetWidth={DETAIL_WIDTH}
                 />
                 <button
                   type="button"
@@ -373,7 +415,7 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
                   <OptimizedImage
                     src={media.type === 'image' ? media.url : 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=120&q=80'}
                     alt=""
-                    targetWidth={200}
+                    targetWidth={THUMB_WIDTH}
                   />
                   {media.type === 'video' && (
                     <div className="play-thumb-overlay">
@@ -675,9 +717,12 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
               <div className="lightbox-media-wrapper">
                 {mediaItems[lightboxIndex]?.type === 'image' ? (
                   <img
-                    src={mediaItems[lightboxIndex].url}
+                    src={resolveImageUrl(mediaItems[lightboxIndex].url, { width: LIGHTBOX_WIDTH, quality: 80 })}
                     alt={`${item.title} - ${lightboxIndex + 1}`}
                     className="lightbox-image"
+                    decoding="async"
+                    fetchpriority="high"
+                    draggable={false}
                   />
                 ) : (
                   <div className="lightbox-video-container">
@@ -709,8 +754,16 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
                     className={`lightbox-thumb ${idx === lightboxIndex ? 'active' : ''}`}
                   >
                     <img
-                      src={media.type === 'image' ? media.url : 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=120&q=80'}
+                      src={resolveImageUrl(
+                        media.type === 'image'
+                          ? media.url
+                          : 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4',
+                        { width: THUMB_WIDTH, quality: 65 }
+                      )}
                       alt=""
+                      loading="lazy"
+                      decoding="async"
+                      draggable={false}
                     />
                     {media.type === 'video' && (
                       <div className="play-thumb-overlay">

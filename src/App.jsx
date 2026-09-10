@@ -22,33 +22,98 @@ import MapSplitView from './components/MapSplitView';
 import AboutPage from './components/AboutPage';
 import ContactPage from './components/ContactPage';
 import InquiryModal from './components/InquiryModal';
-import { fetchListings, fetchSections } from './services/storage';
+import { fetchListings, fetchSections, fetchHeroImages } from './services/storage';
+import { resolveImageUrl, preloadManyWithDeadline, preloadInBackground } from './utils/imageUrl';
 import { getWhatsAppUrl } from './utils/whatsapp';
 import { Heart, X, AlertCircle, Layers } from 'lucide-react';
 import Loader from './components/Loader';
 import SEOHead from './components/SEOHead';
 
+/**
+ * Anchos de render reales, en CSS px. Se usan para pedirle a Supabase
+ * exactamente el tamaño que se va a mostrar en vez de la foto original.
+ */
+const CARD_WIDTH = 640;    // tarjeta del catálogo
+const DETAIL_WIDTH = 1200; // foto principal de la ficha
+
+/** Tarjetas que entran en pantalla al cargar. El Loader espera sólo por estas. */
+const ABOVE_FOLD_CARDS = 8;
+
+/**
+ * Techo de espera del Loader. Pasado esto se muestra el home aunque falte
+ * alguna foto: una imagen lenta o rota no puede dejar el sitio bloqueado.
+ */
+const LOADER_MAX_WAIT = 3500;
+
 export default function App() {
   const [data, setData] = useState({ sections: [], listings: [] });
+  const [heroImages, setHeroImages] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
+
     async function loadData() {
       try {
-        const listings = await fetchListings();
-        const sections = await fetchSections();
-        setData({
-          sections,
-          listings
+        const [listings, sections, hero] = await Promise.all([
+          fetchListings(),
+          fetchSections(),
+          fetchHeroImages()
+        ]);
+        if (cancelled) return;
+
+        setData({ sections, listings });
+        setHeroImages(hero);
+
+        // El Loader no se va con los datos: se va con las imágenes.
+        // Antes `setLoading(false)` corría acá mismo, apenas llegaba el JSON,
+        // así que el home aparecía con los huecos todavía descargando.
+        //
+        // Esperamos sólo lo que se ve al entrar (hero + primeras tarjetas).
+        // El resto arranca en paralelo apenas se libera la pantalla, así que
+        // para cuando el usuario scrollea ya está en caché.
+        const heroUrls = (hero || []).slice(0, 2).map((u) =>
+          resolveImageUrl(u, { width: 1600, quality: 76 })
+        );
+
+        const cardUrls = (listings || [])
+          .slice(0, ABOVE_FOLD_CARDS)
+          .map((l) => l.images?.[0])
+          .filter(Boolean)
+          .map((u) => resolveImageUrl(u, { width: CARD_WIDTH, quality: 72 }));
+
+        await preloadManyWithDeadline([...heroUrls, ...cardUrls], {
+          concurrency: 8,
+          timeout: LOADER_MAX_WAIT
         });
       } catch (err) {
         console.error('Error loading Supabase data:', err);
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     }
+
     loadData();
+    return () => { cancelled = true; };
   }, []);
+
+  // Precarga de fondo: el resto del catálogo, y la primera foto de cada ficha
+  // al tamaño del detalle, para que abrir un producto sea instantáneo.
+  useEffect(() => {
+    if (loading || !data.listings?.length) return;
+
+    const rest = data.listings.slice(ABOVE_FOLD_CARDS)
+      .map((l) => l.images?.[0])
+      .filter(Boolean)
+      .map((u) => resolveImageUrl(u, { width: CARD_WIDTH, quality: 72 }));
+
+    const detailCovers = data.listings
+      .map((l) => l.images?.[0])
+      .filter(Boolean)
+      .map((u) => resolveImageUrl(u, { width: DETAIL_WIDTH, quality: 74 }));
+
+    return preloadInBackground([...rest, ...detailCovers]);
+  }, [loading, data.listings]);
 
 
   const [activeSection, setActiveSection] = useState('home');
@@ -469,6 +534,7 @@ export default function App() {
         {/* FUNNEL STAGE 1: Full Viewport Monumental Hero Banner */}
         {isHomepage && (
           <BannerHero
+            images={heroImages}
             onScrollToSection={scrollToSection}
             onGoToSection={(sec) => {
               setActiveSection(sec);

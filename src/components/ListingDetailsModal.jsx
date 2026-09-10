@@ -3,6 +3,7 @@ import { X, Send, MessageCircle, CheckCircle, ArrowUpRight, Maximize2, ChevronLe
 import { formatSpecLabel } from '../utils/specs';
 import { getInitialData, saveStorageData } from '../services/storage';
 import { getWhatsAppUrl } from '../utils/whatsapp';
+import { resolveImageUrl } from '../utils/imageUrl';
 
 export default function ListingDetailsModal({ item, onClose, onOpenInquiry }) {
   const [activeImgIndex, setActiveImgIndex] = useState(0);
@@ -79,7 +80,7 @@ export default function ListingDetailsModal({ item, onClose, onOpenInquiry }) {
                 setIsLightboxOpen(true);
               }}
             >
-              <img src={images[activeImgIndex]} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src={resolveImageUrl(images[activeImgIndex], { width: 1200 })} alt={item.title} decoding="async" draggable={false} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               <button
                 type="button"
                 className="gallery-expand-btn"
@@ -111,7 +112,7 @@ export default function ListingDetailsModal({ item, onClose, onOpenInquiry }) {
                       border: idx === activeImgIndex ? '2px solid var(--text-main)' : '1px solid transparent'
                     }}
                   >
-                    <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <img src={resolveImageUrl(img, { width: 200, quality: 65 })} alt="" loading="lazy" decoding="async" draggable={false} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   </div>
                 ))}
               </div>
@@ -307,9 +308,12 @@ export default function ListingDetailsModal({ item, onClose, onOpenInquiry }) {
 
               <div className="lightbox-media-wrapper">
                 <img
-                  src={images[lightboxIndex]}
+                  src={resolveImageUrl(images[lightboxIndex], { width: 1600, quality: 80 })}
                   alt={`${item.title} - ${lightboxIndex + 1}`}
                   className="lightbox-image"
+                  decoding="async"
+                  fetchpriority="high"
+                  draggable={false}
                 />
               </div>
 
@@ -334,7 +338,7 @@ export default function ListingDetailsModal({ item, onClose, onOpenInquiry }) {
                     onClick={() => setLightboxIndex(idx)}
                     className={`lightbox-thumb ${idx === lightboxIndex ? 'active' : ''}`}
                   >
-                    <img src={img} alt="" />
+                    <img src={resolveImageUrl(img, { width: 200, quality: 65 })} alt="" loading="lazy" decoding="async" draggable={false} />
                   </button>
                 ))}
               </div>

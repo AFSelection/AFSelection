@@ -7141,50 +7141,54 @@ h1, h2, h3, h4, .font-display {
 }
 
 /* ==========================================================================
-   SMOOTH FADE-IN & SKELETON LOADING (NO CURTAIN EFFECT)
+   CARGA DE IMÁGENES
+   El componente OptimizedImage sólo pinta imágenes ya decodificadas, así que
+   acá no hay que "revelar" nada: no existe opacity:0 que pueda quedarse
+   trabada si un evento onLoad no llega. El skeleton es sólo el hueco previo.
    ========================================================================== */
-.img-smooth-load {
-  opacity: 0 !important;
-  transition: opacity 0.35s ease-in-out, transform 0.4s ease-out !important;
-  will-change: opacity;
-}
-
-.img-smooth-load.loaded {
-  opacity: 1 !important;
-}
-
-.img-skeleton-box {
-  background: #191c22;
+.img-box {
+  background: #eceef1;
   position: relative;
   overflow: hidden;
 }
 
-.img-skeleton-box::before {
+/* Placeholder sobrio mientras la foto todavía no está lista. Gris claro y no
+   negro: si algo llegara a fallar, se lee como hueco vacío y no como imagen rota. */
+.img-box.is-pending::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.06) 50%,
-    transparent 100%
-  );
-  animation: img-skeleton-shimmer 1.6s infinite;
-  pointer-events: none;
-  z-index: 1;
+  inset: 0;
+  background: linear-gradient(100deg, #eceef1 30%, #f5f6f8 50%, #eceef1 70%);
+  background-size: 200% 100%;
+  animation: img-box-pulse 1.4s ease-in-out infinite;
 }
 
-.img-skeleton-box.is-loaded::before {
-  display: none;
+.img-box.is-loaded {
+  background: transparent;
 }
 
-@keyframes img-skeleton-shimmer {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(200%); }
+/* La foto entra de una. El fundido corto es sólo para la primera aparición
+   sobre el skeleton; los cambios de foto posteriores ya son instantáneos
+   porque la nueva imagen se prepara antes de reemplazar a la anterior. */
+.img-media {
+  animation: img-media-in 0.18s ease-out;
 }
+
+@keyframes img-media-in {
+  from { opacity: 0.35; }
+  to   { opacity: 1; }
+}
+
+@keyframes img-box-pulse {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .img-box.is-pending::after { animation: none; }
+  .img-media { animation: none; }
+}
+
 
 
 

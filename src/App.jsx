@@ -173,11 +173,13 @@ export default function App() {
   // Centralized Navigation Handlers with Clean URL Persistence
   const handleSelectListing = (item) => {
     if (item) {
-      setSelectedListing(item);
+      const canonicalItem = data.listings?.find((l) => String(l.id) === String(item.id)) || item;
+      setSelectedListing(canonicalItem);
       setShowSellPage(false);
       setShowAboutPage(false);
       setShowContactPage(false);
-      setUrlPath(`/producto/${item.id}`);
+      setShowMap(false);
+      setUrlPath(`/producto/${canonicalItem.id}`);
       window.scrollTo(0, 0);
     } else {
       setSelectedListing(null);
@@ -244,6 +246,7 @@ export default function App() {
           setSelectedListing(found);
           setShowSellPage(false);
           setShowAboutPage(false);
+          setShowMap(false);
           window.scrollTo(0, 0);
         }
       } else if (path === '/vender') {
@@ -530,7 +533,7 @@ export default function App() {
       )}
 
       {/* Main Content Wrapper */}
-      <div className="main-wrapper" style={{ opacity: showMap ? 0 : 1, pointerEvents: showMap ? 'none' : 'auto' }}>
+      <div className="main-wrapper" style={{ opacity: (showMap && !selectedListing) ? 0 : 1, pointerEvents: (showMap && !selectedListing) ? 'none' : 'auto' }}>
         {/* FUNNEL STAGE 1: Full Viewport Monumental Hero Banner */}
         {isHomepage && (
           <BannerHero

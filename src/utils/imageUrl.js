@@ -78,6 +78,11 @@ export function buildImageUrl(url, opts = {}) {
     return `${base}?auto=format&fit=crop&w=${w}&q=${q}`;
   }
 
+  if (url.includes('res.cloudinary.com')) {
+    if (url.includes('/upload/w_')) return url;
+    return url.replace('/upload/', `/upload/w_${w},q_${q},f_auto/`);
+  }
+
   return url;
 }
 

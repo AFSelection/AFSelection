@@ -2417,7 +2417,7 @@ h1, h2, h3, h4, .font-display {
   background: var(--bg-dark);
   border-radius: 24px;
   overflow: hidden !important;
-  height: 400px;
+  height: 315px;
   width: 100% !important;
   min-width: 100% !important;
   max-width: 100% !important;
@@ -2448,6 +2448,7 @@ h1, h2, h3, h4, .font-display {
   max-width: 100% !important;
   max-height: 100% !important;
   object-fit: cover !important;
+  object-position: center 45% !important;
   display: block !important;
   transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   transform: scale(1.0);

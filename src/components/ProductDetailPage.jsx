@@ -578,8 +578,8 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
           <h3 className="description-section-title" style={{ marginBottom: '12px' }}>
             UBICACIÓN DE LA UNIDAD
           </h3>
-          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <MapPin size={16} color="#F59E0B" /> {item.location || 'Ubicación disponible a consultar'}
+          <p style={{ color: 'var(--text-main, #333333)', fontSize: '1rem', fontWeight: '500', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <MapPin size={18} color="#D97706" /> <span>{item.location || 'Ubicación disponible a consultar'}</span>
           </p>
           <div style={{ width: '100%', height: '360px', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)', position: 'relative' }}>
             <PropertyMapView listings={[item]} selectedId={item.id} />

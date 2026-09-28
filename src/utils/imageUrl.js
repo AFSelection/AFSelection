@@ -73,7 +73,12 @@ export function buildImageUrl(url, opts = {}) {
     const params = new URLSearchParams();
     params.set('width', String(w));
     if (height) params.set('height', String(Math.round(height)));
-    if (resize) params.set('resize', resize);
+    // Sin alto, Supabase usa `cover` contra el alto ORIGINAL: una foto de
+    // 1600×2133 pedida a width=960 vuelve 960×2133, recortada de los costados.
+    // Eso agregaba un zoom que no se veía en el CRM. `contain` la achica
+    // entera y en proporción (960×1280).
+    const mode = resize || (height ? null : 'contain');
+    if (mode) params.set('resize', mode);
     params.set('quality', String(q));
 
     return `${base}?${params.toString()}`;

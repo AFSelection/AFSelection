@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { resolveImageUrl, preloadImage, isImageReady } from '../utils/imageUrl';
+import { framingStyle } from '../utils/imageFraming';
 
 /**
  * Imagen que no parpadea, no se pinta en cortina y no se queda en negro.
@@ -77,6 +78,11 @@ export default function OptimizedImage({
 
   const hasImage = !!shownSrc;
 
+  // El encuadre acompaña a la foto que está pintada, no a la que se pidió:
+  // mientras la nueva baja seguimos mostrando la anterior con el suyo.
+  const shownFramingRef = useRef(undefined);
+  if (shownSrc === finalSrc) shownFramingRef.current = framingStyle(src);
+
   const boxStyle = {
     width: width ? (typeof width === 'number' ? `${width}px` : width) : '100%',
     height: height ? (typeof height === 'number' ? `${height}px` : height) : '100%',
@@ -108,7 +114,9 @@ export default function OptimizedImage({
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            display: 'block'
+            display: 'block',
+            // Qué parte de la foto se ve, elegido desde el CRM.
+            ...shownFramingRef.current
           }}
           {...props}
         />

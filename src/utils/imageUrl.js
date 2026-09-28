@@ -11,6 +11,8 @@
  * cacheado en el CDN. Un PNG de 2.7 MB pedido a width=600 sale 77 KB.
  */
 
+import { stripFraming } from './imageFraming';
+
 const SUPABASE_OBJECT_PATH = '/storage/v1/object/public/';
 const SUPABASE_RENDER_PATH = '/storage/v1/render/image/public/';
 
@@ -54,6 +56,10 @@ function isSupabaseStorageUrl(url) {
  */
 export function buildImageUrl(url, opts = {}) {
   if (!url || typeof url !== 'string') return url;
+  // El encuadre del CRM viaja como `#encuadre=...` al final de la URL. Si no se
+  // saca antes, el ancho pedido quedaría pegado después del `#` y el CDN
+  // devolvería el original sin redimensionar.
+  url = stripFraming(url);
   if (url.startsWith('data:') || url.startsWith('blob:')) return url;
 
   const { width = 800, height, quality = 72, resize } = opts;

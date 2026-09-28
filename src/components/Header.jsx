@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Search, Heart, Menu, X, ShieldCheck, ArrowRight, ChevronDown, Layers, Car, Home, TrendingUp } from 'lucide-react';
 import SectionIcon from './SectionIcon';
 import { resolveImageUrl } from '../utils/imageUrl';
+import { framingStyle } from '../utils/imageFraming';
 
 export default function Header({
   sections = [],
@@ -294,6 +295,7 @@ export default function Header({
                               src={resolveImageUrl(item.images?.[0] || 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e', { width: 200, quality: 65 })}
                               alt=""
                               className="result-thumb"
+                              style={framingStyle(item.images?.[0], { allowZoom: false })}
                             />
                             <div className="result-info">
                               <span className="result-title">{item.title}</span>
@@ -406,6 +408,7 @@ export default function Header({
                               src={resolveImageUrl(item.images?.[0] || 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e', { width: 200, quality: 65 })}
                               alt=""
                               className="result-thumb"
+                              style={framingStyle(item.images?.[0], { allowZoom: false })}
                             />
                             <div className="result-info">
                               <span className="result-title">{item.title}</span>

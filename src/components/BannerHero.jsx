@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Search, ArrowRight, ShieldCheck, MapPin } from 'lucide-react';
 import { fetchHeroImages } from '../services/storage';
 import { resolveImageUrl, preloadInBackground } from '../utils/imageUrl';
+import { framingStyle } from '../utils/imageFraming';
 
 const DEFAULT_IMAGES = [
   'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1400&q=80'
@@ -80,6 +81,7 @@ export default function BannerHero({
               key={src}
               src={src}
               alt={`AF • Select Showroom ${i + 1}`}
+              style={framingStyle(images[i])}
               className={`hero-slide ${isActive ? 'hero-slide--active' : ''} ${isPrev ? 'hero-slide--exit' : ''}`.trim()}
               // El primer slide es el LCP de la página: nunca debe diferirse.
               loading={i === 0 ? 'eager' : 'lazy'}

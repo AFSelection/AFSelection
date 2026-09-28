@@ -4,6 +4,7 @@ import { formatSpecLabel } from '../utils/specs';
 import { getInitialData, saveStorageData } from '../services/storage';
 import { getWhatsAppUrl } from '../utils/whatsapp';
 import { resolveImageUrl } from '../utils/imageUrl';
+import { framingStyle } from '../utils/imageFraming';
 
 export default function ListingDetailsModal({ item, onClose, onOpenInquiry }) {
   const [activeImgIndex, setActiveImgIndex] = useState(0);
@@ -80,7 +81,7 @@ export default function ListingDetailsModal({ item, onClose, onOpenInquiry }) {
                 setIsLightboxOpen(true);
               }}
             >
-              <img src={resolveImageUrl(images[activeImgIndex], { width: 1200 })} alt={item.title} decoding="async" draggable={false} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src={resolveImageUrl(images[activeImgIndex], { width: 1200 })} alt={item.title} decoding="async" draggable={false} style={{ width: '100%', height: '100%', objectFit: 'cover', ...framingStyle(images[activeImgIndex]) }} />
               <button
                 type="button"
                 className="gallery-expand-btn"
@@ -112,7 +113,7 @@ export default function ListingDetailsModal({ item, onClose, onOpenInquiry }) {
                       border: idx === activeImgIndex ? '2px solid var(--text-main)' : '1px solid transparent'
                     }}
                   >
-                    <img src={resolveImageUrl(img, { width: 200, quality: 65 })} alt="" loading="lazy" decoding="async" draggable={false} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <img src={resolveImageUrl(img, { width: 200, quality: 65 })} alt="" loading="lazy" decoding="async" draggable={false} style={{ width: '100%', height: '100%', objectFit: 'cover', ...framingStyle(img) }} />
                   </div>
                 ))}
               </div>

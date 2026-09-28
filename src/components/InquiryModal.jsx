@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { framingStyle } from '../utils/imageFraming';
 import { X, Send, MessageCircle, CheckCircle, ShieldCheck } from 'lucide-react';
 import { submitLead } from '../services/storage';
 import { getWhatsAppUrl } from '../utils/whatsapp';
@@ -93,7 +94,7 @@ export default function InquiryModal({ item, onClose }) {
           {/* Product Summary Card Preview */}
           <div className="inquiry-item-preview">
             {item.images?.[0] && (
-              <img src={item.images[0]} alt={item.title} className="inquiry-item-img" />
+              <img src={item.images[0]} alt={item.title} className="inquiry-item-img" style={framingStyle(item.images[0], { allowZoom: false })} />
             )}
             <div className="inquiry-item-info">
               <span className="inquiry-item-cat">{item.category || item.sectionId}</span>

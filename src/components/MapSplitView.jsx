@@ -3,6 +3,7 @@ import { Heart, MapPin, ArrowRight, X, List, Map, SlidersHorizontal } from 'luci
 import PropertyMapView from './PropertyMapView';
 import FiltersPopup from './FiltersPopup';
 import { resolveImageUrl } from '../utils/imageUrl';
+import { framingStyle } from '../utils/imageFraming';
 
 // ─── Compact list card ────────────────────────────────────────────────────────
 function MapListCard({ item, isHovered, isSelected, isFavorite, onHover, onLeave, onSelect, onToggleFavorite }) {
@@ -17,7 +18,7 @@ function MapListCard({ item, isHovered, isSelected, isFavorite, onHover, onLeave
       onClick={onSelect}
     >
       <div className="msl-card-img-wrap">
-        <img src={resolveImageUrl(img, { width: 400 })} alt={item.title} className="msl-card-img" loading="lazy" decoding="async" draggable={false} />
+        <img src={resolveImageUrl(img, { width: 400 })} alt={item.title} className="msl-card-img" style={framingStyle(img)} loading="lazy" decoding="async" draggable={false} />
         {item.category && <span className="msl-card-cat">{item.category}</span>}
       </div>
       <div className="msl-card-body">
@@ -56,7 +57,7 @@ function FloatingMapCard({ item, isFavorite, onToggleFavorite, onSelect, onClose
     <div className="mfc-root">
       <div className="mfc-inner">
         <div className="mfc-img-wrap">
-          <img src={resolveImageUrl(img, { width: 640 })} alt={item.title} className="mfc-img" decoding="async" draggable={false} />
+          <img src={resolveImageUrl(img, { width: 640 })} alt={item.title} className="mfc-img" style={framingStyle(img)} decoding="async" draggable={false} />
           <button
             className={`mfc-fav-btn${isFavorite ? ' mfc-fav-btn--active' : ''}`}
             onClick={(e) => { e.stopPropagation(); onToggleFavorite(); }}

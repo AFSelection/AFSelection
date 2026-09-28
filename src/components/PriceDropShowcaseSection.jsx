@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Zap, Clock } from 'lucide-react';
 import { resolveImageUrl } from '../utils/imageUrl';
+import { framingStyle } from '../utils/imageFraming';
 
 export default function PriceDropShowcaseSection({ listings = [], onSelectListing }) {
   const [timeLeft, setTimeLeft] = useState({ hours: 6, minutes: 18, seconds: 36 });
@@ -83,7 +84,7 @@ export default function PriceDropShowcaseSection({ listings = [], onSelectListin
             })}
           >
             <div className="pd-card-img">
-              <img src={resolveImageUrl(item.image, { width: 640 })} alt={item.title} loading="lazy" decoding="async" draggable={false} />
+              <img src={resolveImageUrl(item.image, { width: 640 })} style={framingStyle(item.image)} alt={item.title} loading="lazy" decoding="async" draggable={false} />
               <span className="pd-discount-pill">{item.discount}</span>
             </div>
 

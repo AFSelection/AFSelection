@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { fetchSiteSetting, DEFAULT_STAGGERED_SHOWCASE } from '../services/storage';
 import { resolveImageUrl } from '../utils/imageUrl';
+import { framingStyle } from '../utils/imageFraming';
 
 export default function StaggeredShowcaseSection({ listings = [], onOpenCatalog }) {
   const [content, setContent] = useState(DEFAULT_STAGGERED_SHOWCASE);
@@ -59,6 +60,7 @@ export default function StaggeredShowcaseSection({ listings = [], onOpenCatalog 
             >
               <img
                 src={resolveImageUrl(card.image || 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e', { width: 800 })}
+                style={framingStyle(card.image)}
                 alt={card.title}
                 loading="lazy"
                 decoding="async"

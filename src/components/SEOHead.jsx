@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { stripFraming } from '../utils/imageFraming';
 
 const SITE_NAME = 'AF SELECT';
 const SITE_URL = typeof window !== 'undefined' ? window.location.origin : 'https://fidalgoselect.com';
@@ -27,9 +28,9 @@ export default function SEOHead({ activeSection, selectedListing, showSellPage, 
         : `${typeLabel} exclusivo disponible en ${SITE_NAME}. Descubre los detalles completos, ficha técnica y fotos en alta resolución.`;
       
       if (selectedListing.images && selectedListing.images.length > 0) {
-        ogImage = selectedListing.images[0];
+        ogImage = stripFraming(selectedListing.images[0]);
       } else if (selectedListing.image) {
-        ogImage = selectedListing.image;
+        ogImage = stripFraming(selectedListing.image);
       }
 
       canonicalUrl = `${SITE_URL}/producto/${selectedListing.id}`;

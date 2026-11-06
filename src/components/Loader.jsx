@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PartnerLogo from './PartnerLogo';
 
 export default function Loader({ visible }) {
   const [mounted, setMounted] = useState(true);
@@ -18,6 +19,7 @@ export default function Loader({ visible }) {
         <span className="af-loader-word">AF</span>
         <span className="af-loader-dot">•</span>
         <span className="af-loader-word af-loader-word--light">SELECT</span>
+        <PartnerLogo />
       </div>
       <div className="af-loader-line" />
     </div>

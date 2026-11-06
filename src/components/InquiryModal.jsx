@@ -65,7 +65,7 @@ export default function InquiryModal({ item, onClose }) {
       whatsappText += `\n\nComentario: "${formData.message.trim()}"`;
     }
 
-    const whatsappUrl = getWhatsAppUrl(whatsappText);
+    const whatsappUrl = getWhatsAppUrl(whatsappText, item);
 
     setIsSubmitting(false);
     setIsSubmitted(true);

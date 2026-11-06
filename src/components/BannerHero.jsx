@@ -3,6 +3,7 @@ import { Search, ArrowRight, ShieldCheck, MapPin } from 'lucide-react';
 import { fetchHeroImages } from '../services/storage';
 import { resolveImageUrl, preloadInBackground } from '../utils/imageUrl';
 import { framingStyle } from '../utils/imageFraming';
+import PartnerLogo from './PartnerLogo';
 
 const DEFAULT_IMAGES = [
   'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1400&q=80'
@@ -100,6 +101,7 @@ export default function BannerHero({
           <span className="logo-text-bold" style={{ color: '#FFF' }}>AF</span>
           <span className="brand-dot-black" style={{ backgroundColor: '#FFF' }} />
           <span className="logo-text-light" style={{ color: '#FFF' }}>SELECT</span>
+          <PartnerLogo />
         </a>
       </div>
 
@@ -111,6 +113,7 @@ export default function BannerHero({
             <span className="logo-text-bold">AF</span>
             <span className="brand-dot-black" />
             <span className="logo-text-light">SELECT</span>
+            <PartnerLogo />
           </a>
 
 

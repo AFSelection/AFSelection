@@ -140,7 +140,7 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
   };
 
   const whatsappMessage = getItemWhatsAppMessage(item);
-  const whatsappUrl = getWhatsAppUrl(whatsappMessage);
+  const whatsappUrl = getWhatsAppUrl(whatsappMessage, item);
 
   // Find related products (same section, excluding current)
   const allListings = listings || [];

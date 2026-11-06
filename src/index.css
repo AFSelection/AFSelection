@@ -7197,3 +7197,26 @@ h1, h2, h3, h4, .font-display {
 
 
 
+
+/* ==========================================================================
+   LOGO ALIADO: CARS & CARS (al lado de AF • SELECT)
+   Se pinta con currentColor, así hereda el color del logo en cada lugar.
+   ========================================================================== */
+.brand-partner-divider {
+  width: 1px;
+  height: 0.95em;
+  margin: 0 6px;
+  background-color: currentColor;
+  opacity: 0.35;
+  flex-shrink: 0;
+}
+
+.brand-partner-logo {
+  display: inline-block;
+  flex-shrink: 0;
+  height: 0.82em;
+  aspect-ratio: 727 / 132;
+  background-color: currentColor;
+  -webkit-mask: url('/cars-and-cars.png') center / contain no-repeat;
+  mask: url('/cars-and-cars.png') center / contain no-repeat;
+}

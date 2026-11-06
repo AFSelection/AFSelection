@@ -62,7 +62,7 @@ export default function ListingDetailsModal({ item, onClose, onOpenInquiry }) {
   };
 
   const whatsappMessage = `Hola AF Select, me interesa la unidad: ${item.title} (${formatPrice(item.price)}). ¿Tienen disponibilidad para coordinar una reunión?`;
-  const whatsappUrl = getWhatsAppUrl(whatsappMessage);
+  const whatsappUrl = getWhatsAppUrl(whatsappMessage, item);
 
   return (
     <div className="modal-backdrop" onClick={onClose}>

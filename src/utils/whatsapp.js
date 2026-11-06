@@ -1,21 +1,47 @@
 /**
  * Centralized WhatsApp utility for AF Select.
- * Number is retrieved from environment variable VITE_WHATSAPP_NUMBER with default fallback.
+ * Numbers are retrieved from environment variables with default fallbacks:
+ *  - VITE_WHATSAPP_NUMBER        -> general (propiedades, inversiones, resto)
+ *  - VITE_WHATSAPP_NUMBER_AUTOS  -> solo publicaciones y secciones de autos
  */
 
-export function getWhatsAppNumber() {
-  const envNumber = import.meta.env?.VITE_WHATSAPP_NUMBER;
-  if (envNumber && typeof envNumber === 'string') {
+// +54 9 3813 59-0196
+const DEFAULT_NUMBER = '5493813590196';
+// +54 9 3813 42-4771
+const DEFAULT_AUTOS_NUMBER = '5493813424771';
+
+function cleanNumber(value) {
+  if (value && typeof value === 'string') {
     // Strip non-digit characters in case user enters formatting like +54 9 3813 59-0196
-    const cleaned = envNumber.replace(/\D/g, '');
+    const cleaned = value.replace(/\D/g, '');
     if (cleaned) return cleaned;
   }
-  // Default fallback: +54 9 3813 59-0196 -> 5493813590196
-  return '5493813590196';
+  return null;
 }
 
-export function getWhatsAppUrl(text = '') {
-  const number = getWhatsAppNumber();
+/** true si la publicación es un auto (sección "autos"). */
+export function isAutoItem(item) {
+  return item?.sectionId === 'autos';
+}
+
+/**
+ * Devuelve el número de WhatsApp a usar.
+ * @param {object|boolean} [context] publicación (item) o `true` si estamos en la sección autos.
+ */
+export function getWhatsAppNumber(context) {
+  const isAutos = context === true || isAutoItem(context);
+  if (isAutos) {
+    return cleanNumber(import.meta.env?.VITE_WHATSAPP_NUMBER_AUTOS) || DEFAULT_AUTOS_NUMBER;
+  }
+  return cleanNumber(import.meta.env?.VITE_WHATSAPP_NUMBER) || DEFAULT_NUMBER;
+}
+
+/**
+ * @param {string} [text] mensaje precargado
+ * @param {object|boolean} [context] publicación (item) o `true` para la sección autos
+ */
+export function getWhatsAppUrl(text = '', context) {
+  const number = getWhatsAppNumber(context);
   if (!text) {
     return `https://wa.me/${number}`;
   }

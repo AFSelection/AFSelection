@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Search, Heart, Menu, X, ShieldCheck, ArrowRight, ChevronDown, Layers, Car, Home, TrendingUp } from 'lucide-react';
 import SectionIcon from './SectionIcon';
+import PartnerLogo from './PartnerLogo';
 import { resolveImageUrl } from '../utils/imageUrl';
 import { framingStyle } from '../utils/imageFraming';
 
@@ -259,6 +260,7 @@ export default function Header({
               <span className="logo-text-bold">AF</span>
               <span className="brand-dot-black" />
               <span className="logo-text-light">SELECT</span>
+              <PartnerLogo />
             </a>
           </div>
 
@@ -367,6 +369,7 @@ export default function Header({
               <span className="logo-text-bold">AF</span>
               <span className="brand-dot-gold" style={{ backgroundColor: '#EF4444' }} />
               <span className="logo-text-light">SELECT</span>
+              <PartnerLogo />
             </a>
 
             <button

@@ -782,7 +782,7 @@ export default function App() {
 
       {/* Floating WhatsApp Button (Reveals AFTER scrolling past Hero) */}
       <a
-        href={getWhatsAppUrl('Hola Agustín, quisiera consultar por un activo en AF Select')}
+        href={getWhatsAppUrl('Hola Agustín, quisiera consultar por un activo en AF Select', selectedListing || activeSection === 'autos')}
         target="_blank"
         rel="noopener noreferrer"
         className={`floating-whatsapp-btn ${showScrolledNav ? 'visible' : ''}`}

@@ -17,7 +17,11 @@ export default function SEOHead({ activeSection, selectedListing, showSellPage, 
 
     if (selectedListing) {
       const listingTitle = selectedListing.title || 'Publicación Exclusiva';
-      const typeLabel = selectedListing.category === 'autos' || selectedListing.type === 'auto' ? 'Vehículo' : 'Propiedad';
+      // La sección es lo que dice si es vehículo o inmueble. `category` es el
+      // tipo dentro de la sección (Hatchback, SUV, Casas…): antes se comparaba
+      // con 'autos' y nunca coincidía, así que todo salía como inmueble.
+      const isAuto = !['propiedades', 'inversiones'].includes(selectedListing.sectionId);
+      const typeLabel = isAuto ? 'Vehículo' : 'Propiedad';
       const formattedPrice = selectedListing.price 
         ? `${selectedListing.currency || 'USD'} ${Number(selectedListing.price).toLocaleString()}`
         : '';
@@ -34,10 +38,9 @@ export default function SEOHead({ activeSection, selectedListing, showSellPage, 
       }
 
       canonicalUrl = `${SITE_URL}/producto/${selectedListing.id}`;
-      ogType = selectedListing.category === 'autos' ? 'product' : 'article';
+      ogType = isAuto ? 'product' : 'article';
 
       // Build JSON-LD Schema based on category
-      const isAuto = selectedListing.category === 'autos' || selectedListing.type === 'auto';
       
       if (isAuto) {
         schemaData = {
@@ -100,6 +103,12 @@ export default function SEOHead({ activeSection, selectedListing, showSellPage, 
       description = 'Explora casas de diseño, penthouses, residencias privadas y terrenos de inversión seleccionados por AF SELECT.';
       keywords = 'propiedades de lujo, casas exclusivas, penthouses, desarrollos inmobiliarios, real estate premium, af select propiedades';
       canonicalUrl = `${SITE_URL}/propiedades`;
+    } else if (activeSection && !['home', 'all', 'todos'].includes(activeSection)) {
+      // Secciones creadas desde el CRM (motos, cuatriciclos, inversiones…).
+      const name = activeSection.charAt(0).toUpperCase() + activeSection.slice(1);
+      title = `${name} | ${SITE_NAME}`;
+      description = `${name} en AF SELECT: publicaciones revisadas, con trato directo con Agustín Fidalgo.`;
+      canonicalUrl = `${SITE_URL}/${activeSection}`;
     } else {
       title = `${SITE_NAME} — Vehículos de Lujo y Propiedades Exclusivas`;
       description = 'Marketplace exclusivo de vehículos de alta gama, superdeportivos e inmuebles residenciales y comerciales de arquitectura de vanguardia.';

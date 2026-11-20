@@ -261,13 +261,27 @@ export default function App() {
         setSelectedListing(null);
         setShowSellPage(false);
         setShowAboutPage(false);
+      } else {
+        // Secciones creadas desde el CRM (motos, cuatriciclos, inversiones…).
+        // Al tocarlas la URL pasa a /<id>, pero abriendo ese link directo o
+        // recargando caía en el home.
+        const slug = decodeURIComponent(path.replace(/^\/|\/$/g, ''));
+        const section = (data.sections || []).find((s) => s.id === slug || s.slug === slug);
+        if (section) {
+          setActiveSection(section.id);
+          setSelectedCategory('all');
+          setSelectedListing(null);
+          setShowSellPage(false);
+          setShowAboutPage(false);
+          setShowContactPage(false);
+        }
       }
     };
 
     syncPathState();
     window.addEventListener('popstate', syncPathState);
     return () => window.removeEventListener('popstate', syncPathState);
-  }, [loading, data.listings]);
+  }, [loading, data.listings, data.sections]);
 
   const scrollToSection = (sec) => {
     // Reset view states first so we are on the homepage

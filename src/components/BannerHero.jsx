@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Search, ArrowRight, ShieldCheck, MapPin } from 'lucide-react';
 import { fetchHeroImages } from '../services/storage';
-import { resolveImageUrl, preloadInBackground } from '../utils/imageUrl';
+import { resolveImageUrl, preloadInBackground, fitToViewport } from '../utils/imageUrl';
 import { framingStyle } from '../utils/imageFraming';
 import PartnerLogo from './PartnerLogo';
 
@@ -11,8 +11,8 @@ const DEFAULT_IMAGES = [
 
 const SLIDE_DURATION = 7000; // ms per slide
 
-/** Ancho de render del hero. Ocupa el viewport completo. */
-const HERO_WIDTH = 1600;
+/** Ancho de render del hero. Ocupa el viewport completo (en celu, ~390). */
+const HERO_WIDTH = fitToViewport(1600);
 
 export default function BannerHero({
   images: providedImages,

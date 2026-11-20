@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { resolveImageUrl, preloadImage, isImageReady } from '../utils/imageUrl';
-import { framingStyle } from '../utils/imageFraming';
+import { framingStyle, stripFraming } from '../utils/imageFraming';
+
+/**
+ * Cuánto antes de entrar en pantalla se empieza a bajar una foto. Alcanza para
+ * que al scrollear ya esté lista, sin bajar el catálogo entero de una.
+ */
+const NEAR_VIEWPORT_MARGIN = '800px 400px';
 
 /**
  * Imagen que no parpadea, no se pinta en cortina y no se queda en negro.
@@ -42,6 +48,29 @@ export default function OptimizedImage({
   );
   const [failed, setFailed] = useState(false);
 
+  // Antes cada imagen se bajaba apenas se montaba, aunque estuviera en el
+  // fondo de un carrusel: abrir una ficha descargaba ~130 fotos (13 MB) y en
+  // celulares la pestaña se quedaba sin memoria. Ahora sólo las prioritarias
+  // arrancan de una; el resto espera a estar cerca de la pantalla.
+  const boxRef = useRef(null);
+  const [isNear, setIsNear] = useState(
+    () => priority || typeof IntersectionObserver === 'undefined'
+  );
+
+  useEffect(() => {
+    if (isNear) return;
+    const el = boxRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        setIsNear(true);
+        io.disconnect();
+      }
+    }, { rootMargin: NEAR_VIEWPORT_MARGIN });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [isNear]);
+
   // Para ignorar respuestas de una imagen que ya no corresponde (el usuario
   // pasó a otra foto mientras esta bajaba).
   const wantedRef = useRef(finalSrc);
@@ -61,27 +90,39 @@ export default function OptimizedImage({
       return;
     }
 
+    if (!isNear) return;
+
     // Ojo: NO limpiamos `shownSrc` acá. Dejar la foto anterior en pantalla
     // mientras baja la nueva es lo que elimina el flash negro al hacer hover
     // sobre una tarjeta o al tocar una miniatura de la galería.
     setFailed(false);
 
     let alive = true;
-    preloadImage(finalSrc).then((ok) => {
-      if (!alive || wantedRef.current !== finalSrc) return;
-      if (ok) setShownSrc(finalSrc);
-      else setFailed(true);
-    });
+    // Red de seguridad: si la versión achicada falla (CDN caído, cuota
+    // agotada, transformación no habilitada), probamos con el archivo original.
+    // Más pesado, pero una foto lenta es mejor que un recuadro vacío.
+    const original = stripFraming(src);
+    preloadImage(finalSrc)
+      .then((ok) => (ok || !original || original === finalSrc
+        ? { ok, url: finalSrc }
+        : preloadImage(original).then((ok2) => ({ ok: ok2, url: original }))))
+      .then(({ ok, url }) => {
+        if (!alive || wantedRef.current !== finalSrc) return;
+        if (ok) setShownSrc(url);
+        else setFailed(true);
+      });
 
     return () => { alive = false; };
-  }, [finalSrc]);
+  }, [finalSrc, isNear, src]);
 
   const hasImage = !!shownSrc;
 
   // El encuadre acompaña a la foto que está pintada, no a la que se pidió:
   // mientras la nueva baja seguimos mostrando la anterior con el suyo.
   const shownFramingRef = useRef(undefined);
-  if (shownSrc === finalSrc) shownFramingRef.current = framingStyle(src);
+  if (shownSrc === finalSrc || shownSrc === stripFraming(src)) {
+    shownFramingRef.current = framingStyle(src);
+  }
 
   const boxStyle = {
     width: width ? (typeof width === 'number' ? `${width}px` : width) : '100%',
@@ -93,6 +134,7 @@ export default function OptimizedImage({
 
   return (
     <div
+      ref={boxRef}
       className={`img-box ${hasImage ? 'is-loaded' : 'is-pending'} ${failed ? 'is-failed' : ''}`}
       style={boxStyle}
     >

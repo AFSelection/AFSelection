@@ -23,18 +23,13 @@ import AboutPage from './components/AboutPage';
 import ContactPage from './components/ContactPage';
 import InquiryModal from './components/InquiryModal';
 import { fetchListings, fetchSections, fetchHeroImages } from './services/storage';
-import { resolveImageUrl, preloadManyWithDeadline, preloadInBackground } from './utils/imageUrl';
+import { resolveImageUrl, preloadManyWithDeadline, fitToViewport } from './utils/imageUrl';
+import { CARD_WIDTH } from './components/ListingCard';
 import { getWhatsAppUrl } from './utils/whatsapp';
 import { Heart, X, AlertCircle, Layers } from 'lucide-react';
 import Loader from './components/Loader';
 import SEOHead from './components/SEOHead';
 
-/**
- * Anchos de render reales, en CSS px. Se usan para pedirle a Supabase
- * exactamente el tamaño que se va a mostrar en vez de la foto original.
- */
-const CARD_WIDTH = 640;    // tarjeta del catálogo
-const DETAIL_WIDTH = 1200; // foto principal de la ficha
 
 /** Tarjetas que entran en pantalla al cargar. El Loader espera sólo por estas. */
 const ABOVE_FOLD_CARDS = 8;
@@ -72,8 +67,9 @@ export default function App() {
         // Esperamos sólo lo que se ve al entrar (hero + primeras tarjetas).
         // El resto arranca en paralelo apenas se libera la pantalla, así que
         // para cuando el usuario scrollea ya está en caché.
+        // Mismo ancho y calidad que BannerHero, para que sea la misma URL.
         const heroUrls = (hero || []).slice(0, 2).map((u) =>
-          resolveImageUrl(u, { width: 1600, quality: 76 })
+          resolveImageUrl(u, { width: fitToViewport(1600), quality: 76 })
         );
 
         const cardUrls = (listings || [])
@@ -97,23 +93,11 @@ export default function App() {
     return () => { cancelled = true; };
   }, []);
 
-  // Precarga de fondo: el resto del catálogo, y la primera foto de cada ficha
-  // al tamaño del detalle, para que abrir un producto sea instantáneo.
-  useEffect(() => {
-    if (loading || !data.listings?.length) return;
-
-    const rest = data.listings.slice(ABOVE_FOLD_CARDS)
-      .map((l) => l.images?.[0])
-      .filter(Boolean)
-      .map((u) => resolveImageUrl(u, { width: CARD_WIDTH, quality: 72 }));
-
-    const detailCovers = data.listings
-      .map((l) => l.images?.[0])
-      .filter(Boolean)
-      .map((u) => resolveImageUrl(u, { width: DETAIL_WIDTH, quality: 74 }));
-
-    return preloadInBackground([...rest, ...detailCovers]);
-  }, [loading, data.listings]);
+  // Acá había una precarga de fondo de TODO el catálogo (tarjeta + foto grande
+  // de cada publicación) en cada visita: ~13 MB por visitante. Con tráfico de
+  // publicidad eso agota la cuota de Cloudinary y en celulares tumba la
+  // pestaña. Ahora cada foto baja cuando está por entrar en pantalla
+  // (ver OptimizedImage).
 
 
   const [activeSection, setActiveSection] = useState('home');

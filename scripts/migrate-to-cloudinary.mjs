@@ -19,8 +19,9 @@ const SUPABASE_URL = 'https://lodmedtdpgeeswdozpow.supabase.co';
 const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxvZG1lZHRkcGdlZXN3ZG96cG93Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5NzcxMzgsImV4cCI6MjEwMjU1MzEzOH0.H8iis9tZW-mb1aURtx1ailLpLttqNn_ojgWO8z8olAI';
 
 const CLOUD_NAME = 'jm1u0v8b';
-const API_KEY = '972187185433841';
-const API_SECRET = 'iVSI-ZmPGLC-eaq--dvNxRazLjY';
+// Credenciales en .env.local (ver fix-supabase-urls.mjs). Nunca en el código.
+const API_KEY = process.env.CLOUDINARY_API_KEY;
+const API_SECRET = process.env.CLOUDINARY_API_SECRET;
 
 const BUCKET = 'listings';
 const OBJECT_PREFIX = `/storage/v1/object/public/${BUCKET}/`;

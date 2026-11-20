@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Heart, MapPin, Percent } from 'lucide-react';
 import OptimizedImage from './OptimizedImage';
-import { resolveImageUrl, preloadInBackground } from '../utils/imageUrl';
 import { formatSpecSummary } from '../utils/specs';
 
-/** Debe coincidir con CARD_WIDTH en App.jsx para reusar la misma precarga. */
-const CARD_WIDTH = 640;
+/**
+ * Ancho de la tarjeta en CSS px: 360 en los carruseles, hasta ~440 en la
+ * grilla del catálogo. App.jsx lo importa para que el Loader precargue
+ * exactamente la misma URL.
+ */
+export const CARD_WIDTH = 440;
 
 export default function ListingCard({
   item,
@@ -27,15 +30,10 @@ export default function ListingCard({
   const [activeImg, setActiveImg] = useState(primaryImage);
   const [isHovered, setIsHovered] = useState(false);
 
-  // La segunda foto se trae apenas la tarjeta existe, no al hacer hover.
-  // Si esperáramos al hover, el primer paso del mouse encontraba una imagen
-  // sin descargar — que es de dónde salía el parpadeo.
-  useEffect(() => {
-    if (!secondaryImage || secondaryImage === primaryImage) return;
-    return preloadInBackground([
-      resolveImageUrl(secondaryImage, { width: CARD_WIDTH, quality: 72 })
-    ]);
-  }, [secondaryImage, primaryImage]);
+  // La segunda foto se pide recién en el hover. Antes se bajaba al montar cada
+  // tarjeta: en celu (sin hover) eran decenas de fotos que nadie veía. El
+  // parpadeo no vuelve porque OptimizedImage deja la primera foto en pantalla
+  // hasta que la segunda está lista.
 
   const isDiscount = item.isOffer || (item.oldPrice && Number(item.oldPrice) > Number(item.price));
 

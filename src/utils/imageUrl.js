@@ -1,14 +1,14 @@
 /**
  * Pipeline único de imágenes.
  *
- * Contexto: las fotos guardadas en Supabase Storage se llaman `.webp` pero en
- * realidad son PNG de 2.7 a 8.4 MB (el `canvas.toBlob(..., 'image/webp')` del
- * CRM caía a PNG sin avisar). Servirlas crudas es lo que hacía que el sitio
- * cargara lento, en cortina o en negro.
+ * Las fotos viven en Cloudinary, que las achica y convierte al vuelo
+ * (`w_…,q_…,f_auto`). Quedan algunas URLs viejas de Supabase Storage.
  *
- * La solución es no servirlas nunca crudas: todo pasa por el endpoint de
- * transformaciones de Supabase, que devuelve WebP real de 30-80 KB y queda
- * cacheado en el CDN. Un PNG de 2.7 MB pedido a width=600 sale 77 KB.
+ * Ojo con Supabase: el endpoint de transformaciones (`/render/image/`) NO está
+ * habilitado en este proyecto — responde 403 FeatureNotEnabled y el navegador
+ * lo bloquea. Pedirlas por ahí dejaba las fotos en blanco (nov 2026). Por eso
+ * las URLs de Supabase se sirven tal cual, aunque pesen varios MB: lento pero
+ * visible. La solución de fondo es que no quede ninguna en la base.
  */
 
 import { stripFraming } from './imageFraming';
@@ -67,21 +67,8 @@ export function buildImageUrl(url, opts = {}) {
   const q = snapUp(quality, QUALITY_LADDER);
 
   if (isSupabaseStorageUrl(url)) {
-    // Descartamos cualquier query previa para no acumular transformaciones.
-    const base = url.split('?')[0].replace(SUPABASE_OBJECT_PATH, SUPABASE_RENDER_PATH);
-
-    const params = new URLSearchParams();
-    params.set('width', String(w));
-    if (height) params.set('height', String(Math.round(height)));
-    // Sin alto, Supabase usa `cover` contra el alto ORIGINAL: una foto de
-    // 1600×2133 pedida a width=960 vuelve 960×2133, recortada de los costados.
-    // Eso agregaba un zoom que no se veía en el CRM. `contain` la achica
-    // entera y en proporción (960×1280).
-    const mode = resize || (height ? null : 'contain');
-    if (mode) params.set('resize', mode);
-    params.set('quality', String(q));
-
-    return `${base}?${params.toString()}`;
+    // Sin transformaciones (ver arriba): el objeto original, sin query.
+    return url.split('?')[0].replace(SUPABASE_RENDER_PATH, SUPABASE_OBJECT_PATH);
   }
 
   if (url.includes('images.unsplash.com')) {
@@ -95,6 +82,17 @@ export function buildImageUrl(url, opts = {}) {
   }
 
   return url;
+}
+
+/**
+ * Ancho de render topeado al ancho de la pantalla. Una foto de 1200 px de
+ * ancho en un celu de 390 px se baja casi tres veces más pesada de lo que se ve.
+ * Se calcula una vez al cargar el módulo para que la URL que se precarga y la
+ * que pinta el `<img>` sean la misma.
+ */
+export function fitToViewport(maxWidth) {
+  if (typeof window === 'undefined' || !window.innerWidth) return maxWidth;
+  return Math.min(maxWidth, Math.ceil(window.innerWidth));
 }
 
 /**

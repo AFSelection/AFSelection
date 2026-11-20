@@ -33,3 +33,6 @@ scripts/.recompress-manifest*.json
 
 # Configuracion local de herramientas
 .claude/
+
+# Manifiestos de fix-supabase-urls (para revertir)
+scripts/.fix-urls-manifest*.json

@@ -6,14 +6,14 @@ import { isInstagramUrl, parseInstagramUrl, getListingVideos } from '../utils/in
 import { ExternalLink } from 'lucide-react';
 import ListingCard from './ListingCard';
 import OptimizedImage from './OptimizedImage';
-import { resolveImageUrl, preloadMany, preloadInBackground } from '../utils/imageUrl';
+import { resolveImageUrl, preloadMany, fitToViewport } from '../utils/imageUrl';
 import { formatSpecLabel } from '../utils/specs';
 import PropertyMapView from './PropertyMapView';
 
 /** Anchos de render de la ficha. */
-const DETAIL_WIDTH = 1200;  // foto principal
-const THUMB_WIDTH = 200;    // miniaturas
-const LIGHTBOX_WIDTH = 1600; // pantalla completa
+const DETAIL_WIDTH = fitToViewport(1200);   // foto principal
+const THUMB_WIDTH = 200;                     // miniaturas
+const LIGHTBOX_WIDTH = fitToViewport(1600);  // pantalla completa
 
 export default function ProductDetailPage({ item, onBack, onGoToSell, favorites, toggleFavorite, onSelectListing, listings = [], onOpenInquiry }) {
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
@@ -49,26 +49,30 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
     setIsLightboxOpen(false);
   }, [item]);
 
-  // Toda la galería se descarga apenas se abre la ficha, no al tocar cada
-  // miniatura. Es lo que hace que pasar de foto en foto sea instantáneo en vez
-  // de dejar el recuadro en negro esperando la descarga.
+  // Al abrir la ficha: miniaturas (livianas, se ven todas juntas) y la foto
+  // grande que está en pantalla.
   useEffect(() => {
     if (!item) return;
-    const urls = images.map((u) => u).filter(Boolean);
+    const urls = images.filter(Boolean);
     if (urls.length === 0) return;
-
-    // Primero las miniaturas (livianas, se ven todas juntas) y la foto grande
-    // que ya está en pantalla; después el resto de las grandes.
-    const immediate = [
-      ...urls.map((u) => resolveImageUrl(u, { width: THUMB_WIDTH, quality: 65 })),
-      resolveImageUrl(urls[0], { width: DETAIL_WIDTH, quality: 74 })
-    ];
-    preloadMany(immediate, { concurrency: 8 });
-
-    return preloadInBackground(
-      urls.slice(1).map((u) => resolveImageUrl(u, { width: DETAIL_WIDTH, quality: 74 }))
-    );
+    preloadMany([
+      resolveImageUrl(urls[0], { width: DETAIL_WIDTH, quality: 74 }),
+      ...urls.map((u) => resolveImageUrl(u, { width: THUMB_WIDTH, quality: 65 }))
+    ], { concurrency: 6 });
   }, [item, images]);
+
+  // De las fotos grandes, sólo la siguiente y la anterior a la que se ve.
+  // Antes se bajaba la galería entera (12 fotos grandes) apenas se abría la
+  // ficha; en celu eso, sumado al resto, dejaba la pestaña sin memoria.
+  // Con las vecinas listas, las flechas siguen pasando sin hueco.
+  useEffect(() => {
+    if (!item || mediaItems.length < 2) return;
+    const neighbours = [activeMediaIndex + 1, activeMediaIndex - 1]
+      .map((i) => mediaItems[(i + mediaItems.length) % mediaItems.length])
+      .filter((m) => m && m.type === 'image')
+      .map((m) => resolveImageUrl(m.url, { width: DETAIL_WIDTH, quality: 74 }));
+    preloadMany(neighbours, { concurrency: 2 });
+  }, [item, activeMediaIndex, mediaItems]);
 
   // El lightbox pide una resolución mayor. Preparamos la foto activa y sus dos
   // vecinas para que las flechas no muestren un hueco.

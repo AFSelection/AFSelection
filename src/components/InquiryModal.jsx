@@ -3,6 +3,7 @@ import { framingStyle } from '../utils/imageFraming';
 import { X, Send, MessageCircle, CheckCircle, ShieldCheck } from 'lucide-react';
 import { submitLead } from '../services/storage';
 import { getWhatsAppUrl } from '../utils/whatsapp';
+import FormNotice from './FormNotice';
 
 export default function InquiryModal({ item, onClose }) {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ export default function InquiryModal({ item, onClose }) {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formError, setFormError] = useState('');
 
   if (!item) return null;
 
@@ -24,10 +26,11 @@ export default function InquiryModal({ item, onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name.trim() || !formData.phone.trim()) {
-      alert('Por favor completa tu nombre y número de teléfono / WhatsApp (*)');
+      setFormError('Completá tu nombre y tu teléfono o WhatsApp.');
       return;
     }
 
+    setFormError('');
     setIsSubmitting(true);
 
     const priceText = item.price ? ` (${formatPrice(item.price)})` : '';
@@ -109,15 +112,15 @@ export default function InquiryModal({ item, onClose }) {
             <CheckCircle size={44} className="inquiry-success-icon" />
             <h3>¡Consulta Registrada!</h3>
             <p>
-              Tus datos fueron guardados en nuestro CRM y se envió una notificación a Agustín Fidalgo. 
-              Si la pestaña de WhatsApp no se abrió automáticamente, podés hacer clic abajo:
+              Tu consulta le llegó a Agustín Fidalgo.
+              Si WhatsApp no se abrió solo, tocá el botón de abajo:
             </p>
             <button className="btn-pill btn-pill-dark" onClick={onClose} style={{ marginTop: '16px' }}>
               <span>Cerrar</span>
             </button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="inquiry-form">
+          <form onSubmit={handleSubmit} className="inquiry-form" noValidate>
             <div className="form-group">
               <label className="input-label">Nombre y Apellido *</label>
               <input
@@ -164,6 +167,7 @@ export default function InquiryModal({ item, onClose }) {
               />
             </div>
 
+            <FormNotice message={formError} />
             <button
               type="submit"
               className="btn-submit-inquiry"
@@ -174,7 +178,7 @@ export default function InquiryModal({ item, onClose }) {
             </button>
 
             <span className="inquiry-footer-note">
-              🔒 Notifica automáticamente a Agustín en el CRM y por email aunque no envíes el mensaje en WhatsApp.
+              Agustín recibe tu consulta aunque no llegues a mandar el mensaje de WhatsApp.
             </span>
           </form>
         )}

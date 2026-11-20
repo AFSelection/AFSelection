@@ -773,7 +773,7 @@ export default function App() {
             <p style={{ color: 'var(--text-light-muted)', fontSize: '0.88rem' }}>Automotive & Real Estate Portfolio</p>
           </div>
           <div style={{ fontSize: '0.8rem', color: 'var(--text-light-muted)' }}>
-            © 2026 AF Select Inc. All rights reserved.
+            © {new Date().getFullYear()} AF Select. Todos los derechos reservados.
           </div>
         </div>
       </footer>

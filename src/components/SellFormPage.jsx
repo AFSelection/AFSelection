@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, ArrowRight, Send, CheckCircle, Car, Home, ShieldCheck, FileText, User } from 'lucide-react';
 import { submitLead } from '../services/storage';
+import FormNotice from './FormNotice';
+import CustomSelect from './CustomSelect';
 
 export default function SellFormPage({ onBack }) {
   const [step, setStep] = useState(1);
@@ -25,6 +27,8 @@ export default function SellFormPage({ onBack }) {
     message: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState('');
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -35,27 +39,31 @@ export default function SellFormPage({ onBack }) {
     // Validation for Step 2
     if (step === 2) {
       if (assetType === 'autos' && (!formData.brandModel || !formData.year || !formData.kilometers)) {
-        alert('Por favor completa los campos requeridos (*)');
+        setFormError('Completá marca y modelo, año y kilómetros.');
         return;
       }
       if (assetType === 'propiedades' && (!formData.location)) {
-        alert('Por favor completa la ubicación requerida (*)');
+        setFormError('Completá la ubicación de la propiedad.');
         return;
       }
     }
+    setFormError('');
     setStep(prev => prev + 1);
   };
 
   const handleBack = () => {
+    setFormError('');
     setStep(prev => prev - 1);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return;
     if (!formData.name || !formData.email || !formData.phone) {
-      alert('Por favor completa todos los datos de contacto requeridos (*)');
+      setFormError('Completá nombre, email y teléfono para poder contactarte.');
       return;
     }
+    setFormError('');
 
     // Create a detailed message combining asset data
     let descriptionText = '';
@@ -78,10 +86,14 @@ export default function SellFormPage({ onBack }) {
         type: 'sell'
       };
 
+      setIsSubmitting(true);
       await submitLead(newLead);
       setIsSubmitted(true);
     } catch (error) {
-      alert('Hubo un error al enviar tu solicitud de publicación. Por favor intentá nuevamente.');
+      console.error(error);
+      setFormError('No se pudo enviar. Probá de nuevo en unos segundos.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -247,16 +259,18 @@ export default function SellFormPage({ onBack }) {
                 ) : (
                   <div className="wizard-form-fields-grid">
                     <div className="form-input-group">
-                      <label>Tipo de Unidad</label>
-                      <select
+                      <label htmlFor="sell-property-type">Tipo de Unidad</label>
+                      <CustomSelect
+                        id="sell-property-type"
                         value={formData.propertyType}
-                        onChange={(e) => setFormData({ ...formData, propertyType: e.target.value })}
-                      >
-                        <option value="Casa">Casa</option>
-                        <option value="Departamento">Departamento</option>
-                        <option value="Terreno">Lote / Terreno</option>
-                        <option value="Oficina">Oficina / Local</option>
-                      </select>
+                        onChange={(v) => setFormData({ ...formData, propertyType: v })}
+                        options={[
+                          { value: 'Casa', label: 'Casa' },
+                          { value: 'Departamento', label: 'Departamento' },
+                          { value: 'Terreno', label: 'Lote / Terreno' },
+                          { value: 'Oficina', label: 'Oficina / Local' }
+                        ]}
+                      />
                     </div>
                     <div className="form-input-group">
                       <label>Ubicación / Barrio *</label>
@@ -310,6 +324,7 @@ export default function SellFormPage({ onBack }) {
                   </div>
                 </div>
 
+                <FormNotice message={formError} />
                 <div className="wizard-actions-row">
                   <button type="button" className="btn-wizard-back" onClick={handleBack}>
                     Atrás
@@ -373,12 +388,13 @@ export default function SellFormPage({ onBack }) {
                   </div>
                 </div>
 
+                <FormNotice message={formError} />
                 <div className="wizard-actions-row">
                   <button type="button" className="btn-wizard-back" onClick={handleBack}>
                     Atrás
                   </button>
-                  <button type="button" className="btn-submit-wizard" onClick={handleSubmit}>
-                    <span>Enviar Solicitud</span>
+                  <button type="button" className="btn-submit-wizard" onClick={handleSubmit} disabled={isSubmitting}>
+                    <span>{isSubmitting ? 'Enviando...' : 'Enviar Solicitud'}</span>
                     <Send size={16} />
                   </button>
                 </div>

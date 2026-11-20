@@ -6654,7 +6654,7 @@ h1, h2, h3, h4, .font-display {
 .select-field {
   appearance: none;
   cursor: pointer;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2366970' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666970' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 16px center;
   padding-right: 40px;
@@ -7253,4 +7253,113 @@ h1, h2, h3, h4, .font-display {
   background-color: currentColor;
   -webkit-mask: url('/cars-and-cars.png') center / contain no-repeat;
   mask: url('/cars-and-cars.png') center / contain no-repeat;
+}
+
+/* Aviso dentro de formularios (reemplaza a los alert() nativos).
+   Rojo #B42318 sobre #FEF3F2: contraste 6.6:1, se lee sobre fondo claro u oscuro. */
+.form-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0 0 14px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: #FEF3F2;
+  border: 1px solid #FECDCA;
+  color: #B42318;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: left;
+  animation: form-notice-in 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.form-notice svg { flex: none; margin-top: 1px; }
+@keyframes form-notice-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .form-notice { animation: none; }
+}
+
+/* Selector propio (CustomSelect). El botón hereda la clase del campo donde
+   está (input-field, fpop-select…); acá va sólo lo que el <button> no trae. */
+.cselect {
+  position: relative;
+  width: 100%;
+  /* Grilla de una columna minmax(0, 1fr): así el texto largo (que va en una
+     sola línea con …) no estira el formulario que lo contiene. */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+}
+.cselect-trigger {
+  display: block;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  line-height: 1.3;
+}
+.cselect-trigger:focus-visible { outline: 2px solid var(--text-main); outline-offset: 2px; }
+.cselect--dark .cselect-trigger:focus-visible { outline-color: #FFFFFF; }
+.cselect-value { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* En el formulario de vender el <select> tomaba estilo por etiqueta. */
+.form-input-group .cselect-trigger {
+  border: 1px solid var(--border-light);
+  background: #FFFFFF url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666970' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 16px center;
+  color: #111317;
+  padding: 12px 40px 12px 16px;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+}
+.cselect-list {
+  position: absolute;
+  z-index: 60;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  max-height: 260px;
+  overflow-y: auto;
+  background: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(17, 19, 23, 0.14);
+  transform-origin: top center;
+  animation: cselect-in 160ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.cselect-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #111317;
+  cursor: pointer;
+}
+.cselect-option.is-active { background: var(--bg-canvas); }
+.cselect-option.is-selected { font-weight: 800; }
+.cselect--dark .cselect-list { background: #1F232A; border-color: rgba(255, 255, 255, 0.12); }
+.cselect--dark .cselect-option { color: #F4F3EF; }
+.cselect--dark .cselect-option.is-active { background: rgba(255, 255, 255, 0.08); }
+@keyframes cselect-in {
+  from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cselect-list { animation: none; }
+}
+/* La flecha del selector de contacto también con foco (input-field:focus
+   pisa el background completo). */
+.cselect-trigger.select-field:focus,
+.cselect.is-open .cselect-trigger.select-field {
+  background: #FFFFFF url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666970' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 16px center;
 }

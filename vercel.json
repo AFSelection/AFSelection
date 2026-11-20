@@ -1,6 +1,18 @@
 {
   "rewrites": [
     { "source": "/sitemap.xml", "destination": "/api/sitemap" },
+    {
+      "source": "/producto/:id",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|facebot|whatsapp|twitterbot|linkedinbot|slackbot|telegrambot|discordbot|pinterest|skypeuripreview|googlebot|bingbot|applebot|instagram).*"
+        }
+      ],
+      "missing": [{ "type": "query", "key": "raw" }],
+      "destination": "/api/producto?id=:id"
+    },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }

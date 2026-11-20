@@ -6,6 +6,7 @@ import { isInstagramUrl, parseInstagramUrl, getListingVideos } from '../utils/in
 import { ExternalLink } from 'lucide-react';
 import ListingCard from './ListingCard';
 import OptimizedImage from './OptimizedImage';
+import FormNotice from './FormNotice';
 import { resolveImageUrl, preloadMany, fitToViewport } from '../utils/imageUrl';
 import { formatSpecLabel } from '../utils/specs';
 import PropertyMapView from './PropertyMapView';
@@ -21,6 +22,8 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState('');
 
   // Gather media (images + videos) safely before hooks evaluate dependencies.
   // Memoizado a propósito: estos arrays son dependencia de los efectos de
@@ -121,7 +124,14 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
 
   const handleLeadSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.email) return;
+    if (isSubmitting) return;
+    // Antes, si faltaba un dato, el botón no hacía nada y no avisaba.
+    if (!formData.name.trim() || !formData.email.trim()) {
+      setFormError('Completá tu nombre y tu email para enviarte la información.');
+      return;
+    }
+    setFormError('');
+    setIsSubmitting(true);
 
     try {
       const newLead = {
@@ -138,8 +148,10 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
       await submitLead(newLead);
       setIsSubmitted(true);
     } catch (error) {
-      alert('Hubo un error al enviar tu consulta. Por favor, intentalo de nuevo.');
+      setFormError('No se pudo enviar. Probá de nuevo o escribinos por WhatsApp.');
       console.error(error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -437,7 +449,14 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
         <div className="detail-info-column">
           <div className="category-badge-row">
             <span className="category-pill">{item.category || item.sectionId}</span>
-            {item.featured && <span className="featured-pill">★ SELECCIÓN DESTACADA</span>}
+            {item.featured && (
+              <span className="featured-pill">
+                <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                  <path d="M8 1.5l1.9 4.1 4.4.5-3.3 3 .9 4.4L8 11.3l-3.9 2.2.9-4.4-3.3-3 4.4-.5z" />
+                </svg>
+                SELECCIÓN DESTACADA
+              </span>
+            )}
           </div>
 
           <h1 className="detail-title">{item.title}</h1>
@@ -653,7 +672,7 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
               <p>Tu solicitud ha sido registrada correctamente. Nos comunicaremos pronto.</p>
             </div>
           ) : (
-            <form onSubmit={handleLeadSubmit} className="cta-contact-form">
+            <form onSubmit={handleLeadSubmit} className="cta-contact-form" noValidate>
               <div className="form-group">
                 <input
                   type="text"
@@ -688,8 +707,9 @@ export default function ProductDetailPage({ item, onBack, onGoToSell, favorites,
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 />
               </div>
-              <button type="submit" className="btn-submit-lead">
-                <span>ENVIAR SOLICITUD</span>
+              <FormNotice message={formError} />
+              <button type="submit" className="btn-submit-lead" disabled={isSubmitting}>
+                <span>{isSubmitting ? 'ENVIANDO...' : 'ENVIAR SOLICITUD'}</span>
                 <Send size={14} />
               </button>
             </form>

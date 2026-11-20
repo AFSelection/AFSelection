@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { X } from 'lucide-react';
+import CustomSelect from './CustomSelect';
 
 
 const ROOMS_OPTIONS = [
@@ -97,21 +98,22 @@ export default function FiltersPopup({
           {/* Ordenar por */}
           <div className="fpop-section">
             <Label>Ordenar por</Label>
-            <select
+            <CustomSelect
+              ariaLabel="Ordenar por"
               className={`fpop-select${dark ? ' dark' : ''}`}
+              dark={dark}
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-            >
-              <option value="recent">Más recientes</option>
-              <option value="price_asc">Precio: menor a mayor</option>
-              <option value="price_desc">Precio: mayor a menor</option>
-              {isAutos && (
-                <>
-                  <option value="year_desc">Año más nuevo</option>
-                  <option value="km_asc">Menor kilometraje</option>
-                </>
-              )}
-            </select>
+              onChange={setSortBy}
+              options={[
+                { value: 'recent', label: 'Más recientes' },
+                { value: 'price_asc', label: 'Precio: menor a mayor' },
+                { value: 'price_desc', label: 'Precio: mayor a menor' },
+                ...(isAutos ? [
+                  { value: 'year_desc', label: 'Año más nuevo' },
+                  { value: 'km_asc', label: 'Menor kilometraje' }
+                ] : [])
+              ]}
+            />
           </div>
 
           {/* Rango de precio */}

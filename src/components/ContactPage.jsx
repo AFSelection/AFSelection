@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { ArrowLeft, Send, CheckCircle, Phone, Mail, MapPin, Clock, MessageSquare, ShieldCheck, ArrowRight } from 'lucide-react';
 import { submitLead } from '../services/storage';
 import { getWhatsAppUrl } from '../utils/whatsapp';
+import FormNotice from './FormNotice';
+import CustomSelect from './CustomSelect';
 
 export default function ContactPage({ onBack }) {
   const [formData, setFormData] = useState({
@@ -13,14 +15,16 @@ export default function ContactPage({ onBack }) {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formError, setFormError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name.trim() || !formData.email.trim() || !formData.phone.trim()) {
-      alert('Por favor completa todos los campos requeridos (*)');
+    if (!formData.name.trim() || !formData.email.trim() || !formData.phone.trim() || !formData.message.trim()) {
+      setFormError('Completá nombre, email, teléfono y tu consulta para poder responderte.');
       return;
     }
 
+    setFormError('');
     setIsSubmitting(true);
 
     const subjectLabels = {
@@ -46,7 +50,7 @@ export default function ContactPage({ onBack }) {
       await submitLead(newLead);
       setIsSubmitted(true);
     } catch (err) {
-      alert('Ocurrió un error al enviar el formulario. Por favor intentá nuevamente.');
+      setFormError('No se pudo enviar. Probá de nuevo o escribinos por WhatsApp.');
       console.error(err);
     } finally {
       setIsSubmitting(false);
@@ -71,8 +75,7 @@ export default function ContactPage({ onBack }) {
           <CheckCircle size={48} className="success-icon" />
           <h2>¡Mensaje Enviado con Éxito!</h2>
           <p>
-            Tu consulta fue registrada en nuestro CRM y se notificó inmediatamente por mail a Agustín Fidalgo. 
-            Nos pondremos en contacto con vos a la brevedad.
+            Tu consulta le llegó a Agustín Fidalgo. Te va a contactar por mail o WhatsApp.
           </p>
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap', marginTop: '24px' }}>
             <button className="btn-pill btn-pill-dark" onClick={onBack}>
@@ -159,10 +162,10 @@ export default function ContactPage({ onBack }) {
             <div className="contact-form-column">
               <h3 className="form-clean-title">ENVIAR UN MENSAJE</h3>
               <p className="form-clean-subtitle">
-                Completá el formulario. Tu solicitud se guardará en nuestro CRM y le enviará un aviso inmediato por correo a Agustín.
+                Completá el formulario y la consulta le llega directo a Agustín.
               </p>
 
-              <form onSubmit={handleSubmit} className="contact-clean-form">
+              <form onSubmit={handleSubmit} className="contact-clean-form" noValidate>
                 <div className="form-group">
                   <label className="input-label">Nombre Completo *</label>
                   <input
@@ -202,17 +205,19 @@ export default function ContactPage({ onBack }) {
                 </div>
 
                 <div className="form-group">
-                  <label className="input-label">Tipo de Consulta</label>
-                  <select
+                  <label className="input-label" htmlFor="contact-subject">Tipo de Consulta</label>
+                  <CustomSelect
+                    id="contact-subject"
                     className="input-field select-field"
                     value={formData.subjectType}
-                    onChange={(e) => setFormData({ ...formData, subjectType: e.target.value })}
-                  >
-                    <option value="compra">Asesoramiento para Compra de Vehículo o Propiedad</option>
-                    <option value="venta">Publicación / Venta Directa de mi Activo</option>
-                    <option value="inversiones">Inversiones & Desarrollo</option>
-                    <option value="general">Otra Consulta General</option>
-                  </select>
+                    onChange={(v) => setFormData({ ...formData, subjectType: v })}
+                    options={[
+                      { value: 'compra', label: 'Asesoramiento para Compra de Vehículo o Propiedad' },
+                      { value: 'venta', label: 'Publicación / Venta Directa de mi Activo' },
+                      { value: 'inversiones', label: 'Inversiones & Desarrollo' },
+                      { value: 'general', label: 'Otra Consulta General' }
+                    ]}
+                  />
                 </div>
 
                 <div className="form-group">
@@ -227,8 +232,9 @@ export default function ContactPage({ onBack }) {
                   />
                 </div>
 
+                <FormNotice message={formError} />
                 <button type="submit" className="btn-submit-contact-form" disabled={isSubmitting}>
-                  <span>{isSubmitting ? 'ENVIANDO...' : 'ENVIAR CONSULTA AL CRM & MAIL'}</span>
+                  <span>{isSubmitting ? 'ENVIANDO...' : 'ENVIAR CONSULTA'}</span>
                   <Send size={16} />
                 </button>
               </form>

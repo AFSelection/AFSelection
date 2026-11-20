@@ -12,12 +12,22 @@ Public site for [AF Select](https://fidalgoselect.com), a curated marketplace of
 
 ## Image pipeline
 
-Listing photos are the heaviest part of the site, so they get their own tooling:
+Every photo lives in **Cloudinary**, which resizes and converts it on the fly (`w_…,q_…,f_auto`). Supabase Storage is no longer used for images: its image transformations are not enabled on this project (they return `403 FeatureNotEnabled`), and the free plan only allows 1 GB of storage.
 
-- `src/utils/imageUrl.js` requests each photo at the size it is displayed, snapped to a small set of widths so CDN variants are reused, and preloads images with a 3.5-second deadline so one slow photo can't hold up the page.
-- `scripts/recompress-storage.mjs` fixed a real bug: the previous uploader saved PNGs of 2.7 to 8.4 MB named `.webp`, because the browser silently fell back to PNG. The script re-encodes those originals as real WebP.
-- `scripts/warm-images.mjs` pre-generates the resized variants on the CDN, so no visitor pays the first-request resize time.
-- `scripts/migrate-to-cloudinary.mjs` moves photos from Supabase Storage to Cloudinary and rewrites their URLs, keeping a backup manifest.
+- `src/utils/imageUrl.js` requests each photo at the size it is displayed, capped to the screen width and snapped to a small set of widths so CDN variants are reused.
+- `src/components/OptimizedImage.jsx` only downloads a photo when it gets close to the viewport, and falls back to the original file if the resized version fails. Opening a listing on a phone downloads about 0.8 MB instead of the whole catalog.
+- `scripts/fix-supabase-urls.mjs` finishes the migration from Supabase Storage to Cloudinary. It verifies every database write: the earlier migration (`migrate-to-cloudinary.mjs`) wrote with the anon key, RLS silently ignored it, and 28 listings kept their old URLs.
+- `scripts/recompress-storage.mjs` and `scripts/warm-images.mjs` belong to the old Supabase pipeline and are kept for reference only.
+
+## SEO and link previews
+
+- `api/sitemap.js` builds `/sitemap.xml` from the database (every listing and every CRM section), cached for an hour.
+- `api/producto.js` serves `/producto/:id` with the listing's title, price, description and a 1200×630 photo **only to link-preview bots** (WhatsApp, Facebook, X, Google…), selected by user agent in `vercel.json`. People get the normal static page. If anything fails, it redirects to `?raw=1`, which serves the regular SPA.
+
+## Security and backups
+
+- Database access rules live in `supabase/seguridad.sql`: the public can read listings and settings and create enquiries; only the CRM account can write, delete or read enquiries. Sign-ups are disabled in Supabase Auth.
+- The free Supabase plan has **no automatic backups**. Run `node scripts/respaldo.mjs` to save the three tables as JSON in `../respaldos/<date>/` (outside the repo, because enquiries contain personal data).
 
 ## Stack
 
